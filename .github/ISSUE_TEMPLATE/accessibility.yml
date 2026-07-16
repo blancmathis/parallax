@@ -1,0 +1,27 @@
+name: Accessibility or readability issue
+description: Report a keyboard, screen-reader, contrast, responsive, or comprehension problem.
+title: "[Accessibility]: "
+labels: [accessibility]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or component
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the barrier and its practical impact.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps and assistive technology
+      description: Include keyboard steps, browser, viewport, or assistive technology when relevant.
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement

@@ -1,0 +1,570 @@
+{
+  "topic": {
+    "id": "topic_smartphones_schools",
+    "title": "Smartphones à l'école",
+    "question": "Les écoles devraient-elles interdire les smartphones pendant les cours ?",
+    "summary": "Un débat de politique scolaire sur l'interdiction des smartphones pendant les cours : attention, résultats d'apprentissage et égalité en classe face à l'autonomie des élèves, la littératie numérique, le contact familial et les coûts réels d'application.",
+    "status": "published",
+    "current_revision_id": "rev_001",
+    "created_at": "2026-04-28T00:00:00Z",
+    "created_by": "user_admin"
+  },
+  "revision": {
+    "id": "rev_001",
+    "topic_id": "topic_smartphones_schools",
+    "revision_number": 1,
+    "status": "published",
+    "published_at": "2026-04-30T00:00:00Z",
+    "published_by": "user_admin"
+  },
+  "positions": [
+    {
+      "id": "pos_a",
+      "topic_id": "topic_smartphones_schools",
+      "title": "Oui — les interdire de la sonnerie du matin à celle du soir",
+      "short_summary": "Retirer les smartphones pendant toute la journée scolaire pour protéger l'attention, les apprentissages et l'égalité en classe.",
+      "steelman": "La classe existe pour orienter une attention rare vers l'apprentissage, et les smartphones sont conçus pour détourner cette attention. Les élèves reçoivent une grande part de leurs notifications quotidiennes pendant les heures de cours, et même un téléphone silencieux à portée de main concurrence l'enseignement. Là où les écoles ont retiré les téléphones, les chercheurs ont trouvé des gains mesurables aux examens, concentrés chez les élèves déjà en difficulté ; une règle claire réduit donc les écarts au lieu de les creuser. Une interdiction sur toute la journée est aussi la seule version que le personnel peut appliquer équitablement, car elle retire la négociation au cas par cas de chaque leçon. Beaucoup d'enseignants et de parents valorisent aussi une journée scolaire sans pression des réseaux sociaux, même si la preuve directe sur le bien-être reste contestée. L'interdiction demande un acte de retenue à la grille de l'école plutôt que des centaines de petits actes tout au long de la journée.",
+      "status": "published",
+      "argument_ids": [
+        "arg_a1",
+        "arg_a2",
+        "arg_a3"
+      ],
+      "value_ids": [
+        "val_attention",
+        "val_equity"
+      ],
+      "tradeoff_ids": [
+        "to_a"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_b",
+      "topic_id": "topic_smartphones_schools",
+      "title": "Non — enseigner plutôt un usage maîtrisé",
+      "short_summary": "Garder les téléphones à l'école et enseigner un usage délibéré et maîtrisé plutôt qu'imposer une interdiction générale.",
+      "steelman": "Les smartphones sont l'infrastructure de la vie moderne, et l'école devrait être le lieu où les jeunes apprennent à les utiliser délibérément, plutôt que de simplement les voir enfermés. La meilleure preuve directe affaiblit le cas le plus fort pour les interdictions : les politiques scolaires restrictives n'ont pas démontré d'amélioration du bien-être ni de réduction de l'usage total des téléphones par les adolescents, car la plupart de cet usage a lieu hors des heures de classe. Les interdictions générales ont aussi de vrais coûts : elles coupent le lien direct entre parents et enfants et transforment les enseignants en police des appareils dans des conflits quotidiens de confiscation. Une approche d'usage maîtrisé fait du téléphone un objet d'enseignement explicite : quand le mettre en silence, comment la conception des notifications agit contre vous, et quand il devient un outil légitime d'apprentissage. Des élèves qui ne connaissent que la prohibition sortent diplômés sans pratique de l'autorégulation, précisément au moment où les règles externes disparaissent.",
+      "status": "published",
+      "argument_ids": [
+        "arg_b1",
+        "arg_b2",
+        "arg_b3"
+      ],
+      "value_ids": [
+        "val_autonomy",
+        "val_reachability"
+      ],
+      "tradeoff_ids": [
+        "to_b"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_c",
+      "topic_id": "topic_smartphones_schools",
+      "title": "Restreindre en cours, autoriser entre les cours",
+      "short_summary": "Exiger des téléphones rangés et silencieux pendant les cours, tout en autorisant un usage limité entre eux.",
+      "steelman": "Le temps de cours est la ressource la plus rare d'une école, et la preuve que les téléphones l'érodent est assez solide pour agir, tandis que la preuve de bénéfices plus larges des interdictions sur toute la journée pour le bien-être est beaucoup plus faible. Une politique médiane suit cette asymétrie : les téléphones sont rangés et silencieux pendant chaque cours, et disponibles pendant les pauses et les déplacements. Cela protège l'enseignement là où la distraction fait ses dégâts, garde les élèves joignables par leur famille et leur fait pratiquer l'habitude de ranger le téléphone plutôt que de la vivre seulement comme une confiscation. Une règle perçue comme proportionnée est aussi plus susceptible d'obtenir l'adhésion volontaire large dont toute politique sur les téléphones dépend finalement. Cette position accepte une frontière d'application plus difficile qu'une interdiction générale en échange de la préservation des formes de connectivité qui ont une vraie valeur.",
+      "status": "published",
+      "argument_ids": [
+        "arg_c1",
+        "arg_c2",
+        "arg_c3"
+      ],
+      "value_ids": [
+        "val_attention",
+        "val_autonomy",
+        "val_reachability"
+      ],
+      "tradeoff_ids": [
+        "to_c"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "arguments": [
+    {
+      "id": "arg_a1",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Les téléphones et leurs notifications détournent l'attention des élèves de l'enseignement tout au long de la journée scolaire.",
+      "claim_ids": [
+        "c1"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a2",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Les interdictions de téléphones sont suivies de gains aux examens concentrés chez les élèves les moins performants, ce qui réduit les écarts en classe.",
+      "claim_ids": [
+        "c2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a3",
+      "position_id": "pos_a",
+      "direction": "qualifies",
+      "summary": "La justification de santé mentale est plausible mais contestée ; le cœur du cas pour l'interdiction repose donc sur l'attention et l'apprentissage.",
+      "claim_ids": [
+        "c3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b1",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Les politiques scolaires restrictives ne réduisent pas le temps total passé sur téléphone ou réseaux sociaux, qui est ce qui suit réellement les mauvais résultats.",
+      "claim_ids": [
+        "c4"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b2",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Les interdictions fuient et coûtent cher à faire respecter, car beaucoup d'élèves utilisent leur téléphone à l'école malgré les règles.",
+      "claim_ids": [
+        "c5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b3",
+      "position_id": "pos_b",
+      "direction": "qualifies",
+      "summary": "L'argument de bien-être en faveur des interdictions n'est pas confirmé par la comparaison directe la plus pertinente entre écoles restrictives et permissives.",
+      "claim_ids": [
+        "c3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c1",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "La distraction en cours est le dommage le plus clair et le mieux documenté ; la règle doit donc cibler directement le temps de cours.",
+      "claim_ids": [
+        "c1"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c2",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Une restriction pendant les cours vise les gains d'apprentissage documentés tout en gardant les élèves joignables entre les cours.",
+      "claim_ids": [
+        "c2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c3",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "Une règle conditionnelle ne fonctionne que si elle est claire et appliquée de façon constante, car les élèves utilisent les téléphones même sous restriction.",
+      "claim_ids": [
+        "c5",
+        "c6"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Les smartphones et leurs notifications détournent l'attention des élèves de l'enseignement en classe.",
+      "claim_type": [
+        "factual",
+        "causal"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c1_s1",
+        "ev_c1_s5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c2",
+      "text": "Interdire les téléphones portables à l'école peut améliorer les résultats aux examens, avec les plus grands gains chez les élèves les moins performants.",
+      "claim_type": [
+        "causal"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c2_s2",
+        "ev_c2_s1"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c3",
+      "text": "Interdire les téléphones pendant la journée scolaire améliore le bien-être mental des adolescents.",
+      "claim_type": [
+        "causal",
+        "predictive"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c3_s4",
+        "ev_c3_s1"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c4",
+      "text": "Les politiques scolaires restrictives sur les téléphones ne réduisent pas à elles seules le temps quotidien total de téléphone et de réseaux sociaux des adolescents.",
+      "claim_type": [
+        "factual",
+        "causal"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c4_s4"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c5",
+      "text": "De nombreux élèves utilisent leur téléphone pendant la journée scolaire même lorsque les politiques de l'école en restreignent l'usage.",
+      "claim_type": [
+        "factual"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c5_s5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c6",
+      "text": "Les bénéfices d'une politique scolaire sur les téléphones dépendent de règles claires et d'une application cohérente dans toute l'école.",
+      "claim_type": [
+        "causal"
+      ],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": [
+        "ev_c6_s6",
+        "ev_c6_s3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://www.unesco.org/gem-report/en/publication/technology",
+      "title": "Global Education Monitoring Report 2023 — Technology in education: A tool on whose terms?",
+      "publisher": "UNESCO",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Rapport phare de l'ONU avec une large synthèse des preuves ; il plaide ouvertement pour limiter l'usage des smartphones à l'école, donc son cadrage penche vers la restriction. Solide pour le contexte international des politiques ; beaucoup des études citées sont corrélationnelles."
+    },
+    {
+      "id": "s2",
+      "url": "https://cep.lse.ac.uk/pubs/download/dp1350.pdf",
+      "title": "Ill Communication: Technology, Distraction and Student Performance (CEP Discussion Paper No 1350)",
+      "publisher": "Centre for Economic Performance, LSE",
+      "source_type": "paper",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Étude quasi expérimentale très citée (différence de différences dans 91 écoles anglaises) par Beland et Murphy. Conception solide pour les effets sur les examens, mais les données sont antérieures à 2013 et peuvent mal se transférer aux téléphones et applications actuels."
+    },
+    {
+      "id": "s3",
+      "url": "https://www.gov.uk/government/publications/mobile-phones-in-schools/mobile-phones-in-schools",
+      "title": "Mobile phones in schools",
+      "publisher": "UK Department for Education",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Recommandation gouvernementale officielle en faveur de journées scolaires sans téléphone. Utile pour comprendre ce qu'un grand ministère de l'Éducation recommande et pourquoi ; c'est une position de politique publique, pas une évaluation d'impact."
+    },
+    {
+      "id": "s4",
+      "url": "https://doi.org/10.1016/j.lanepe.2025.101211",
+      "title": "School phone policies and their association with mental wellbeing, phone use, and social media use (SMART Schools): a cross-sectional observational study",
+      "publisher": "The Lancet Regional Health - Europe",
+      "source_type": "paper",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Étude évaluée par les pairs de l'Université de Birmingham auprès d'environ 1 200 élèves dans 30 écoles anglaises, la comparaison directe la plus récente entre politiques restrictives et permissives. La conception transversale ne peut pas établir la causalité et compare des politiques existantes plutôt qu'une interdiction nouvellement introduite."
+    },
+    {
+      "id": "s5",
+      "url": "https://www.commonsensemedia.org/research/constant-companion-a-week-in-the-life-of-a-young-persons-smartphone-use",
+      "title": "Constant Companion: A Week in the Life of a Young Person's Smartphone Use",
+      "publisher": "Common Sense Media",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Recherche associative fondée sur le suivi passif d'environ 200 Américains de 11 à 17 ans (Android seulement). Données d'usage exceptionnellement directes, y compris pendant la journée scolaire, mais échantillon réduit et non représentatif ; l'organisation milite pour la santé médiatique des enfants."
+    },
+    {
+      "id": "s6",
+      "url": "https://www.rijksoverheid.nl/actueel/nieuws/2024/07/12/ocw-onderzoek-leerlingen-socialer-en-geconcentreerder-door-mobieltjesafspraak",
+      "title": "OCW-onderzoek: leerlingen socialer en geconcentreerder door mobieltjesafspraak",
+      "publisher": "Government of the Netherlands (Rijksoverheid)",
+      "source_type": "article",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Information officielle du gouvernement néerlandais (en néerlandais) sur l'enquête du ministère auprès de près de 600 établissements secondaires après l'interdiction nationale des téléphones en classe ; le personnel rapporte des élèves plus concentrés et plus sociaux. Utile pour les effets déclarés à l'échelle nationale, mais fondé sur les perceptions du personnel et sur un gouvernement évaluant sa propre politique."
+    }
+  ],
+  "evidence_links": [
+    {
+      "id": "ev_c1_s1",
+      "claim_id": "c1",
+      "source_id": "s1",
+      "label": "supports_claim",
+      "rationale": "Le GEM Report cite des recherches dans 14 pays montrant que la simple proximité d'un appareil mobile distrait les élèves et nuit à l'apprentissage, ce qui fonde son appel à restreindre les smartphones à l'école.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c1_s5",
+      "claim_id": "c1",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "Les données de suivi montrent que les participants recevaient environ un quart de leurs notifications quotidiennes pendant les heures d'école et utilisaient leur téléphone 43 minutes en médiane pendant la journée scolaire ; cela documente le volume d'interruptions plutôt qu'une perte d'attention mesurée directement.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s2",
+      "claim_id": "c2",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "Beland et Murphy ont constaté une hausse des scores aux examens à fort enjeu de 6,4 % d'un écart-type après l'interdiction des téléphones dans des écoles anglaises, avec des gains concentrés chez les élèves les moins performants.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s1",
+      "claim_id": "c2",
+      "source_id": "s1",
+      "label": "partially_supports_claim",
+      "rationale": "L'UNESCO cite des preuves selon lesquelles le retrait des smartphones des écoles dans certains pays a amélioré l'apprentissage, tout en notant que les preuves rigoureuses sur les effets de la technologie dans l'éducation restent globalement rares.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s4",
+      "claim_id": "c3",
+      "source_id": "s4",
+      "label": "contradicts_claim",
+      "rationale": "L'étude SMART Schools n'a trouvé aucune différence significative de bien-être mental, d'anxiété ou de dépression entre élèves d'écoles à politiques restrictives et élèves d'écoles permissives.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s1",
+      "claim_id": "c3",
+      "source_id": "s1",
+      "label": "unclear",
+      "rationale": "L'UNESCO recommande de restreindre les smartphones à l'école en partie pour des raisons de bien-être, mais le rapport fournit peu de preuves directes que les interdictions scolaires elles-mêmes améliorent ce bien-être.",
+      "confidence": 0.55,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s4",
+      "claim_id": "c4",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "Les politiques scolaires restrictives n'étaient pas associées à un moindre temps total de téléphone ou de réseaux sociaux chez les adolescents ; c'est le temps total plus élevé, où qu'il ait lieu, qui suivait un moins bon bien-être, sommeil et niveau scolaire.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s5",
+      "claim_id": "c5",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "Presque tous les participants suivis utilisaient leur téléphone pendant les heures d'école, avec une médiane de 43 minutes par jour scolaire ; le rapport note aussi que les règles varient d'une classe à l'autre et ne sont pas appliquées de manière constante.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s6",
+      "claim_id": "c6",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "Les écoles néerlandaises ont rapporté une meilleure concentration et un meilleur climat social après une règle nationale claire, transformée par chaque établissement en politique locale concrète ; l'enquête ne comporte toutefois pas de groupe de comparaison avec application faible.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s3",
+      "claim_id": "c6",
+      "source_id": "s3",
+      "label": "partially_supports_claim",
+      "rationale": "La recommandation du DfE affirme que les approches cohérentes à l'échelle de toute l'école sont les plus efficaces pour gérer les téléphones, mais comme guide de politique elle s'appuie sur des exemples plutôt que sur une évaluation systématique.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    }
+  ],
+  "values": [
+    {
+      "id": "val_attention",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Apprentissage concentré",
+      "description": "Le temps de classe est rare, et l'enseignement mérite d'être protégé de la concurrence conçue pour capter l'attention des élèves.",
+      "position_ids": [
+        "pos_a",
+        "pos_c"
+      ],
+      "tension_with": [
+        "connectivité permanente",
+        "discrétion des élèves pendant les cours"
+      ]
+    },
+    {
+      "id": "val_equity",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Classe égale",
+      "description": "Les règles scolaires devraient empêcher les habitudes d'appareil et les distractions d'élargir les écarts de réussite entre élèves.",
+      "position_ids": [
+        "pos_a"
+      ],
+      "tension_with": [
+        "exceptions au cas par cas",
+        "discrétion familiale sur les appareils"
+      ]
+    },
+    {
+      "id": "val_autonomy",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Autonomie et littératie numérique",
+      "description": "Les élèves devraient sortir de l'école capables de gérer leur propre usage technologique, pas seulement de le voir géré pour eux.",
+      "position_ids": [
+        "pos_b",
+        "pos_c"
+      ],
+      "tension_with": [
+        "interdictions générales uniformes",
+        "ordre de classe à court terme"
+      ]
+    },
+    {
+      "id": "val_reachability",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Joignabilité familiale",
+      "description": "Parents et élèves accordent un poids réel à la possibilité de se joindre directement pendant la journée scolaire.",
+      "position_ids": [
+        "pos_b",
+        "pos_c"
+      ],
+      "tension_with": [
+        "interdictions du matin au soir",
+        "passage de tout contact par le bureau de l'école"
+      ]
+    }
+  ],
+  "tradeoffs": [
+    {
+      "id": "to_a",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_a",
+      "gain": "Attention protégée dans chaque cours, gains documentés aux examens pour les élèves en difficulté, et une pression sociale de moins dans l'école.",
+      "cost": "Les familles perdent le contact direct pendant la journée et le personnel assume l'application de la règle de l'entrée à la sortie.",
+      "risk": "L'usage peut se déplacer hors de vue, et les conflits de confiscation peuvent consommer le temps et la bonne volonté que l'interdiction devait préserver.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_b",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_b",
+      "gain": "Préserve le contact familial et donne aux élèves une pratique encadrée de l'autorégulation avant la disparition des règles externes.",
+      "cost": "Garde une distraction documentée à portée de main pendant les cours et demande aux enseignants de faire respecter la nuance plutôt qu'une ligne claire.",
+      "risk": "Si l'enseignement de l'usage est faible, l'usage maîtrisé peut devenir une quasi-liberté totale.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_c",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_c",
+      "gain": "Protège le temps d'enseignement tout en gardant les élèves joignables et en construisant l'habitude de ranger le téléphone.",
+      "cost": "Une règle conditionnelle est plus difficile à appliquer régulièrement qu'une interdiction générale et invite à tester la limite à chaque sonnerie.",
+      "risk": "L'usage entre les cours peut déborder sur le temps de classe, sans offrir ni la concentration d'une interdiction ni l'autonomie d'un usage maîtrisé.",
+      "review_status": "unreviewed"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "ae_01",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "topic_created",
+      "summary": "Sujet créé à partir du dossier de départ sur les smartphones à l'école.",
+      "created_at": "2026-04-30T09:00:00Z"
+    },
+    {
+      "id": "ae_02",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "system",
+      "actor_id": "retriever_v0",
+      "event_type": "source_added",
+      "summary": "6 sources ajoutées et récupérées avec succès (statut : found) : UNESCO GEM Report, CEP (LSE), UK DfE, The Lancet Regional Health - Europe, Common Sense Media, Gouvernement des Pays-Bas.",
+      "created_at": "2026-04-30T09:05:00Z"
+    },
+    {
+      "id": "ae_03",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "claim_extracted",
+      "summary": "6 affirmations atomiques (C1-C6) extraites manuellement du dossier de départ.",
+      "created_at": "2026-04-30T09:20:00Z"
+    },
+    {
+      "id": "ae_04",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "evidence_labeled",
+      "summary": "10 liens de preuve libellés (alignement affirmation-source), dont 1 lien contradictoire et 1 lien à clarifier sur l'affirmation de bien-être. Tous marqués non relus.",
+      "created_at": "2026-04-30T09:40:00Z"
+    },
+    {
+      "id": "ae_05",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "revision_published",
+      "summary": "3 positions structurées avec steelmans, valeurs et compromis ; révision 1 publiée. Tâches ouvertes : preuves longitudinales sur le bien-être et évaluation indépendante de l'interdiction néerlandaise.",
+      "created_at": "2026-04-30T10:15:00Z"
+    }
+  ]
+}

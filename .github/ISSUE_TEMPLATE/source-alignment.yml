@@ -1,0 +1,39 @@
+name: Claim or source correction
+description: Report a claim, citation, evidence-label, or source-context problem.
+title: "[Source]: "
+labels: [source-alignment]
+body:
+  - type: input
+    id: debate
+    attributes:
+      label: Debate or page
+      description: Link to the relevant debate or identify the fixture.
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim and current treatment
+      description: Quote only the minimum text needed to identify the problem.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+      description: Explain the source context, label, wording, or uncertainty that should change.
+    validations:
+      required: true
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Submission check
+      options:
+        - label: I have not included private data or substantial copyrighted text.
+          required: true

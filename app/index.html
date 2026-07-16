@@ -1,0 +1,112 @@
+<!doctype html>
+<!--
+  SPA shell ships lang="en" because index.html is a single static shell serving
+  both locales. i18n/index.tsx corrects document.documentElement.lang to the
+  active locale on the client after mount. EN-canonical crawling of the shell is
+  a conscious, documented decision; move to per-locale prerender/SSG later if FR
+  SEO becomes a priority. Keep the runtime lang sync in i18n/index.tsx.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-pxh="1">Parallax — The atlas of disagreement</title>
+    <meta name="description" data-pxh="1" content="Parallax makes disagreement inspectable. Every serious position at its strongest, every claim tied to its sources, every value named. No winners declared." />
+    <meta name="theme-color" content="#eef1f4" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Canonical / social. parallax.org is the default origin; SITE_ORIGIN /
+         VITE_SITE_ORIGIN override it at build. The prerender (scripts/prerender.ts)
+         rewrites every data-pxh tag per route+locale; unmarked tags are shared. -->
+    <link rel="canonical" href="https://parallax.org/" data-pxh="1" />
+
+    <meta property="og:site_name" content="Parallax" />
+    <meta property="og:title" data-pxh="1" content="Parallax — The atlas of disagreement" />
+    <meta property="og:description" data-pxh="1" content="Most disagreements are about values, not facts. Parallax lays the debate out flat — positions, evidence, values, trade-offs — so you can see why people actually disagree." />
+    <meta property="og:type" data-pxh="1" content="website" />
+    <meta property="og:url" data-pxh="1" content="https://parallax.org/" />
+    <meta property="og:locale" data-pxh="1" content="en_US" />
+    <meta property="og:locale:alternate" data-pxh="1" content="fr_FR" />
+    <meta property="og:image" data-pxh="1" content="https://parallax.org/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Parallax — the atlas of disagreement. Two offset circles, petrol and ember on a blueprint ground." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" data-pxh="1" content="Parallax — The atlas of disagreement" />
+    <meta name="twitter:description" data-pxh="1" content="Understand every view — including your own. Every claim tied to its sources, every value named. No winners declared." />
+    <meta name="twitter:image" data-pxh="1" content="https://parallax.org/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Parallax — the atlas of disagreement. Two offset circles, petrol and ember on a blueprint ground."
+    />
+
+    <!-- Fonts. Variable axes trimmed to the weights actually used in the design
+         system (Fraunces 400/500/600/700, Archivo 400/500/600/700, Plex Mono
+         400/500/600). display=swap + preconnect avoid a blocking dependency. To
+         elevate further for a non-profit, self-host via @fontsource and drop the
+         third-party render dependency. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Spline+Sans:wght@400..700&family=Spline+Sans+Mono:wght@400..600&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Spline+Sans:wght@400..700&family=Spline+Sans+Mono:wght@400..600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Identity mark: oxide filled circle + paper-stroked outline circle on ink,
+         inlined as a data: URI so there is no network round-trip and no 404. Add
+         raster icons (favicon-16/-32.png, apple-touch-icon.png) + site.webmanifest
+         to app/public and re-link them here once that art is produced — until then
+         we ship ONLY the inline SVG so nothing dangles. -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316202b'/%3E%3Ccircle cx='37' cy='32' r='13' fill='%230e6b7a'/%3E%3Ccircle cx='26' cy='32' r='13' fill='none' stroke='%239a4a12' stroke-width='3'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div
+        style="
+          min-height: 100vh;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          padding: 48px 24px;
+          background: #eef1f4;
+          color: #16202b;
+          text-align: center;
+          font-family: Georgia, 'Times New Roman', serif;
+        "
+      >
+        <svg width="56" height="56" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="37" cy="32" r="13" fill="#0e6b7a" />
+          <circle
+            cx="26"
+            cy="32"
+            r="13"
+            fill="none"
+            stroke="#9a4a12"
+            stroke-width="3"
+          />
+        </svg>
+        <p style="margin: 0; font-size: 1.9rem; font-weight: 600;">
+          Parallax — <em style="color: #0e6b7a;">The atlas of disagreement.</em>
+        </p>
+        <p style="margin: 0; font-size: 1rem; max-width: 28rem; line-height: 1.5;">
+          This site needs JavaScript to lay out every side of a debate. Please
+          enable it, or open Parallax in a browser that supports it.
+        </p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

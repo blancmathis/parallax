@@ -1,0 +1,685 @@
+{
+  "topic": {
+    "id": "topic_nuclear_power",
+    "title": "Expansion du nucléaire",
+    "question": "Faut-il développer le nucléaire pour lutter contre le changement climatique ?",
+    "summary": "Un débat de politique énergétique sur la place de nouveaux réacteurs dans la stratégie climatique : électricité pilotable bas-carbone, usage du sol et sûreté par unité d'énergie face aux dépassements de coûts, aux délais, aux déchets et à l'alternative moins chère des renouvelables avec stockage.",
+    "status": "published",
+    "current_revision_id": "rev_001",
+    "created_at": "2026-05-19T00:00:00Z",
+    "created_by": "user_admin"
+  },
+  "revision": {
+    "id": "rev_001",
+    "topic_id": "topic_nuclear_power",
+    "revision_number": 1,
+    "status": "published",
+    "published_at": "2026-05-21T00:00:00Z",
+    "published_by": "user_admin"
+  },
+  "positions": [
+    {
+      "id": "pos_a",
+      "topic_id": "topic_nuclear_power",
+      "title": "Oui — le développer comme électricité pilotable bas-carbone",
+      "short_summary": "Construire de nouvelles capacités nucléaires parce qu'une décarbonation profonde a besoin d'électricité pilotable bas-carbone aux côtés des renouvelables.",
+      "steelman": "Décarboner toute l'économie signifie électrifier les transports, le chauffage et l'industrie tout en remplaçant la production fossile, et la plupart des trajectoires crédibles modélisées pour y parvenir incluent davantage de nucléaire. L'éolien et le solaire sont essentiels mais variables, et les réseaux ont toujours besoin de capacité pilotable bas-carbone qui fonctionne pendant les semaines sans vent et les hivers sombres. Le nucléaire fournit déjà cela à grande échelle, avec une empreinte au sol bien plus faible que la production renouvelable équivalente. Mesuré par unité d'électricité produite, son bilan de sûreté sur six décennies est comparable à celui de l'éolien et du solaire et très supérieur à celui des fossiles qu'il remplace. Les dépassements récents de coûts en Occident reflètent des chaînes d'approvisionnement atrophiées et des projets tête de série plutôt que des limites physiques ; les pays qui construisent des modèles standardisés en série ont fait beaucoup mieux. Exclure une source pilotable bas-carbone éprouvée rend le zéro net plus difficile, plus lent et plus cher qu'il ne doit l'être.",
+      "status": "published",
+      "argument_ids": [
+        "arg_a1",
+        "arg_a2",
+        "arg_a3"
+      ],
+      "value_ids": [
+        "val_climate",
+        "val_reliability"
+      ],
+      "tradeoff_ids": [
+        "to_a"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_b",
+      "topic_id": "topic_nuclear_power",
+      "title": "Non — les renouvelables sont plus rapides et moins chères",
+      "short_summary": "Orienter le capital climatique vers le solaire, l'éolien et le stockage, qui réduisent les émissions plus vite et à moindre coût que les nouvelles centrales nucléaires.",
+      "steelman": "La politique climatique est une course mesurée en coût par tonne de carbone évitée et en années, et le nouveau nucléaire performe aujourd'hui mal sur ces deux axes. Les projets occidentaux récents ont accumulé des années de retard et des milliards de dépassements, tandis que les coûts du solaire, de l'éolien et du stockage ont fortement baissé et continuent de baisser. Chaque dollar et chaque décennie engagés dans un chantier nucléaire lent sont un dollar et une décennie non consacrés à des options qui décarbonent plus tôt ; le coût d'opportunité du capital est donc lui-même un coût climatique. Le nucléaire porte aussi des charges que les renouvelables n'ont pas : déchets à longue durée de vie sans stockage permanent opérationnel dans la plupart des pays, et technologies du cycle du combustible qui soulèvent des préoccupations de prolifération. Flexibilité du réseau, transport, effacement de demande et stockage sont des compléments plus crédibles aux renouvelables bon marché qu'une technologie dont les coûts ont augmenté pendant que tout autour devenait moins cher.",
+      "status": "published",
+      "argument_ids": [
+        "arg_b1",
+        "arg_b2",
+        "arg_b3",
+        "arg_b4"
+      ],
+      "value_ids": [
+        "val_climate",
+        "val_cost",
+        "val_stewardship"
+      ],
+      "tradeoff_ids": [
+        "to_b"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_c",
+      "topic_id": "topic_nuclear_power",
+      "title": "Garder les centrales existantes, rester agnostique sur les nouvelles",
+      "short_summary": "Prolonger la durée d'exploitation des réacteurs existants et juger chaque nouveau projet au cas par cas sur coût et calendrier.",
+      "steelman": "La capacité pilotable bas-carbone la moins chère et la plus rapide est le parc nucléaire qui existe déjà, et fermer tôt des réacteurs sains a plusieurs fois conduit une production fossile à combler le vide. Les prolongations de licence et augmentations de puissance livrent de l'électricité bas-carbone pour une fraction du coût de toute nouvelle construction, nucléaire ou non. Les nouveaux projets sont un pari différent : leur bilan de coût et de calendrier est au mieux mitigé et varie énormément selon le pays, la maturité du modèle et la chaîne d'approvisionnement. La politique raisonnable est donc asymétrique : défendre vigoureusement les centrales existantes et n'approuver de nouveaux projets que lorsqu'une proposition précise bat les alternatives sur le coût, le calendrier et le risque. Cela garde l'option nucléaire ouverte sans signer de chèques en blanc, et laisse les prochains projets produire la preuve qui manque aujourd'hui au débat.",
+      "status": "published",
+      "argument_ids": [
+        "arg_c1",
+        "arg_c2",
+        "arg_c3",
+        "arg_c4"
+      ],
+      "value_ids": [
+        "val_climate",
+        "val_reliability",
+        "val_cost"
+      ],
+      "tradeoff_ids": [
+        "to_c"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "arguments": [
+    {
+      "id": "arg_a1",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "La plupart des trajectoires crédibles vers le zéro net incluent davantage de nucléaire, car les réseaux ont besoin de puissance pilotable bas-carbone aux côtés des renouvelables variables.",
+      "claim_ids": [
+        "c1",
+        "c3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a2",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Par unité d'électricité produite, le bilan de sûreté du nucléaire est comparable à celui de l'éolien et du solaire et bien meilleur que celui des fossiles.",
+      "claim_ids": [
+        "c2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a3",
+      "position_id": "pos_a",
+      "direction": "qualifies",
+      "summary": "La capacité des nouveaux projets à se déployer assez vite est contestée ; l'expansion devrait donc privilégier des modèles standardisés construits en série — la même logique de série qui fait de la prolongation du parc actuel la voie la moins chère.",
+      "claim_ids": [
+        "c6",
+        "c5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b1",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Aux estimations actuelles, l'électricité nucléaire nouvelle est nettement plus chère que le solaire à grande échelle et l'éolien terrestre.",
+      "claim_ids": [
+        "c4"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b2",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Les chantiers lents et hors budget ont un coût d'opportunité : le même capital investi dans les renouvelables et le stockage réduit les émissions plus tôt.",
+      "claim_ids": [
+        "c4",
+        "c6"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b3",
+      "position_id": "pos_b",
+      "direction": "qualifies",
+      "summary": "Même en reconnaissant la valeur système de la puissance pilotable, cette valeur doit être pesée face aux charges de déchets et de prolifération propres au nucléaire.",
+      "claim_ids": [
+        "c3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b4",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Les renouvelables et le stockage forment une part des nouvelles capacités en forte croissance et toujours moins chère, tandis que les dépassements récents du nucléaire semblent la règle des futurs chantiers plutôt qu'un cas isolé.",
+      "claim_ids": [
+        "c7",
+        "c8"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c1",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Prolonger les réacteurs existants préserve à bas coût de grandes quantités de capacité pilotable bas-carbone.",
+      "claim_ids": [
+        "c5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c2",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "La capacité pilotable bas-carbone a une vraie valeur système, et le parc existant la fournit sans risque de coût et de calendrier de nouvelles constructions.",
+      "claim_ids": [
+        "c3",
+        "c5"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c3",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "Le bilan des nouvelles constructions est mitigé et varie selon pays et modèle ; les propositions méritent donc un jugement au cas par cas plutôt qu'une approbation ou un rejet général.",
+      "claim_ids": [
+        "c4",
+        "c6"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c4",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "Des renouvelables et un stockage bon marché et en forte croissance sont réels et bienvenus, mais ils aiguisent plutôt qu'ils ne tranchent l'examen au cas par cas que tout réacteur neuf doit franchir.",
+      "claim_ids": [
+        "c7"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "La plupart des trajectoires modélisées limitant le réchauffement à 1,5-2 °C incluent une hausse de la production nucléaire mondiale.",
+      "claim_type": [
+        "factual",
+        "predictive"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c1_s1",
+        "ev_c1_s2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c2",
+      "text": "Mesurée en décès par unité d'électricité produite, l'énergie nucléaire est bien plus sûre que les combustibles fossiles et comparable à l'éolien et au solaire.",
+      "claim_type": [
+        "factual"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c2_s6"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c3",
+      "text": "Inclure une production pilotable bas-carbone comme le nucléaire peut réduire le coût total de systèmes électriques profondément décarbonés.",
+      "claim_type": [
+        "causal"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c3_s5",
+        "ev_c3_s2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c4",
+      "text": "Aux estimations actuelles de coût actualisé, l'électricité issue de nouvelles centrales nucléaires coûte plus cher que le solaire à grande échelle et l'éolien terrestre.",
+      "claim_type": [
+        "factual"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c4_s3",
+        "ev_c4_s5",
+        "ev_c4_s2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c5",
+      "text": "Prolonger la durée d'exploitation des centrales nucléaires existantes fait partie des sources d'électricité bas-carbone les moins chères.",
+      "claim_type": [
+        "factual"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c5_s2",
+        "ev_c5_s3"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c6",
+      "text": "La capacité nucléaire peut être développée assez vite pour contribuer substantiellement aux objectifs climatiques de 2050.",
+      "claim_type": [
+        "predictive"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c6_s4",
+        "ev_c6_s2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c7",
+      "text": "Les renouvelables et le stockage représentent une part en forte croissance des nouvelles capacités, et leurs coûts ont fortement chuté au cours de la dernière décennie.",
+      "claim_type": [
+        "factual"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c7_s4",
+        "ev_c7_s2"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c8",
+      "text": "Les dépassements de coûts récents du nucléaire occidental se généralisent aux futurs chantiers plutôt que de refléter des effets de tête de série.",
+      "claim_type": [
+        "predictive",
+        "causal"
+      ],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": [
+        "ev_c8_s5",
+        "ev_c8_s4"
+      ],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://www.ipcc.ch/report/ar6/wg3/",
+      "title": "Climate Change 2022: Mitigation of Climate Change (AR6 Working Group III)",
+      "publisher": "Intergovernmental Panel on Climate Change",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Évaluation de consensus de l'organe scientifique climat de l'ONU ; source la plus solide disponible sur ce que supposent les trajectoires d'atténuation modélisées. Les fourchettes de scénarios sont larges et agrègent de nombreux modèles ; les citations à chiffre unique demandent donc de la prudence."
+    },
+    {
+      "id": "s2",
+      "url": "https://www.iea.org/reports/net-zero-by-2050",
+      "title": "Net Zero by 2050: A Roadmap for the Global Energy Sector",
+      "publisher": "International Energy Agency",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Exercice de modélisation intergouvernemental influent. Ses chiffres nucléaires sont des sorties de scénario conditionnelles aux politiques, pas des prévisions ; l'AIE a historiquement sous-estimé la croissance des renouvelables."
+    },
+    {
+      "id": "s3",
+      "url": "https://www.lazard.com/research-insights/levelized-cost-of-energyplus/",
+      "title": "Levelized Cost of Energy+ (LCOE+)",
+      "publisher": "Lazard",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Référence de banque d'investissement très citée pour les coûts de production américains. Le LCOE exclut les coûts d'intégration système et de fermeté, ce qui sous-estime la valeur des centrales pilotables ; ses estimations de nouveau nucléaire reposent sur très peu de données américaines récentes."
+    },
+    {
+      "id": "s4",
+      "url": "https://www.worldnuclearreport.org/",
+      "title": "World Nuclear Industry Status Report",
+      "publisher": "Mycle Schneider Consulting",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Jeu de données annuel détaillé sur les démarrages de construction de réacteurs, retards et coûts. Ligne éditoriale sceptique sur le nucléaire : ses données de tendance sont largement utilisées, mais son cadrage argumente systématiquement contre le nouveau nucléaire."
+    },
+    {
+      "id": "s5",
+      "url": "https://energy.mit.edu/research/future-nuclear-energy-carbon-constrained-world/",
+      "title": "The Future of Nuclear Energy in a Carbon-Constrained World",
+      "publisher": "MIT Energy Initiative",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Grande étude universitaire avec modélisation des coûts système. Penche vers des recommandations pro-nucléaires, tout en étant franche sur les échecs de coûts de l'industrie ; publiée en 2018, donc ses données de coûts précèdent les projets les plus récents."
+    },
+    {
+      "id": "s6",
+      "url": "https://ourworldindata.org/safest-sources-of-energy",
+      "title": "What are the safest and cleanest sources of energy?",
+      "publisher": "Our World in Data",
+      "source_type": "article",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Synthèse accessible d'estimations évaluées par les pairs sur la mortalité par unité d'énergie. Bonne pour les ordres de grandeur ; les estimations sous-jacentes de mortalité portent une vraie incertitude, surtout pour les impacts chroniques de pollution de l'air."
+    }
+  ],
+  "evidence_links": [
+    {
+      "id": "ev_c1_s1",
+      "claim_id": "c1",
+      "source_id": "s1",
+      "label": "supports_claim",
+      "rationale": "Les trajectoires d'atténuation de l'AR6 limitant le réchauffement autour de 1,5-2 °C montrent une augmentation de la production nucléaire dans la plupart des scénarios, même si la fourchette entre modèles est large.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c1_s2",
+      "claim_id": "c1",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "Le scénario zéro net de l'AIE montre une production nucléaire mondiale à peu près doublée entre 2020 et 2050, aux côtés d'une croissance beaucoup plus forte des renouvelables.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s6",
+      "claim_id": "c2",
+      "source_id": "s6",
+      "label": "supports_claim",
+      "rationale": "La synthèse d'Our World in Data des taux de mortalité par térawattheure place le nucléaire près de l'éolien et du solaire, et des ordres de grandeur sous le charbon, le pétrole et le gaz.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s5",
+      "claim_id": "c3",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "La modélisation système de l'étude du MIT estime qu'exclure les options pilotables bas-carbone comme le nucléaire augmente nettement le coût moyen d'une décarbonation profonde.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s2",
+      "claim_id": "c3",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "La trajectoire de l'AIE repose sur un portefeuille de sources bas-émissions pilotables aux côtés des renouvelables, mais ne désigne pas le nucléaire comme indispensable.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s3",
+      "claim_id": "c4",
+      "source_id": "s3",
+      "label": "supports_claim",
+      "rationale": "L'analyse de coût actualisé de Lazard place le nouveau nucléaire bien au-dessus du solaire à grande échelle et de l'éolien terrestre par mégawattheure, même dans ses larges fourchettes d'estimation.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s5",
+      "claim_id": "c4",
+      "source_id": "s5",
+      "label": "partially_supports_claim",
+      "rationale": "L'étude du MIT reconnaît que les nouvelles constructions occidentales récentes sont coûteuses, tout en soutenant que le coût actualisé seul sous-estime la valeur de la capacité pilotable.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s2",
+      "claim_id": "c5",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "La feuille de route de l'AIE traite la prolongation d'exploitation des réacteurs existants comme une composante à bas coût de sa trajectoire zéro net.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s3",
+      "claim_id": "c5",
+      "source_id": "s3",
+      "label": "supports_claim",
+      "rationale": "Lazard rapporte que le coût marginal d'exploitation de centrales nucléaires entièrement amorties est faible par rapport à la construction de nouvelles capacités de tout type.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s4",
+      "claim_id": "c6",
+      "source_id": "s4",
+      "label": "contradicts_claim",
+      "rationale": "WNISR documente la baisse de la part du nucléaire dans la production mondiale et des délais moyens de projet proches d'une décennie, concluant que la technologie se déploie trop lentement pour compter dans les objectifs 2050.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s2",
+      "claim_id": "c6",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "Le scénario de l'AIE montre un nucléaire approximativement doublé d'ici 2050, mais comme résultat de scénario conditionnel aux politiques plutôt que preuve des rythmes actuels de déploiement.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s2",
+      "claim_id": "c4",
+      "source_id": "s2",
+      "label": "unclear",
+      "rationale": "Le cadrage de l'AIE sur la valeur système implique que le LCOE seul sous-estime la capacité pilotable, laissant la simple comparaison de coûts indécise une fois les coûts d'intégration inclus.",
+      "confidence": 0.5,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c7_s4",
+      "claim_id": "c7",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "Les données annuelles de WNISR montrent que les renouvelables captent l'immense majorité des ajouts de capacité, le solaire et l'éolien croissant bien plus vite que le nucléaire sur la dernière décennie.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c7_s2",
+      "claim_id": "c7",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "La feuille de route de l'AIE projette les renouvelables et le stockage comme la part dominante des nouveaux investissements, cohérente avec de fortes baisses de coûts récentes, même si ses chiffres précis sont des sorties de scénario plutôt que des prix observés.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s5",
+      "claim_id": "c8",
+      "source_id": "s5",
+      "label": "contradicts_claim",
+      "rationale": "L'étude du MIT attribue les dépassements occidentaux récents largement à des effets de tête de série, à des chaînes d'approvisionnement atrophiées et à la perte d'expérience de construction en série, soutenant qu'ils n'ont pas à se généraliser à de futurs chantiers standardisés.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s4",
+      "claim_id": "c8",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "Le relevé de construction de WNISR montre des dépassements de coûts et de calendrier persistants et répétés à travers pays et décennies, qu'il lit comme un trait structurel du nouveau nucléaire plutôt qu'un problème passager de tête de série.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    }
+  ],
+  "values": [
+    {
+      "id": "val_climate",
+      "topic_id": "topic_nuclear_power",
+      "name": "Urgence climatique",
+      "description": "Réduire les émissions assez vite pour atteindre les objectifs de milieu de siècle importe plus que la fidélité à une technologie particulière.",
+      "position_ids": [
+        "pos_a",
+        "pos_b",
+        "pos_c"
+      ],
+      "tension_with": [
+        "préoccupations locales d'implantation",
+        "prix de l'électricité à court terme"
+      ]
+    },
+    {
+      "id": "val_reliability",
+      "topic_id": "topic_nuclear_power",
+      "name": "Fiabilité du réseau",
+      "description": "Un réseau décarboné doit fournir de l'électricité à la demande pendant les semaines sans vent et les hivers sombres, pas seulement quand le vent et le soleil coopèrent.",
+      "position_ids": [
+        "pos_a",
+        "pos_c"
+      ],
+      "tension_with": [
+        "approvisionnement au moindre coût",
+        "déploiement rapide de renouvelables variables"
+      ]
+    },
+    {
+      "id": "val_cost",
+      "topic_id": "topic_nuclear_power",
+      "name": "Discipline de coût",
+      "description": "Les capitaux publics et privés devraient acheter le maximum de réduction d'émissions par dollar, le plus vite possible.",
+      "position_ids": [
+        "pos_b",
+        "pos_c"
+      ],
+      "tension_with": [
+        "diversité technologique",
+        "planification industrielle de long terme",
+        "valeur d'option de la capacité pilotable"
+      ]
+    },
+    {
+      "id": "val_stewardship",
+      "topic_id": "topic_nuclear_power",
+      "name": "Responsabilité intergénérationnelle",
+      "description": "Les choix énergétiques ne devraient pas transmettre aux générations futures des déchets à longue durée de vie ni des risques d'accident ou de prolifération d'armes.",
+      "position_ids": [
+        "pos_b"
+      ],
+      "tension_with": [
+        "réductions d'émissions à court terme",
+        "abondance énergétique"
+      ]
+    }
+  ],
+  "tradeoffs": [
+    {
+      "id": "to_a",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_a",
+      "gain": "Capacité pilotable bas-carbone complémentaire des renouvelables, avec faible usage du sol et solide bilan de sûreté.",
+      "cost": "Capital initial élevé, longs délais de construction et déchets à longue durée de vie à gérer.",
+      "risk": "Des dépassements de coûts répétés pourraient absorber le capital et la volonté politique que des options plus rapides auraient mieux utilisés.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_b",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_b",
+      "gain": "Le capital va aux options bas-carbone les moins chères et les plus rapides à déployer aujourd'hui.",
+      "cost": "Renonce à une capacité pilotable bas-carbone, laissant des problèmes de fiabilité plus difficiles à mesure que les réseaux approchent la décarbonation complète.",
+      "risk": "Si le stockage et la flexibilité du réseau montent moins vite qu'espéré, la décarbonation pourrait caler à des parts élevées de renouvelables.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_c",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_c",
+      "gain": "Préserve à bas coût la capacité bas-carbone existante tout en évitant des paris prématurés sur de nouvelles constructions.",
+      "cost": "N'envoie pas de signal industriel clair, ce qui maintient la chaîne d'approvisionnement et la main-d'œuvre nucléaires en déclin.",
+      "risk": "L'ambivalence au cas par cas peut devenir une sortie de fait si aucun nouveau projet ne franchit jamais la barre.",
+      "review_status": "unreviewed"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "ae_01",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "topic_created",
+      "summary": "Sujet créé à partir du dossier de départ sur l'énergie nucléaire.",
+      "created_at": "2026-05-21T09:00:00Z"
+    },
+    {
+      "id": "ae_02",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "source_added",
+      "summary": "6 sources ajoutées et récupérées (statut : found) : IPCC AR6 WG3, IEA Net Zero by 2050, Lazard LCOE+, WNISR, MIT Energy Initiative, Our World in Data.",
+      "created_at": "2026-05-21T09:05:00Z"
+    },
+    {
+      "id": "ae_03",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "claim_extracted",
+      "summary": "8 affirmations atomiques (C1-C8) extraites manuellement du dossier de départ.",
+      "created_at": "2026-05-21T09:20:00Z"
+    },
+    {
+      "id": "ae_04",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "system",
+      "actor_id": "labeler_v0",
+      "event_type": "evidence_labeled",
+      "summary": "16 liens de preuve libellés sur 8 affirmations et 6 sources, dont 2 liens contradictoires et 1 lien indéterminé. Tous marqués non relus.",
+      "created_at": "2026-05-21T09:40:00Z"
+    },
+    {
+      "id": "ae_05",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "revision_published",
+      "summary": "Révision 1 publiée avec 3 positions, 11 arguments, 4 valeurs et 3 compromis. Tâches ouvertes : ajouter des preuves sur le stockage des déchets et les coûts des SMR, demander une revue indépendante des affirmations contestées sur le passage à l'échelle et la généralité des dépassements.",
+      "created_at": "2026-05-21T10:15:00Z"
+    }
+  ]
+}

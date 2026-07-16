@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- engraved sightline texture, alpha capped low so the title stays loudest -->
+    <pattern id="sight" width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+      <path d="M0 34 L34 0" stroke="#211c16" stroke-width="0.5" opacity="0.05"/>
+    </pattern>
+    <radialGradient id="halo" cx="78%" cy="14%" r="62%">
+      <stop offset="0%" stop-color="#b4421f" stop-opacity="0.07"/>
+      <stop offset="65%" stop-color="#b4421f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- warm paper field -->
+  <rect width="1200" height="630" fill="#f5f0e5"/>
+  <rect width="1200" height="630" fill="url(#sight)"/>
+  <rect width="1200" height="630" fill="url(#halo)"/>
+  <rect x="0.5" y="0.5" width="1199" height="629" fill="none" stroke="#bdaf92" stroke-width="1"/>
+
+  <!-- lab caption, top-left -->
+  <text x="80" y="86" font-family="'IBM Plex Mono','Courier New',monospace" font-size="20" letter-spacing="4" fill="#766a58">PARALLAX · THE ATLAS OF DISAGREEMENT</text>
+  <line x1="80" y1="104" x2="420" y2="104" stroke="#ddd2bc" stroke-width="1"/>
+
+  <!-- Fraunces title — the loudest thing on the card -->
+  <text x="78" y="278" font-family="Fraunces,Georgia,'Times New Roman',serif" font-size="112" font-weight="500" letter-spacing="-3" fill="#211c16">Understand</text>
+  <text x="78" y="392" font-family="Fraunces,Georgia,'Times New Roman',serif" font-size="112" font-weight="500" letter-spacing="-3" fill="#211c16">every side.</text>
+  <text x="78" y="506" font-family="Fraunces,Georgia,'Times New Roman',serif" font-size="112" font-weight="400" font-style="italic" letter-spacing="-3" fill="#b4421f">Build your own.</text>
+
+  <!-- the object, sighted from two points: two offset circles = the parallax mark -->
+  <g transform="translate(980,300)">
+    <!-- two sightlines converging on the object -->
+    <line x1="-300" y1="-150" x2="0" y2="0" stroke="#211c16" stroke-width="1.25" opacity="0.5"/>
+    <line x1="-300" y1="150" x2="0" y2="0" stroke="#211c16" stroke-width="1.25" opacity="0.5"/>
+    <!-- two sighting eyes -->
+    <circle cx="-300" cy="-150" r="5" fill="#211c16"/>
+    <circle cx="-300" cy="150" r="5" fill="#211c16"/>
+    <!-- the mark: oxide filled + paper-stroked outline, on an ink disc -->
+    <circle cx="0" cy="0" r="118" fill="#211c16"/>
+    <circle cx="22" cy="0" r="48" fill="#b4421f"/>
+    <circle cx="-22" cy="0" r="48" fill="none" stroke="#f5f0e5" stroke-width="11"/>
+  </g>
+
+  <!-- evidence legend, bottom-right, lab markings -->
+  <g font-family="'IBM Plex Mono','Courier New',monospace" font-size="20" fill="#51483b">
+    <circle cx="858" cy="556" r="7" fill="#2f6b4a"/>
+    <text x="876" y="563">supports</text>
+    <circle cx="1004" cy="556" r="7" fill="#93660a"/>
+    <text x="1022" y="563">partial</text>
+    <circle cx="1140" cy="556" r="7" fill="#a23029"/>
+  </g>
+</svg>

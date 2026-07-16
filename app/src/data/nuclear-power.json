@@ -1,0 +1,559 @@
+{
+  "topic": {
+    "id": "topic_nuclear_power",
+    "title": "Nuclear Power Expansion",
+    "question": "Should nuclear power be expanded to fight climate change?",
+    "summary": "A policy debate about whether building new nuclear plants should be part of climate strategy — weighing firm low-carbon power, land use, and safety per unit of energy against cost overruns, deployment speed, waste, and the cheaper alternative of renewables plus storage.",
+    "status": "published",
+    "current_revision_id": "rev_001",
+    "created_at": "2026-05-19T00:00:00Z",
+    "created_by": "user_admin"
+  },
+  "revision": {
+    "id": "rev_001",
+    "topic_id": "topic_nuclear_power",
+    "revision_number": 1,
+    "status": "published",
+    "published_at": "2026-05-21T00:00:00Z",
+    "published_by": "user_admin"
+  },
+  "positions": [
+    {
+      "id": "pos_a",
+      "topic_id": "topic_nuclear_power",
+      "title": "Yes — expand it as firm low-carbon power",
+      "short_summary": "Build new nuclear capacity because deep decarbonization needs firm low-carbon power alongside renewables.",
+      "steelman": "Decarbonizing the whole economy means electrifying transport, heat, and industry while replacing fossil generation, and most credible modeled pathways for doing so include more nuclear power. Wind and solar are essential but variable, and grids still need firm low-carbon capacity that works through still weeks and dark winters. Nuclear provides that today at scale, from a land footprint far smaller than the equivalent renewable output. Measured per unit of electricity generated, its safety record over six decades is comparable to wind and solar and vastly better than the fossil fuels it displaces. Recent Western cost overruns reflect atrophied supply chains and first-of-a-kind projects rather than physical limits, and countries that build standardized designs in series have done much better. Excluding a proven firm low-carbon source makes net zero harder, slower, and more expensive than it needs to be.",
+      "status": "published",
+      "argument_ids": ["arg_a1", "arg_a2", "arg_a3"],
+      "value_ids": ["val_climate", "val_reliability"],
+      "tradeoff_ids": ["to_a"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_b",
+      "topic_id": "topic_nuclear_power",
+      "title": "No — renewables are faster and cheaper",
+      "short_summary": "Direct climate capital to solar, wind, and storage, which cut emissions faster and at lower cost than new nuclear builds.",
+      "steelman": "Climate policy is a race measured in cost per tonne of carbon avoided and in years, and new nuclear currently performs poorly on both. Recent Western projects have run years late and billions over budget, while solar, wind, and storage costs have fallen steeply and continue to fall. Every dollar and decade committed to a slow nuclear build is a dollar and decade not spent on options that decarbonize sooner, so the opportunity cost of capital is itself a climate cost. Nuclear also carries burdens renewables do not: long-lived waste with no operating permanent disposal in most countries, and fuel-cycle technologies that raise proliferation concerns. Grid flexibility, transmission, demand response, and storage are more credible complements to cheap renewables than a technology whose costs rose while everything around it got cheaper.",
+      "status": "published",
+      "argument_ids": ["arg_b1", "arg_b2", "arg_b3", "arg_b4"],
+      "value_ids": ["val_climate", "val_cost", "val_stewardship"],
+      "tradeoff_ids": ["to_b"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_c",
+      "topic_id": "topic_nuclear_power",
+      "title": "Keep existing plants, stay agnostic on new builds",
+      "short_summary": "Extend the operating lives of existing reactors and judge any new build case-by-case on cost and timeline.",
+      "steelman": "The cheapest and fastest firm low-carbon capacity is the nuclear fleet that already exists, and closing healthy reactors early has repeatedly led to fossil generation filling the gap. License extensions and uprates deliver low-carbon power at a fraction of the cost of any new construction, nuclear or otherwise. New builds are a different bet entirely: their record on cost and schedule is mixed at best and varies enormously by country, design maturity, and supply chain. The sensible policy is therefore asymmetric — defend existing plants vigorously, and approve new projects only when a specific proposal beats the alternatives on cost, timeline, and risk. This keeps the nuclear option open without writing blank checks, and lets the next few projects generate the evidence the debate currently lacks.",
+      "status": "published",
+      "argument_ids": ["arg_c1", "arg_c2", "arg_c3", "arg_c4"],
+      "value_ids": ["val_climate", "val_reliability", "val_cost"],
+      "tradeoff_ids": ["to_c"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "arguments": [
+    {
+      "id": "arg_a1",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Most credible net-zero pathways include more nuclear, because grids need firm low-carbon power alongside variable renewables.",
+      "claim_ids": ["c1", "c3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a2",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Per unit of electricity generated, nuclear's safety record is comparable to wind and solar and far better than fossil fuels.",
+      "claim_ids": ["c2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a3",
+      "position_id": "pos_a",
+      "direction": "qualifies",
+      "summary": "Whether new builds can scale fast enough is contested, so expansion should favor standardized designs built in series — the same series-build logic that makes extending today's fleet the cheap path.",
+      "claim_ids": ["c6", "c5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b1",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "On current cost estimates, new nuclear electricity is substantially more expensive than utility-scale solar and onshore wind.",
+      "claim_ids": ["c4"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b2",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Slow, over-budget builds carry an opportunity cost: the same capital deployed in renewables and storage cuts emissions sooner.",
+      "claim_ids": ["c4", "c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b3",
+      "position_id": "pos_b",
+      "direction": "qualifies",
+      "summary": "Even granting firm power its system value, that value must be weighed against waste and proliferation burdens unique to nuclear.",
+      "claim_ids": ["c3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b4",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Renewables plus storage are a fast-growing, ever-cheaper share of new capacity, while recent nuclear overruns look like the rule for future builds rather than a one-off.",
+      "claim_ids": ["c7", "c8"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c1",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Extending existing reactors preserves large amounts of firm low-carbon capacity at low cost.",
+      "claim_ids": ["c5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c2",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Firm low-carbon capacity has real system value, and the existing fleet delivers it without new-build cost and schedule risk.",
+      "claim_ids": ["c3", "c5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c3",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "The new-build record is mixed and varies by country and design, so proposals deserve case-by-case judgment rather than blanket approval or rejection.",
+      "claim_ids": ["c4", "c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c4",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "Cheap, fast-growing renewables plus storage are real and welcome, but they sharpen rather than settle the case-by-case test any new reactor must pass.",
+      "claim_ids": ["c7"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Most modeled pathways that limit warming to 1.5–2°C include an increase in global nuclear generation.",
+      "claim_type": ["factual", "predictive"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c1_s1", "ev_c1_s2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c2",
+      "text": "Measured in deaths per unit of electricity generated, nuclear power is far safer than fossil fuels and comparable to wind and solar.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c2_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c3",
+      "text": "Including firm low-carbon generation such as nuclear can lower the total cost of deeply decarbonized power systems.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c3_s5", "ev_c3_s2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c4",
+      "text": "On current levelized cost estimates, electricity from new nuclear plants costs more than utility-scale solar and onshore wind.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c4_s3", "ev_c4_s5", "ev_c4_s2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c5",
+      "text": "Extending the operating lives of existing nuclear plants is among the cheapest sources of low-carbon electricity.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c5_s2", "ev_c5_s3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c6",
+      "text": "Nuclear capacity can be expanded quickly enough to contribute substantially to 2050 climate targets.",
+      "claim_type": ["predictive"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c6_s4", "ev_c6_s2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c7",
+      "text": "Renewables plus storage are a fast-growing share of new capacity, and their costs have fallen steeply over the last decade.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c7_s4", "ev_c7_s2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c8",
+      "text": "Recent Western nuclear cost overruns generalize to future builds rather than reflecting first-of-a-kind effects.",
+      "claim_type": ["predictive", "causal"],
+      "topic_id": "topic_nuclear_power",
+      "evidence_link_ids": ["ev_c8_s5", "ev_c8_s4"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://www.ipcc.ch/report/ar6/wg3/",
+      "title": "Climate Change 2022: Mitigation of Climate Change (AR6 Working Group III)",
+      "publisher": "Intergovernmental Panel on Climate Change",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Consensus assessment by the UN climate science body; the strongest available source for what modeled mitigation pathways assume. Scenario ranges are wide and aggregate many models, so single-number citations need care."
+    },
+    {
+      "id": "s2",
+      "url": "https://www.iea.org/reports/net-zero-by-2050",
+      "title": "Net Zero by 2050: A Roadmap for the Global Energy Sector",
+      "publisher": "International Energy Agency",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Influential intergovernmental modeling exercise. Its nuclear figures are scenario outputs conditional on policy, not forecasts, and the IEA has historically underestimated renewables growth."
+    },
+    {
+      "id": "s3",
+      "url": "https://www.lazard.com/research-insights/levelized-cost-of-energyplus/",
+      "title": "Levelized Cost of Energy+ (LCOE+)",
+      "publisher": "Lazard",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Widely cited investment-bank benchmark for U.S. generation costs. LCOE excludes system integration and firming costs, which understates the value of dispatchable plants, and its new-nuclear estimates rest on very few recent U.S. data points."
+    },
+    {
+      "id": "s4",
+      "url": "https://www.worldnuclearreport.org/",
+      "title": "World Nuclear Industry Status Report",
+      "publisher": "Mycle Schneider Consulting",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Detailed annual dataset on reactor construction starts, delays, and costs. Editorially nuclear-skeptic: its trend data is widely used, but its framing consistently argues against new nuclear."
+    },
+    {
+      "id": "s5",
+      "url": "https://energy.mit.edu/research/future-nuclear-energy-carbon-constrained-world/",
+      "title": "The Future of Nuclear Energy in a Carbon-Constrained World",
+      "publisher": "MIT Energy Initiative",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Major university study with system-cost modeling. Pro-nuclear-policy leaning in its recommendations, though candid about the industry's cost failures; published 2018, so its cost data predates the most recent projects."
+    },
+    {
+      "id": "s6",
+      "url": "https://ourworldindata.org/safest-sources-of-energy",
+      "title": "What are the safest and cleanest sources of energy?",
+      "publisher": "Our World in Data",
+      "source_type": "article",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-05-19",
+      "quality_notes": "Accessible synthesis of peer-reviewed mortality estimates per unit of energy. Good for orders of magnitude; the underlying death-rate estimates carry real uncertainty, especially for chronic air-pollution impacts."
+    }
+  ],
+  "evidence_links": [
+    {
+      "id": "ev_c1_s1",
+      "claim_id": "c1",
+      "source_id": "s1",
+      "label": "supports_claim",
+      "rationale": "AR6 mitigation pathways limiting warming to around 1.5–2°C show nuclear generation increasing in most scenarios, though the range across models is wide.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c1_s2",
+      "claim_id": "c1",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "The IEA net-zero scenario shows global nuclear generation roughly doubling between 2020 and 2050, alongside much larger growth in renewables.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s6",
+      "claim_id": "c2",
+      "source_id": "s6",
+      "label": "supports_claim",
+      "rationale": "Our World in Data's synthesis of death rates per terawatt-hour places nuclear close to wind and solar and orders of magnitude below coal, oil, and gas.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s5",
+      "claim_id": "c3",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "The MIT study's system modeling finds that excluding firm low-carbon options such as nuclear substantially raises the average cost of deep decarbonization.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s2",
+      "claim_id": "c3",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "The IEA pathway relies on a portfolio of dispatchable low-emissions sources alongside renewables, but does not single out nuclear as indispensable.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s3",
+      "claim_id": "c4",
+      "source_id": "s3",
+      "label": "supports_claim",
+      "rationale": "Lazard's levelized cost analysis places new nuclear well above utility-scale solar and onshore wind per megawatt-hour, even across its wide estimate ranges.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s5",
+      "claim_id": "c4",
+      "source_id": "s5",
+      "label": "partially_supports_claim",
+      "rationale": "The MIT study concedes that recent Western new builds are expensive, while arguing that levelized cost alone understates the value of firm capacity.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s2",
+      "claim_id": "c5",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "The IEA roadmap treats extended operation of existing reactors as a low-cost component of its net-zero pathway.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s3",
+      "claim_id": "c5",
+      "source_id": "s3",
+      "label": "supports_claim",
+      "rationale": "Lazard reports the marginal cost of running fully depreciated nuclear plants as low relative to building new generation of any type.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s4",
+      "claim_id": "c6",
+      "source_id": "s4",
+      "label": "contradicts_claim",
+      "rationale": "WNISR documents nuclear's shrinking share of global generation and roughly decade-long average project timelines, concluding the technology scales too slowly to matter for 2050 targets.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s2",
+      "claim_id": "c6",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "The IEA scenario shows nuclear roughly doubling by 2050, but as a policy-contingent scenario outcome rather than evidence of current deployment rates.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s2",
+      "claim_id": "c4",
+      "source_id": "s2",
+      "label": "unclear",
+      "rationale": "The IEA roadmap's system-value framing implies LCOE alone understates firm capacity, leaving the bare cost comparison unsettled once integration costs are included.",
+      "confidence": 0.5,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c7_s4",
+      "claim_id": "c7",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "WNISR's annual data show renewables capturing the overwhelming majority of new capacity additions, with solar and wind growing far faster than nuclear over the past decade.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c7_s2",
+      "claim_id": "c7",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "The IEA roadmap projects renewables and storage as the dominant share of new investment, consistent with steep recent cost declines, though its specific figures are scenario outputs rather than observed prices.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s5",
+      "claim_id": "c8",
+      "source_id": "s5",
+      "label": "contradicts_claim",
+      "rationale": "The MIT study attributes recent Western overruns largely to first-of-a-kind effects, atrophied supply chains, and lost serial-build experience, arguing they need not generalize to standardized future builds.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s4",
+      "claim_id": "c8",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "WNISR's construction record shows persistent, repeated cost and schedule overruns across countries and decades, which it reads as a structural feature of new nuclear rather than a transient first-of-a-kind problem.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    }
+  ],
+  "values": [
+    {
+      "id": "val_climate",
+      "topic_id": "topic_nuclear_power",
+      "name": "Climate Urgency",
+      "description": "Cutting emissions fast enough to meet mid-century targets matters more than loyalty to any particular technology.",
+      "position_ids": ["pos_a", "pos_b", "pos_c"],
+      "tension_with": ["local siting concerns", "short-term electricity prices"]
+    },
+    {
+      "id": "val_reliability",
+      "topic_id": "topic_nuclear_power",
+      "name": "Grid Reliability",
+      "description": "A decarbonized grid must deliver power on demand through still weeks and dark winters, not only when wind and sun cooperate.",
+      "position_ids": ["pos_a", "pos_c"],
+      "tension_with": ["least-cost procurement", "rapid variable-renewables build-out"]
+    },
+    {
+      "id": "val_cost",
+      "topic_id": "topic_nuclear_power",
+      "name": "Cost Discipline",
+      "description": "Public and private capital should buy the most emissions reduction per dollar, as quickly as possible.",
+      "position_ids": ["pos_b", "pos_c"],
+      "tension_with": ["technology diversity", "long-horizon industrial planning", "option value of firm capacity"]
+    },
+    {
+      "id": "val_stewardship",
+      "topic_id": "topic_nuclear_power",
+      "name": "Intergenerational Stewardship",
+      "description": "Energy choices should not hand long-lived waste, accident, or weapons-proliferation risks to future generations.",
+      "position_ids": ["pos_b"],
+      "tension_with": ["near-term emissions cuts", "energy abundance"]
+    }
+  ],
+  "tradeoffs": [
+    {
+      "id": "to_a",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_a",
+      "gain": "Firm low-carbon capacity that complements renewables, with small land use and a strong safety record.",
+      "cost": "High upfront capital, long construction timelines, and long-lived waste to manage.",
+      "risk": "Repeated cost overruns could absorb capital and political will that faster options would have used better.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_b",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_b",
+      "gain": "Capital flows to the cheapest and fastest-deploying low-carbon options available today.",
+      "cost": "Forgoes firm low-carbon capacity, leaving harder reliability problems as grids approach full decarbonization.",
+      "risk": "If storage and grid flexibility scale slower than hoped, decarbonization could stall at high renewable shares.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_c",
+      "topic_id": "topic_nuclear_power",
+      "position_id": "pos_c",
+      "gain": "Preserves existing low-carbon capacity cheaply while avoiding premature bets on new construction.",
+      "cost": "Sends no clear industrial signal, which keeps the nuclear supply chain and workforce in decline.",
+      "risk": "Case-by-case ambivalence can become a de facto phase-out if no new project ever clears the bar.",
+      "review_status": "unreviewed"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "ae_01",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "topic_created",
+      "summary": "Topic created from the nuclear power seed packet.",
+      "created_at": "2026-05-21T09:00:00Z"
+    },
+    {
+      "id": "ae_02",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "source_added",
+      "summary": "6 sources added and retrieved (status: found): IPCC AR6 WG3, IEA Net Zero by 2050, Lazard LCOE+, WNISR, MIT Energy Initiative, Our World in Data.",
+      "created_at": "2026-05-21T09:05:00Z"
+    },
+    {
+      "id": "ae_03",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "claim_extracted",
+      "summary": "8 atomic claims (C1–C8) extracted manually from the seed packet.",
+      "created_at": "2026-05-21T09:20:00Z"
+    },
+    {
+      "id": "ae_04",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "system",
+      "actor_id": "labeler_v0",
+      "event_type": "evidence_labeled",
+      "summary": "16 evidence links labeled across 8 claims and 6 sources, including 2 contradicting and 1 unclear link. All marked unreviewed.",
+      "created_at": "2026-05-21T09:40:00Z"
+    },
+    {
+      "id": "ae_05",
+      "topic_id": "topic_nuclear_power",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "revision_published",
+      "summary": "Revision 1 published with 3 positions, 11 arguments, 4 values, and 3 trade-offs. Open tasks: add waste-disposal and SMR cost evidence, seek independent review of the contested scaling and overrun-generality claims.",
+      "created_at": "2026-05-21T10:15:00Z"
+    }
+  ]
+}

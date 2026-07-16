@@ -1,0 +1,469 @@
+{
+  "topic": {
+    "id": "topic_smartphones_schools",
+    "title": "Smartphones in Schools",
+    "question": "Should schools ban smartphones during class?",
+    "summary": "A policy debate about whether schools should ban smartphones during class — weighing attention, learning outcomes, and an equal classroom against student autonomy, digital literacy, family contact, and the real costs of enforcement.",
+    "status": "published",
+    "current_revision_id": "rev_001",
+    "created_at": "2026-04-28T00:00:00Z",
+    "created_by": "user_admin"
+  },
+  "revision": {
+    "id": "rev_001",
+    "topic_id": "topic_smartphones_schools",
+    "revision_number": 1,
+    "status": "published",
+    "published_at": "2026-04-30T00:00:00Z",
+    "published_by": "user_admin"
+  },
+  "positions": [
+    {
+      "id": "pos_a",
+      "topic_id": "topic_smartphones_schools",
+      "title": "Yes — ban them bell-to-bell",
+      "short_summary": "Remove smartphones for the whole school day to protect attention, learning outcomes, and an equal classroom.",
+      "steelman": "Classrooms exist to direct scarce attention toward learning, and smartphones are engineered to pull that attention away. Students receive a large share of their daily notifications during school hours, and even a silent phone within reach competes with instruction. Where schools have removed phones, researchers have found measurable test-score gains concentrated among the students who were already struggling, so a clear ban narrows gaps rather than widening them. A bell-to-bell rule is also the only version staff can enforce evenly, because it removes case-by-case negotiation from every lesson. Many teachers and parents additionally value a school day free of social media pressure, even though the direct wellbeing evidence is still contested. The ban asks for one act of restraint at the school gate instead of hundreds of small ones across the day.",
+      "status": "published",
+      "argument_ids": ["arg_a1", "arg_a2", "arg_a3"],
+      "value_ids": ["val_attention", "val_equity"],
+      "tradeoff_ids": ["to_a"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_b",
+      "topic_id": "topic_smartphones_schools",
+      "title": "No — teach managed use instead",
+      "short_summary": "Keep phones at school and teach deliberate, managed use instead of imposing a blanket ban.",
+      "steelman": "Smartphones are the infrastructure of modern life, and school is where young people should learn to use them deliberately rather than simply have them locked away. The best direct evidence undercuts the strongest case for bans: restrictive school policies have not been shown to improve wellbeing or to reduce how much adolescents use phones overall, because most use happens outside school hours. Blanket bans also carry real costs, cutting the direct line between parents and children and turning teachers into device police in daily confiscation conflicts. A managed-use approach makes the phone an object of explicit teaching: when to silence it, how notification design works against you, and when it is a legitimate tool for learning. Students who experience only prohibition graduate with no practice at self-regulation at exactly the moment the external rules disappear.",
+      "status": "published",
+      "argument_ids": ["arg_b1", "arg_b2", "arg_b3"],
+      "value_ids": ["val_autonomy", "val_reachability"],
+      "tradeoff_ids": ["to_b"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_c",
+      "topic_id": "topic_smartphones_schools",
+      "title": "Restrict in class, allow between lessons",
+      "short_summary": "Require phones to be away and silent during lessons while allowing limited use between them.",
+      "steelman": "Lesson time is the scarcest resource a school has, and the evidence that phones erode it is strong enough to act on, while the evidence that all-day bans deliver broader wellbeing benefits is much weaker. A middle policy follows that asymmetry: phones are away and silent during every lesson and available during breaks and passing time. This protects instruction where distraction does its damage, keeps students reachable by their families, and lets them practice putting the phone away as a habit rather than experiencing it only as confiscation. A rule students see as proportionate is also more likely to earn the broad voluntary compliance that every phone policy ultimately depends on. The position accepts a harder enforcement boundary than a blanket ban in exchange for preserving the parts of connectivity that have genuine value.",
+      "status": "published",
+      "argument_ids": ["arg_c1", "arg_c2", "arg_c3"],
+      "value_ids": ["val_attention", "val_autonomy", "val_reachability"],
+      "tradeoff_ids": ["to_c"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "arguments": [
+    {
+      "id": "arg_a1",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Phones and their notifications pull student attention away from instruction across the school day.",
+      "claim_ids": ["c1"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a2",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Banning phones is followed by test-score gains concentrated among the lowest-achieving students, narrowing classroom gaps.",
+      "claim_ids": ["c2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a3",
+      "position_id": "pos_a",
+      "direction": "qualifies",
+      "summary": "The mental health rationale is plausible but contested, so the ban's core case rests on attention and learning.",
+      "claim_ids": ["c3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b1",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Restrictive school policies do not reduce overall phone or social media time, which is what actually tracks worse outcomes.",
+      "claim_ids": ["c4"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b2",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Bans are leaky and costly to police, since many students use phones during school regardless of the rules.",
+      "claim_ids": ["c5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b3",
+      "position_id": "pos_b",
+      "direction": "qualifies",
+      "summary": "The wellbeing argument for bans is not borne out by the most direct comparison of restrictive and permissive schools.",
+      "claim_ids": ["c3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c1",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "In-class distraction is the clearest, best-documented harm, so the rule should target lesson time directly.",
+      "claim_ids": ["c1"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c2",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "A lesson-time restriction pursues the documented learning gains while keeping students reachable between lessons.",
+      "claim_ids": ["c2"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c3",
+      "position_id": "pos_c",
+      "direction": "qualifies",
+      "summary": "A conditional rule works only if it is bright-line and consistently enforced, because students use phones even under restrictions.",
+      "claim_ids": ["c5", "c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Smartphones and their notifications draw student attention away from classroom instruction.",
+      "claim_type": ["factual", "causal"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c1_s1", "ev_c1_s5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c2",
+      "text": "Banning mobile phones in schools can raise student test scores, with the largest gains for low-achieving students.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c2_s2", "ev_c2_s1"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c3",
+      "text": "Banning phones during the school day improves adolescent mental wellbeing.",
+      "claim_type": ["causal", "predictive"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c3_s4", "ev_c3_s1"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c4",
+      "text": "Restrictive school phone policies on their own do not reduce adolescents' overall daily phone and social media time.",
+      "claim_type": ["factual", "causal"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c4_s4"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c5",
+      "text": "Many students use their phones during the school day even where school policies restrict use.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c5_s5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c6",
+      "text": "The benefits of a school phone policy depend on clear rules and consistent whole-school enforcement.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_smartphones_schools",
+      "evidence_link_ids": ["ev_c6_s6", "ev_c6_s3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://www.unesco.org/gem-report/en/publication/technology",
+      "title": "Global Education Monitoring Report 2023 — Technology in education: A tool on whose terms?",
+      "publisher": "UNESCO",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Flagship UN report with a broad evidence synthesis; it openly advocates limiting smartphone use in schools, so its framing leans pro-restriction. Strong for international policy context; many of the studies it cites are correlational."
+    },
+    {
+      "id": "s2",
+      "url": "https://cep.lse.ac.uk/pubs/download/dp1350.pdf",
+      "title": "Ill Communication: Technology, Distraction and Student Performance (CEP Discussion Paper No 1350)",
+      "publisher": "Centre for Economic Performance, LSE",
+      "source_type": "paper",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Widely cited quasi-experimental study (difference-in-differences across 91 English schools) by Beland and Murphy. Strong design for test-score effects, but the data predate 2013 and may not transfer to today's phones and apps."
+    },
+    {
+      "id": "s3",
+      "url": "https://www.gov.uk/government/publications/mobile-phones-in-schools/mobile-phones-in-schools",
+      "title": "Mobile phones in schools",
+      "publisher": "UK Department for Education",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Official government guidance recommending phone-free school days. Good for what a major education ministry recommends and why; it is a policy position, not an impact evaluation."
+    },
+    {
+      "id": "s4",
+      "url": "https://doi.org/10.1016/j.lanepe.2025.101211",
+      "title": "School phone policies and their association with mental wellbeing, phone use, and social media use (SMART Schools): a cross-sectional observational study",
+      "publisher": "The Lancet Regional Health - Europe",
+      "source_type": "paper",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Peer-reviewed University of Birmingham study of around 1,200 students in 30 English schools, the most direct comparison of restrictive and permissive policies to date. Cross-sectional design cannot establish causation, and it compares existing policies rather than evaluating a newly introduced ban."
+    },
+    {
+      "id": "s5",
+      "url": "https://www.commonsensemedia.org/research/constant-companion-a-week-in-the-life-of-a-young-persons-smartphone-use",
+      "title": "Constant Companion: A Week in the Life of a Young Person's Smartphone Use",
+      "publisher": "Common Sense Media",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Nonprofit research using passive tracking of about 200 US 11- to 17-year-olds (Android only). Unusually direct usage data, including school-day use, but the sample is small and nonrepresentative, and the organization advocates for children's media health."
+    },
+    {
+      "id": "s6",
+      "url": "https://www.rijksoverheid.nl/actueel/nieuws/2024/07/12/ocw-onderzoek-leerlingen-socialer-en-geconcentreerder-door-mobieltjesafspraak",
+      "title": "OCW-onderzoek: leerlingen socialer en geconcentreerder door mobieltjesafspraak",
+      "publisher": "Government of the Netherlands (Rijksoverheid)",
+      "source_type": "article",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-04-28",
+      "quality_notes": "Official Dutch government news item (in Dutch) on the education ministry's survey of nearly 600 secondary schools after the national classroom phone ban; staff report students are more focused and more social. Useful for reported effects at national scale, but it is based on staff perceptions and is the government reporting on its own policy."
+    }
+  ],
+  "evidence_links": [
+    {
+      "id": "ev_c1_s1",
+      "claim_id": "c1",
+      "source_id": "s1",
+      "label": "supports_claim",
+      "rationale": "The GEM Report cites research from 14 countries finding that mere proximity to a mobile device distracts students and harms learning, which grounds its call to restrict smartphones in schools.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c1_s5",
+      "claim_id": "c1",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "Tracking data showed participants received roughly a quarter of their daily notifications during school hours and used phones a median of 43 minutes during the school day, documenting the volume of interruption rather than measuring attention loss directly.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s2",
+      "claim_id": "c2",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "Beland and Murphy found high-stakes exam scores rose by 6.4% of a standard deviation after English schools banned phones, with gains concentrated among the lowest-achieving students.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s1",
+      "claim_id": "c2",
+      "source_id": "s1",
+      "label": "partially_supports_claim",
+      "rationale": "UNESCO cites evidence that removing smartphones from schools in some countries improved learning, while noting that rigorous evidence on technology's effects in education is scarce overall.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s4",
+      "claim_id": "c3",
+      "source_id": "s4",
+      "label": "contradicts_claim",
+      "rationale": "The SMART Schools study found no significant difference in mental wellbeing, anxiety, or depression between students at schools with restrictive phone policies and those at permissive ones.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s1",
+      "claim_id": "c3",
+      "source_id": "s1",
+      "label": "unclear",
+      "rationale": "UNESCO recommends restricting smartphones in schools partly on wellbeing grounds, but the report offers little direct evidence that school bans themselves improve wellbeing.",
+      "confidence": 0.55,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s4",
+      "claim_id": "c4",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "Restrictive school policies were not associated with lower overall phone or social media time among adolescents; higher overall time, wherever it occurred, was what tracked worse wellbeing, sleep, and attainment.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s5",
+      "claim_id": "c5",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "Nearly all tracked participants used their phones during school hours, with a median of 43 minutes per school day, and the report notes that school rules vary classroom to classroom and are not consistently enforced.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s6",
+      "claim_id": "c6",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "Dutch schools reported better focus and a better social climate after a clear national rule that each school turned into concrete local policy, though the survey has no comparison group of weakly enforced policies.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s3",
+      "claim_id": "c6",
+      "source_id": "s3",
+      "label": "partially_supports_claim",
+      "rationale": "The DfE guidance asserts that consistent whole-school approaches are the most effective way to manage phones, but as policy guidance it relies on examples rather than systematic evaluation.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    }
+  ],
+  "values": [
+    {
+      "id": "val_attention",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Focused Learning",
+      "description": "Classroom time is scarce, and instruction deserves protection from engineered competition for student attention.",
+      "position_ids": ["pos_a", "pos_c"],
+      "tension_with": ["constant connectivity", "student discretion during lessons"]
+    },
+    {
+      "id": "val_equity",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Equal Classroom",
+      "description": "School rules should prevent device habits and distractions from widening achievement gaps between students.",
+      "position_ids": ["pos_a"],
+      "tension_with": ["case-by-case exceptions", "family discretion over devices"]
+    },
+    {
+      "id": "val_autonomy",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Autonomy and Digital Literacy",
+      "description": "Students should graduate able to manage their own technology use rather than only ever having it managed for them.",
+      "position_ids": ["pos_b", "pos_c"],
+      "tension_with": ["uniform blanket bans", "short-term classroom order"]
+    },
+    {
+      "id": "val_reachability",
+      "topic_id": "topic_smartphones_schools",
+      "name": "Family Reachability",
+      "description": "Parents and students place real weight on being able to reach each other directly during the school day.",
+      "position_ids": ["pos_b", "pos_c"],
+      "tension_with": ["bell-to-bell bans", "routing all contact through the school office"]
+    }
+  ],
+  "tradeoffs": [
+    {
+      "id": "to_a",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_a",
+      "gain": "Protected attention in every lesson, documented test-score gains for struggling students, and one less social pressure inside school.",
+      "cost": "Families lose direct contact during the day and staff take on gate-to-gate enforcement work.",
+      "risk": "Use may move out of sight, and confiscation disputes could consume the time and goodwill the ban was meant to save.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_b",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_b",
+      "gain": "Preserves family contact and gives students supervised practice at self-regulation before the external rules disappear.",
+      "cost": "Keeps a documented distraction within reach during lessons and asks teachers to police nuance instead of a bright line.",
+      "risk": "If the teaching component is weak, managed use can collapse into de facto unrestricted use.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_c",
+      "topic_id": "topic_smartphones_schools",
+      "position_id": "pos_c",
+      "gain": "Protects instruction time while keeping students reachable and building the habit of putting the phone away.",
+      "cost": "A conditional rule is harder to enforce consistently than a blanket ban and invites boundary-testing at every bell.",
+      "risk": "Between-lesson use can spill into class time, delivering neither the focus of a ban nor the autonomy of managed use.",
+      "review_status": "unreviewed"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "ae_01",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "topic_created",
+      "summary": "Topic created from the smartphones-in-schools seed packet.",
+      "created_at": "2026-04-30T09:00:00Z"
+    },
+    {
+      "id": "ae_02",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "system",
+      "actor_id": "retriever_v0",
+      "event_type": "source_added",
+      "summary": "6 sources added and retrieved successfully (status: found): UNESCO GEM Report, CEP (LSE), UK DfE, The Lancet Regional Health - Europe, Common Sense Media, Government of the Netherlands.",
+      "created_at": "2026-04-30T09:05:00Z"
+    },
+    {
+      "id": "ae_03",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "claim_extracted",
+      "summary": "6 atomic claims (C1–C6) extracted manually from the seed packet.",
+      "created_at": "2026-04-30T09:20:00Z"
+    },
+    {
+      "id": "ae_04",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "evidence_labeled",
+      "summary": "10 evidence links labeled (claim–source alignment), including 1 contradicting and 1 unclear link on the wellbeing claim. All marked unreviewed.",
+      "created_at": "2026-04-30T09:40:00Z"
+    },
+    {
+      "id": "ae_05",
+      "topic_id": "topic_smartphones_schools",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "revision_published",
+      "summary": "3 positions structured with steelmans, values, and trade-offs; revision 1 published. Open tasks: longitudinal wellbeing evidence and an independent evaluation of the Dutch ban.",
+      "created_at": "2026-04-30T10:15:00Z"
+    }
+  ]
+}

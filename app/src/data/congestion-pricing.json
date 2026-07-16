@@ -1,0 +1,688 @@
+{
+  "topic": {
+    "id": "topic_congestion_pricing",
+    "title": "Congestion Pricing",
+    "question": "Should cities implement congestion pricing for cars?",
+    "summary": "A policy debate about charging vehicles to enter busy urban areas — weighing congestion relief, transit funding, and environmental gains against fairness, affordability, and trust in institutions.",
+    "status": "published",
+    "current_revision_id": "rev_001",
+    "created_at": "2026-06-09T00:00:00Z",
+    "created_by": "user_admin"
+  },
+  "revision": {
+    "id": "rev_001",
+    "topic_id": "topic_congestion_pricing",
+    "revision_number": 1,
+    "status": "published",
+    "published_at": "2026-06-11T00:00:00Z",
+    "published_by": "user_admin"
+  },
+  "positions": [
+    {
+      "id": "pos_a",
+      "topic_id": "topic_congestion_pricing",
+      "title": "Yes — price the zone, invest in transit",
+      "short_summary": "Implement congestion pricing and direct the revenue to public transport.",
+      "steelman": "Cities should charge drivers to enter the most congested zones because scarce road space is currently underpriced. Pricing can reduce traffic, improve travel reliability, reduce pollution, and create a dedicated funding stream for public transport. Fairness concerns are real, but they can be mitigated through transit investment, exemptions, credits, and careful policy design.",
+      "status": "published",
+      "argument_ids": ["arg_a1", "arg_a2", "arg_a3", "arg_a4"],
+      "value_ids": ["val_mobility", "val_environment"],
+      "tradeoff_ids": ["to_a"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_b",
+      "topic_id": "topic_congestion_pricing",
+      "title": "No — the burden falls unfairly",
+      "short_summary": "Congestion pricing charges access to public roads and shifts burdens onto those least able to adapt.",
+      "steelman": "Congestion pricing charges people for access to public roads and may hurt people who cannot easily change route, schedule, job location, or transport mode. It can also create geographic unfairness, traffic diversion, delivery cost increases, and new administrative complexity. The fact that pricing can reduce congestion does not prove that its burdens are fairly distributed.",
+      "status": "published",
+      "argument_ids": ["arg_b1", "arg_b2", "arg_b3", "arg_b4"],
+      "value_ids": ["val_fairness", "val_access"],
+      "tradeoff_ids": ["to_b"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "pos_c",
+      "topic_id": "topic_congestion_pricing",
+      "title": "Yes, but — only with equity protections",
+      "short_summary": "Price congestion only with rebates, transparent revenue use, and independent review built in from the start.",
+      "steelman": "Congestion pricing can be justified, but only if the city designs it around equity from the start. The policy should include clear exemptions or rebates, transparent revenue use, public reporting, review of traffic diversion, and measurable transit improvements. The goal should be lower congestion and fairer mobility, not just revenue extraction.",
+      "status": "published",
+      "argument_ids": ["arg_c1", "arg_c2", "arg_c3", "arg_c4"],
+      "value_ids": ["val_fairness", "val_mobility", "val_environment", "val_trust"],
+      "tradeoff_ids": ["to_c"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "arguments": [
+    {
+      "id": "arg_a1",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Pricing demonstrably reduces traffic in priced zones.",
+      "claim_ids": ["c1"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a2",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Tolls create a dedicated, recurring funding stream for transit.",
+      "claim_ids": ["c2", "c3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a3",
+      "position_id": "pos_a",
+      "direction": "qualifies",
+      "summary": "Fairness objections are addressable through design, not reasons to abandon the policy.",
+      "claim_ids": ["c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b1",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "The policy raises real income and geographic equity concerns.",
+      "claim_ids": ["c4"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b2",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "Drivers with no realistic alternative bear the cost without the benefit.",
+      "claim_ids": ["c5"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b3",
+      "position_id": "pos_b",
+      "direction": "qualifies",
+      "summary": "Reduced congestion does not prove the burdens are fairly distributed.",
+      "claim_ids": ["c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c1",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Rebates and revenue recycling can change the fairness outcome.",
+      "claim_ids": ["c7"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c2",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Outcomes hinge on revenue use and policy design, so design for equity explicitly.",
+      "claim_ids": ["c6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c3",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "Official program claims need independent auditing over time.",
+      "claim_ids": ["c8", "c13"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_a4",
+      "position_id": "pos_a",
+      "direction": "supports",
+      "summary": "Pricing also clears the air and rests on a fair principle: scarce road space should carry a price.",
+      "claim_ids": ["c11", "c12", "c9"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_b4",
+      "position_id": "pos_b",
+      "direction": "supports",
+      "summary": "A new daily cost is unacceptable when the driver has no realistic alternative.",
+      "claim_ids": ["c10"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "arg_c4",
+      "position_id": "pos_c",
+      "direction": "supports",
+      "summary": "The same air-quality and compliance gains hold here too — provided the design is clear and predictable.",
+      "claim_ids": ["c11", "c12"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Congestion pricing can reduce vehicle traffic in a priced zone.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c1_s5", "ev_c1_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c2",
+      "text": "Congestion pricing can generate revenue for public transit.",
+      "claim_type": ["causal", "factual"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c2_s2", "ev_c2_s3"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c3",
+      "text": "If revenue funds transit, many non-driving residents can benefit.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c3_s7", "ev_c3_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c4",
+      "text": "Congestion pricing can create income and geographic equity concerns.",
+      "claim_type": ["factual"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c4_s6", "ev_c4_s8"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c5",
+      "text": "Low-income drivers with limited alternatives may be burdened.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c5_s8", "ev_c5_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c6",
+      "text": "Benefits and costs depend heavily on revenue use and policy design.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c6_s6", "ev_c6_s8"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c7",
+      "text": "Rebates or revenue recycling can change the fairness of congestion pricing.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c7_s8"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c8",
+      "text": "Official program claims should be audited independently over time.",
+      "claim_type": ["normative"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c8_s2", "ev_c8_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c9",
+      "text": "Charging for entry to public roads is a fair way to allocate scarce road space.",
+      "claim_type": ["normative"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": [],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c10",
+      "text": "It is unacceptable to impose a new daily cost on drivers who have no realistic alternative.",
+      "claim_type": ["normative"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": [],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c11",
+      "text": "Priced cordons have been associated with measurable reductions in local air pollutants.",
+      "claim_type": ["factual", "causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c11_s5", "ev_c11_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c12",
+      "text": "Clear, predictable pricing rules improve public compliance and reduce enforcement disputes.",
+      "claim_type": ["causal"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": ["ev_c12_s4", "ev_c12_s6"],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "c13",
+      "text": "Whether the policy is legitimate depends on transparent, independently audited revenue use.",
+      "claim_type": ["normative"],
+      "topic_id": "topic_congestion_pricing",
+      "evidence_link_ids": [],
+      "generated_by": "human",
+      "review_status": "unreviewed"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://rosap.ntl.bts.gov/view/dot/42199",
+      "title": "Congestion Pricing: A Primer",
+      "publisher": "U.S. Federal Highway Administration",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Official U.S. FHWA source. Published 2006 — not current for recent deployments."
+    },
+    {
+      "id": "s2",
+      "url": "https://www.mta.info/agency/bridges-and-tunnels/congestion-relief-zone",
+      "title": "Congestion Relief Zone Overview",
+      "publisher": "MTA (New York)",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Official operator source. Useful for program facts and official claims, not independent impact analysis."
+    },
+    {
+      "id": "s3",
+      "url": "https://www.mta.info/fares-tolls/tolls/congestion-relief-zone/about",
+      "title": "Congestion Relief Zone Toll Information",
+      "publisher": "MTA (New York)",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Official source for toll design (rates, periods, credits, phase-in through 2031). Not neutral for policy evaluation."
+    },
+    {
+      "id": "s4",
+      "url": "https://tfl.gov.uk/modes/driving/congestion-charge",
+      "title": "Congestion Charge",
+      "publisher": "Transport for London",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Official source for current London charge amount, hours, exemptions, and discounts."
+    },
+    {
+      "id": "s5",
+      "url": "https://www.itskrs.its.dot.gov/2007-b00333",
+      "title": "London Congestion Charging Evaluation Summary",
+      "publisher": "U.S. DOT ITS Knowledge Resources",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Summarizes TfL monitoring reports. Should be backed by original reports before production use."
+    },
+    {
+      "id": "s6",
+      "url": "https://www.gao.gov/products/gao-12-119",
+      "title": "Road Pricing Can Help Reduce Congestion, but Equity Concerns May Grow",
+      "publisher": "U.S. Government Accountability Office",
+      "source_type": "report",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Official U.S. oversight source. Covers U.S. road pricing broadly, not only cordon pricing."
+    },
+    {
+      "id": "s7",
+      "url": "https://www.cssny.org/news/entry/congestion-pricing-outer-borough-new-yorkers-poverty-data-analysis",
+      "title": "Congestion Pricing and Outer-Borough New Yorkers in Poverty",
+      "publisher": "Community Service Society of New York",
+      "source_type": "article",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Advocacy / policy analysis — not neutral. Useful as a position source, not as final authority."
+    },
+    {
+      "id": "s8",
+      "url": "https://ucits.org/research_products/policy-brief-congestion-pricing-can-be-equitable-if-a-portion-of-the-revenue-is-returned-to-drivers/",
+      "title": "Congestion Pricing Can Be Equitable if Revenue Is Returned to Drivers",
+      "publisher": "UC Institute of Transportation Studies",
+      "source_type": "paper",
+      "retrieval_status": "found",
+      "retrieved_at": "2026-06-09",
+      "quality_notes": "Research institution policy brief. Core source for the rebates / revenue-recycling position."
+    }
+  ],
+  "evidence_links": [
+    {
+      "id": "ev_c1_s5",
+      "claim_id": "c1",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "The London evaluation summary reports early automobile traffic decline of about 20% in the charge zone and reduced peak congestion delay.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c1_s6",
+      "claim_id": "c1",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "GAO found evaluated pricing projects generally show congestion reduction, while noting mixed results and incomplete impact assessment.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s2",
+      "claim_id": "c2",
+      "source_id": "s2",
+      "label": "supports_claim",
+      "rationale": "MTA states the NYC program provides funding for capital improvements.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c2_s3",
+      "claim_id": "c2",
+      "source_id": "s3",
+      "label": "supports_claim",
+      "rationale": "MTA describes toll amounts and phase-in rates that generate the program revenue.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s7",
+      "claim_id": "c3",
+      "source_id": "s7",
+      "label": "supports_claim",
+      "rationale": "CSS argues many low-income outer-borough residents rely on transit and would benefit from transit investment.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c3_s6",
+      "claim_id": "c3",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "GAO lists public transit funding as an option to address equity issues.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s6",
+      "claim_id": "c4",
+      "source_id": "s6",
+      "label": "supports_claim",
+      "rationale": "GAO explicitly identifies income equity and geographic equity concerns.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c4_s8",
+      "claim_id": "c4",
+      "source_id": "s8",
+      "label": "supports_claim",
+      "rationale": "UC ITS notes fairness concerns and potential burden on low-income drivers.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s8",
+      "claim_id": "c5",
+      "source_id": "s8",
+      "label": "supports_claim",
+      "rationale": "UC ITS says road pricing can pose substantial burdens for low-income drivers with limited alternatives.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c5_s6",
+      "claim_id": "c5",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "GAO frames low-income driver impacts as a core equity question.",
+      "confidence": 0.65,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s6",
+      "claim_id": "c6",
+      "source_id": "s6",
+      "label": "supports_claim",
+      "rationale": "GAO notes revenue use can help address equity issues.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c6_s8",
+      "claim_id": "c6",
+      "source_id": "s8",
+      "label": "supports_claim",
+      "rationale": "UC ITS argues returning revenue can change fairness outcomes.",
+      "confidence": 0.8,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c7_s8",
+      "claim_id": "c7",
+      "source_id": "s8",
+      "label": "supports_claim",
+      "rationale": "UC ITS argues that returning some or all revenue can fundamentally alter fairness outcomes.",
+      "confidence": 0.85,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s2",
+      "claim_id": "c8",
+      "source_id": "s2",
+      "label": "partially_supports_claim",
+      "rationale": "MTA makes official positive-impact claims, which illustrates the need for independent verification rather than asserting it.",
+      "confidence": 0.55,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c8_s6",
+      "claim_id": "c8",
+      "source_id": "s6",
+      "label": "supports_claim",
+      "rationale": "GAO emphasizes monitoring and evaluation, and notes that relevant impacts have not always been assessed.",
+      "confidence": 0.75,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c11_s5",
+      "claim_id": "c11",
+      "source_id": "s5",
+      "label": "supports_claim",
+      "rationale": "The London evaluation summary reports reductions in traffic-related emissions in the charge zone alongside the drop in vehicle volumes.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c11_s6",
+      "claim_id": "c11",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "GAO notes air-quality improvement among the potential benefits of cordon pricing, while cautioning that local effects vary and are not always fully measured.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c12_s4",
+      "claim_id": "c12",
+      "source_id": "s4",
+      "label": "supports_claim",
+      "rationale": "TfL publishes fixed charging hours, zone boundaries, and penalty rules, an operational design built for predictability and straightforward enforcement.",
+      "confidence": 0.7,
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "ev_c12_s6",
+      "claim_id": "c12",
+      "source_id": "s6",
+      "label": "partially_supports_claim",
+      "rationale": "GAO links the workability of road-pricing schemes to clear, well-communicated rules, while treating compliance effects as program-dependent.",
+      "confidence": 0.6,
+      "review_status": "unreviewed"
+    }
+  ],
+  "values": [
+    {
+      "id": "val_mobility",
+      "topic_id": "topic_congestion_pricing",
+      "name": "Efficient Mobility",
+      "description": "Scarce road space should be used where it creates the most value; congestion is a cost everyone pays.",
+      "position_ids": ["pos_a", "pos_c"],
+      "tension_with": ["affordability", "unrestricted road access"]
+    },
+    {
+      "id": "val_fairness",
+      "topic_id": "topic_congestion_pricing",
+      "name": "Fairness",
+      "description": "Public policy should not place its burdens on those least able to adapt or pay.",
+      "position_ids": ["pos_b", "pos_c"],
+      "tension_with": ["simplicity", "revenue maximization", "fast rollout"]
+    },
+    {
+      "id": "val_environment",
+      "topic_id": "topic_congestion_pricing",
+      "name": "Environmental Protection",
+      "description": "Fewer vehicle trips mean cleaner air, less noise, and more livable streets.",
+      "position_ids": ["pos_a", "pos_c"],
+      "tension_with": ["driver convenience", "short-term household or business costs"]
+    },
+    {
+      "id": "val_trust",
+      "topic_id": "topic_congestion_pricing",
+      "name": "Institutional Trust",
+      "description": "Programs that charge the public must report transparently and accept independent evaluation.",
+      "position_ids": ["pos_c"],
+      "tension_with": ["opaque revenue allocation", "official self-reporting without independent evaluation"]
+    },
+    {
+      "id": "val_access",
+      "topic_id": "topic_congestion_pricing",
+      "name": "Unrestricted Road Access",
+      "description": "Public roads are a shared resource everyone has already paid for; charging a daily fee to enter them is itself a burden.",
+      "position_ids": ["pos_b"],
+      "tension_with": ["efficient mobility", "revenue maximization", "pricing scarce road space"]
+    }
+  ],
+  "tradeoffs": [
+    {
+      "id": "to_a",
+      "topic_id": "topic_congestion_pricing",
+      "position_id": "pos_a",
+      "gain": "Less congestion, more transit funding, cleaner air, better travel reliability.",
+      "cost": "Direct fees for some drivers, administrative complexity, political resistance.",
+      "risk": "Poorly designed exemptions or revenue rules could weaken the policy.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_b",
+      "topic_id": "topic_congestion_pricing",
+      "position_id": "pos_b",
+      "gain": "Avoids new fees and avoids burdening constrained drivers.",
+      "cost": "Preserves congestion and may leave transit underfunded.",
+      "risk": "Rejects a tool that could improve citywide mobility if designed well.",
+      "review_status": "unreviewed"
+    },
+    {
+      "id": "to_c",
+      "topic_id": "topic_congestion_pricing",
+      "position_id": "pos_c",
+      "gain": "Keeps congestion-reduction benefits while addressing unfair burdens.",
+      "cost": "Slower rollout, more complexity, lower net revenue.",
+      "risk": "Too many carveouts can undermine congestion reduction.",
+      "review_status": "unreviewed"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "ae_01",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "topic_created",
+      "summary": "Topic created from the congestion pricing seed packet.",
+      "created_at": "2026-06-11T09:00:00Z"
+    },
+    {
+      "id": "ae_02",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "source_added",
+      "summary": "8 sources added: FHWA, MTA (×2), TfL, US DOT ITS, GAO, CSS NY, UC ITS.",
+      "created_at": "2026-06-11T09:05:00Z"
+    },
+    {
+      "id": "ae_03",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "system",
+      "actor_id": "retriever_v0",
+      "event_type": "source_retrieved",
+      "summary": "All 8 sources retrieved successfully (status: found).",
+      "created_at": "2026-06-11T09:06:00Z"
+    },
+    {
+      "id": "ae_04",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "claim_extracted",
+      "summary": "13 atomic claims (C1–C13) extracted manually from the seed packet.",
+      "created_at": "2026-06-11T09:20:00Z"
+    },
+    {
+      "id": "ae_05",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "evidence_labeled",
+      "summary": "19 evidence links labeled (claim–source alignment). All marked unreviewed.",
+      "created_at": "2026-06-11T09:40:00Z"
+    },
+    {
+      "id": "ae_06",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "position_generated",
+      "summary": "3 positions structured with steelmans, values, and trade-offs.",
+      "created_at": "2026-06-11T10:00:00Z"
+    },
+    {
+      "id": "ae_07",
+      "topic_id": "topic_congestion_pricing",
+      "revision_id": "rev_001",
+      "actor_type": "admin",
+      "actor_id": "user_admin",
+      "event_type": "revision_published",
+      "summary": "Revision 1 published. Open tasks: add opposing-source coverage, diversion and delivery-cost evidence, independent NYC evaluation.",
+      "created_at": "2026-06-11T10:15:00Z"
+    }
+  ]
+}
