@@ -2,6 +2,17 @@
   "name": "parallax",
   "private": true,
   "version": "0.0.0",
+  "description": "An open-source Peerlab project for making disagreement inspectable.",
+  "license": "Apache-2.0",
+  "author": "Peerlab",
+  "homepage": "https://github.com/Swarek/parallax#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Swarek/parallax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Swarek/parallax/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

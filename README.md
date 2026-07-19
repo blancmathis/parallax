@@ -2,6 +2,8 @@
 
 **Parallax makes disagreement inspectable.**
 
+Parallax is developed and maintained by **Peerlab**.
+
 Parallax is an open-source platform for turning difficult public questions into
 structured, auditable debate maps. Instead of flattening everything into a
 comment thread, it separates positions, arguments, claims, sources, values,
@@ -107,7 +109,8 @@ Do not disclose vulnerabilities or credentials in public issues. Follow
 
 ## License and third-party material
 
-Original Parallax code and documentation are licensed under the
-[Apache License 2.0](LICENSE). External sources, quoted material, names, marks,
-and linked third-party works remain subject to their respective owners' terms.
-See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Original Peerlab-authored Parallax code and documentation are © 2026 Peerlab
+and licensed under the [Apache License 2.0](LICENSE). External contributions,
+sources, quoted material, names, marks, and linked third-party works remain
+subject to their respective authors' or owners' terms. See [`NOTICE`](NOTICE)
+and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

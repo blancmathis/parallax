@@ -3,6 +3,9 @@
 Thank you for helping improve Parallax. The project is still stabilizing its
 source model, governance rules, privacy posture, and public deployment.
 
+Parallax is developed and maintained by Peerlab. Peerlab maintainers set the
+project direction and make final repository decisions.
+
 ## Useful contributions now
 
 - Reproducible bugs.
@@ -50,5 +53,7 @@ A contribution may be declined when it:
 - includes private, confidential, or improperly licensed material;
 - expands scope substantially without prior agreement.
 
-By contributing, you agree that your contribution is licensed under the
-repository's Apache-2.0 license and that you have the right to submit it.
+External contributors retain copyright in their contributions and agree to
+license them under the repository's Apache-2.0 license. Contributions do not
+transfer copyright ownership to Peerlab unless a separate written agreement
+explicitly provides otherwise. You must have the right to submit your work.

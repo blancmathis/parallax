@@ -1,8 +1,9 @@
 # Third-party notices
 
-The Apache-2.0 license covers original Parallax code and documentation in this
-repository. It does not grant rights to third-party material merely because
-that material is referenced, linked, summarized, or used in a demonstration.
+The Apache-2.0 license covers original Peerlab-authored Parallax code and
+documentation in this repository. It does not grant rights to third-party
+material merely because that material is referenced, linked, summarized, or
+used in a demonstration.
 
 The demonstration debate fixtures contain citations to external publications,
 institutions, datasets, and websites. Copyright, database rights, trademarks,

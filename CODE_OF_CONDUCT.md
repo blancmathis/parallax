@@ -22,9 +22,9 @@ and political perspectives.
 - Public disclosure of security vulnerabilities or credentials.
 - Spam, manipulation, or coordinated disruption.
 
-Maintainers may edit, hide, lock, or remove content and may temporarily or
-permanently restrict participation when needed to protect the community and the
-project.
+Peerlab maintainers may edit, hide, lock, or remove content and may temporarily
+or permanently restrict participation when needed to protect the community and
+the project.
 
 For ordinary moderation concerns, use the relevant issue or GitHub reporting
 tools. For sensitive safety or security concerns, follow

@@ -3,6 +3,8 @@
 Parallax is an active prototype. It does not yet provide production security or
 availability guarantees.
 
+The project is maintained by Peerlab.
+
 ## Reporting a vulnerability
 
 Do not disclose vulnerabilities, credentials, private data, or exploitation
