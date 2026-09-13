@@ -16,12 +16,12 @@ const DIST = join(here, "../dist");
 // guessed domain into sitemap/robots/og is a real launch hazard (wrong canonical,
 // leaked placeholder), so refuse unless SITE_ORIGIN is set — or the operator
 // explicitly opts into the default for a throwaway local build.
-if (!process.env.SITE_ORIGIN && !process.env.SITE_ORIGIN_ALLOW_DEFAULT) {
+if (!process.env.SITE_ORIGIN && process.env.SITE_ORIGIN_ALLOW_LOCAL !== "1") {
   throw new Error(
-    "[gen-seo] SITE_ORIGIN is not set. Set SITE_ORIGIN (and VITE_SITE_ORIGIN) to your canonical https origin in the build env — or set SITE_ORIGIN_ALLOW_DEFAULT=1 for a local throwaway build. Refusing to bake a guessed canonical domain into sitemap/robots/og.",
+    "[gen-seo] SITE_ORIGIN is not set. Set SITE_ORIGIN (and VITE_SITE_ORIGIN) to the controlled canonical origin, or explicitly set SITE_ORIGIN_ALLOW_LOCAL=1 for a local-only build.",
   );
 }
-const ORIGIN = (process.env.SITE_ORIGIN || "https://parallax.org").replace(/\/+$/, "");
+const ORIGIN = (process.env.SITE_ORIGIN || "http://127.0.0.1:4173").replace(/\/+$/, "");
 
 const slugOf = (id) => id.replace(/^topic_/, "").replace(/_/g, "-");
 const slugs = readdirSync(DATA)
@@ -59,6 +59,6 @@ writeFileSync(join(DIST, "sitemap.xml"), sitemap);
 writeFileSync(join(DIST, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${abs("/sitemap.xml")}\n`);
 
 if (!process.env.SITE_ORIGIN) {
-  console.warn(`[gen-seo] WARNING: SITE_ORIGIN not set — used default ${ORIGIN}. Set it (and VITE_SITE_ORIGIN) in the CF Pages build env.`);
+  console.warn(`[gen-seo] LOCAL-ONLY opt-in used ${ORIGIN}; set SITE_ORIGIN and VITE_SITE_ORIGIN for any deployable build.`);
 }
 console.log(`[gen-seo] sitemap.xml: ${urls.length} urls + robots.txt (origin ${ORIGIN})`);

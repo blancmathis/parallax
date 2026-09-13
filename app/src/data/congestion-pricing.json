@@ -296,7 +296,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Official U.S. FHWA source. Published 2006 — not current for recent deployments."
+      "quality_notes": "Official U.S. FHWA source. Published 2006 — not current for recent deployments.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -306,7 +307,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Official operator source. Useful for program facts and official claims, not independent impact analysis."
+      "quality_notes": "Official operator source. Useful for program facts and official claims, not independent impact analysis.",
+      "content_hash": null
     },
     {
       "id": "s3",
@@ -316,7 +318,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Official source for toll design (rates, periods, credits, phase-in through 2031). Not neutral for policy evaluation."
+      "quality_notes": "Official source for toll design (rates, periods, credits, phase-in through 2031). Not neutral for policy evaluation.",
+      "content_hash": null
     },
     {
       "id": "s4",
@@ -326,17 +329,19 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Official source for current London charge amount, hours, exemptions, and discounts."
+      "quality_notes": "Official source for current London charge amount, hours, exemptions, and discounts.",
+      "content_hash": null
     },
     {
       "id": "s5",
       "url": "https://www.itskrs.its.dot.gov/2007-b00333",
-      "title": "London Congestion Charging Evaluation Summary",
+      "title": "Congestion pricing in London decreases inner city traffic by about 20 percent and generates more than £97 million each year for transit improvements.",
       "publisher": "U.S. DOT ITS Knowledge Resources",
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Summarizes TfL monitoring reports. Should be backed by original reports before production use."
+      "quality_notes": "Official U.S. DOT ITS entry, identifier 2007-B00333. It summarizes TfL monitoring reports and should be backed by the original reports before production use.",
+      "content_hash": null
     },
     {
       "id": "s6",
@@ -346,7 +351,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Official U.S. oversight source. Covers U.S. road pricing broadly, not only cordon pricing."
+      "quality_notes": "Official U.S. oversight source, report GAO-12-119. Covers U.S. road pricing broadly, not only cordon pricing.",
+      "content_hash": null
     },
     {
       "id": "s7",
@@ -356,7 +362,8 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Advocacy / policy analysis — not neutral. Useful as a position source, not as final authority."
+      "quality_notes": "Advocacy / policy analysis — not neutral. Useful as a position source, not as final authority.",
+      "content_hash": null
     },
     {
       "id": "s8",
@@ -366,7 +373,50 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Research institution policy brief. Core source for the rebates / revenue-recycling position."
+      "quality_notes": "Research institution policy brief. Core source for the rebates / revenue-recycling position.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c1_s5",
+      "source_id": "s5",
+      "text": "During the first few months of the program, automobile traffic declined by about 20 percent in the charge zone",
+      "locator": "Results, first bullet; ITS identifier 2007-B00333",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c1_s6",
+      "source_id": "s6",
+      "text": "Evaluations of 14 congestion pricing projects in the United States have generally shown reduced congestion, although other results are mixed",
+      "locator": "GAO-12-119, p. 15 (PDF p. 18)",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s6",
+      "source_id": "s6",
+      "text": "Potential concerns include income equity (whether low-income drivers are disproportionately affected by congestion pricing) and geographic equity",
+      "locator": "GAO-12-119, Highlights, PDF p. 1",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c5_s8",
+      "source_id": "s8",
+      "text": "Road pricing can pose a substantial burden for low-income drivers, many of whom have little option to avoid travel during peak times",
+      "locator": "Policy brief, opening section",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s6",
+      "source_id": "s6",
+      "text": "Options to address equity issues include using a portion of toll revenues to finance public transit service.",
+      "locator": "GAO-12-119, Highlights, PDF p. 1",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -377,7 +427,8 @@
       "label": "supports_claim",
       "rationale": "The London evaluation summary reports early automobile traffic decline of about 20% in the charge zone and reduced peak congestion delay.",
       "confidence": 0.8,
-      "review_status": "unreviewed"
+      "review_status": "unreviewed",
+      "source_excerpt_id": "ex_ev_c1_s5"
     },
     {
       "id": "ev_c1_s6",
@@ -386,7 +437,8 @@
       "label": "partially_supports_claim",
       "rationale": "GAO found evaluated pricing projects generally show congestion reduction, while noting mixed results and incomplete impact assessment.",
       "confidence": 0.7,
-      "review_status": "unreviewed"
+      "review_status": "unreviewed",
+      "source_excerpt_id": "ex_ev_c1_s6"
     },
     {
       "id": "ev_c2_s2",
@@ -431,7 +483,8 @@
       "label": "supports_claim",
       "rationale": "GAO explicitly identifies income equity and geographic equity concerns.",
       "confidence": 0.85,
-      "review_status": "unreviewed"
+      "review_status": "unreviewed",
+      "source_excerpt_id": "ex_ev_c4_s6"
     },
     {
       "id": "ev_c4_s8",
@@ -449,7 +502,8 @@
       "label": "supports_claim",
       "rationale": "UC ITS says road pricing can pose substantial burdens for low-income drivers with limited alternatives.",
       "confidence": 0.8,
-      "review_status": "unreviewed"
+      "review_status": "unreviewed",
+      "source_excerpt_id": "ex_ev_c5_s8"
     },
     {
       "id": "ev_c5_s6",
@@ -467,7 +521,8 @@
       "label": "supports_claim",
       "rationale": "GAO notes revenue use can help address equity issues.",
       "confidence": 0.75,
-      "review_status": "unreviewed"
+      "review_status": "unreviewed",
+      "source_excerpt_id": "ex_ev_c6_s6"
     },
     {
       "id": "ev_c6_s8",
@@ -527,18 +582,18 @@
       "id": "ev_c12_s4",
       "claim_id": "c12",
       "source_id": "s4",
-      "label": "supports_claim",
-      "rationale": "TfL publishes fixed charging hours, zone boundaries, and penalty rules, an operational design built for predictability and straightforward enforcement.",
-      "confidence": 0.7,
+      "label": "does_not_support_claim",
+      "rationale": "TfL documents current hours, boundaries, charges, exemptions, and penalties, but this operational page does not evaluate whether clearer rules cause higher compliance or fewer enforcement disputes.",
+      "confidence": 0.9,
       "review_status": "unreviewed"
     },
     {
       "id": "ev_c12_s6",
       "claim_id": "c12",
       "source_id": "s6",
-      "label": "partially_supports_claim",
-      "rationale": "GAO links the workability of road-pricing schemes to clear, well-communicated rules, while treating compliance effects as program-dependent.",
-      "confidence": 0.6,
+      "label": "does_not_support_claim",
+      "rationale": "GAO-12-119 evaluates congestion, equity, monitoring, and program performance; it does not provide the asserted causal link between rule clarity, public compliance, and fewer enforcement disputes.",
+      "confidence": 0.95,
       "review_status": "unreviewed"
     }
   ],

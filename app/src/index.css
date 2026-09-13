@@ -28,22 +28,27 @@
   --accent-2: #9a4a12;
   --accent-2-deep: #7e3c0d;
   --accent-2-on-dark: #e07a3a;
+  --accent-2-on-dark-strong: #f3a46f;
   --accent-overlap: #0a3a44;
 
   --ev-supports: #1f6b42;
+  --ev-supports-text: #104a2a;
   --ev-supports-bg: #d6e7da;
   --ev-partial: #7e5400;
+  --ev-partial-text: #5c3d00;
   --ev-partial-bg: #ede0bb;
   --ev-contradicts: #9e2b22;
+  --ev-contradicts-text: #7f211b;
   --ev-contradicts-bg: #f3ddd7;
   --ev-none: #5b6877;
   --ev-none-bg: #e3e7ec;
   --ev-unclear: #4a5a69;
+  --ev-unclear-text: #354454;
   --ev-unclear-bg: #e1e5ea;
 
-  --font-display: "Newsreader", "Source Serif 4", Georgia, serif;
-  --font-ui: "Spline Sans", "Helvetica Neue", system-ui, sans-serif;
-  --font-mono: "Spline Sans Mono", "Menlo", monospace;
+  --font-display: "Newsreader Variable", "Source Serif 4", Georgia, serif;
+  --font-ui: "Spline Sans Variable", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono Variable", "Menlo", monospace;
 
   --col: 720px;
   --shadow-card: 0 1px 0 rgba(22, 32, 43, 0.07), 0 10px 28px -18px rgba(22, 32, 43, 0.40);
@@ -172,6 +177,8 @@ h4,
 
 .sr-only {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   padding: 0;
@@ -332,6 +339,9 @@ button {
 }
 
 .locale-switch__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--ink-faint);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -360,6 +370,10 @@ button {
 }
 
 .masthead__cta {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
@@ -404,6 +418,16 @@ button {
   .masthead__sheet {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .masthead__inner {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .locale-switch__btn {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
@@ -585,7 +609,7 @@ button {
 }
 
 .poscard--active .poscard__letter {
-  color: var(--accent-2-on-dark);
+  color: var(--accent-2-on-dark-strong);
 }
 
 .poscard__title {
@@ -594,6 +618,7 @@ button {
   font-weight: 550;
   line-height: 1.15;
   letter-spacing: -0.012em;
+  color: var(--ink);
 }
 
 .poscard__summary {
@@ -603,21 +628,22 @@ button {
   flex: 1;
 }
 
-.poscard--active .poscard__summary {
-  color: color-mix(in srgb, var(--paper-raised) 72%, transparent);
-}
-
 .poscard__cta {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--oxide);
+  color: var(--oxide-deep);
   margin-top: 8px;
 }
 
 .poscard--active .poscard__cta {
-  color: var(--accent-2-on-dark);
+  color: var(--accent-2-on-dark-strong);
+}
+
+.poscard--active .poscard__title,
+.poscard--active .poscard__summary {
+  color: var(--paper-raised);
 }
 
 .chooser__note {
@@ -662,6 +688,7 @@ button {
   border-radius: 999px;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   min-width: 0;
+  min-height: 44px;
 }
 
 .switcher__pill b {
@@ -691,7 +718,7 @@ button {
 }
 
 .switcher__pill--active b {
-  color: var(--accent-2-on-dark);
+  color: var(--accent-2-on-dark-strong);
 }
 
 .switcher__pill--active span {
@@ -699,7 +726,19 @@ button {
 }
 
 @media (max-width: 640px) {
-  .switcher__pill span {
+  .switcher__pill > span:first-of-type {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .switcher__pill > span:not(:first-of-type) {
     display: none;
   }
 }
@@ -837,17 +876,17 @@ button {
 
 .dir--supports {
   background: var(--ev-supports-bg);
-  color: var(--ev-supports);
+  color: var(--ev-supports-text);
 }
 
 .dir--opposes {
   background: var(--ev-contradicts-bg);
-  color: var(--ev-contradicts);
+  color: var(--ev-contradicts-text);
 }
 
 .dir--qualifies {
   background: var(--ev-unclear-bg);
-  color: var(--ev-unclear);
+  color: var(--ev-unclear-text);
 }
 
 .arglist__summary {
@@ -1098,17 +1137,17 @@ button {
 
 .ledger__key--gain {
   background: var(--ev-supports-bg);
-  color: var(--ev-supports);
+  color: var(--ev-supports-text);
 }
 
 .ledger__key--cost {
   background: var(--ev-partial-bg);
-  color: var(--ev-partial);
+  color: var(--ev-partial-text);
 }
 
 .ledger__key--risk {
   background: var(--ev-contradicts-bg);
-  color: var(--ev-contradicts);
+  color: var(--ev-contradicts-text);
 }
 
 /* ————— disagree / values matrix ————— */
@@ -1219,24 +1258,29 @@ button {
 
 @media (max-width: 520px) {
   .matrix__row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) repeat(var(--poscols, 3), 40px);
   }
+
+  .matrix__poshead {
+    min-width: 0;
+    padding: 9px 2px;
+    font-size: 16px;
+  }
+
+  .matrix__value {
+    min-width: 0;
+    padding: 12px;
+  }
+
   .matrix__cell {
-    border-left: none;
-    justify-content: flex-start;
-    padding: 0 22px 14px;
+    min-width: 0;
+    border-left: 1px solid var(--rule);
+    justify-content: center;
+    padding: 0;
   }
-  .matrix__cell::before {
-    content: attr(data-pos);
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-right: 10px;
-  }
+
   .matrix__row--head {
-    display: none;
+    display: grid;
   }
 }
 
@@ -2506,6 +2550,10 @@ button {
   color: var(--ink-faint);
 }
 
+.poscard--community.poscard--active .poscard__letter {
+  color: var(--accent-2-on-dark-strong);
+}
+
 .claim--community {
   border-style: dashed;
 }
@@ -2739,6 +2787,13 @@ select.field__input {
   gap: 8px;
 }
 
+.field--choice {
+  min-width: 0;
+  margin-inline: 0;
+  padding: 0;
+  border: 0;
+}
+
 @media (max-width: 480px) {
   .typegrid {
     grid-template-columns: 1fr;
@@ -2746,6 +2801,7 @@ select.field__input {
 }
 
 .typecard {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -2753,7 +2809,23 @@ select.field__input {
   border-radius: 6px;
   background: var(--paper-raised);
   padding: 12px 14px;
+  cursor: pointer;
   transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.choice-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.typecard:focus-within,
+.labelpick__item:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--oxide) 48%, transparent);
+  outline-offset: 3px;
 }
 
 .typecard:hover {
@@ -2790,6 +2862,9 @@ select.field__input {
 }
 
 .labelpick__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   opacity: 0.55;
   border: 1px solid transparent;
   transition: opacity 0.15s, transform 0.15s, border-color 0.15s;

@@ -93,6 +93,7 @@ const retrievalStatuses: Record<RetrievalStatus, string> = {
   found: "found",
   missing: "missing",
   blocked: "blocked",
+  failed: "retrieval failed",
   partial: "partial",
 };
 
@@ -197,7 +198,7 @@ export const en = {
       noSourceYet: "no source yet",
       unreviewedStamp: "Unreviewed",
       openSource: "Open source",
-      nonProfit: "Non-profit",
+      nonProfit: "Public-interest project",
       auditable: "Auditable",
     },
     claimTypes: {
@@ -242,7 +243,7 @@ export const en = {
       "Parallax maps serious disagreement: every view at its strongest, every claim tied to its sources, every value named. Enough to build a grounded view — and to understand why reasonable people diverge: sometimes the same values weighed differently, sometimes different ones. No winner crowned.",
     ogTitle: "Parallax — Understand every view. Including your own.",
     ogDescription:
-      "A non-profit, open-source atlas of disagreement. Facts, then the strongest case, then the values underneath. No winners declared. Ever.",
+      "An open-source atlas of disagreement built with a public-interest purpose. Facts, then the strongest case, then the values underneath. No winners declared.",
     descriptionDebates:
       "Browse every debate on Parallax — each laid out flat: positions at their strongest, evidence, and the values underneath.",
     descriptionMethod:
@@ -267,7 +268,11 @@ export const en = {
       "Every side steel-manned",
       "Every label auditable",
     ],
-    projectItems: ["Open source", "Non-profit", "Milestone 1-3 prototype"],
+    projectItems: [
+      "Open source",
+      "Public-interest purpose",
+      "Milestone 1-3 prototype",
+    ],
     legal: {
       instrument: "parallax — an instrument for public reasoning",
       seed: "seed debates use public sources · structure unreviewed",
@@ -405,11 +410,11 @@ export const en = {
       titleLine: "A compass for humans.",
       titleEm: "A corpus for AI.",
       lede:
-        "The same engine serves both: a living base of verified, sourced reflection where humans and AI learn to think better — together.",
-      buildStep: "AI helps build it",
+        "Today Parallax is a living collection of sourced, unreviewed debate maps. The longer-term aim is a contestable, reviewable corpus for people and AI systems.",
+      buildStep: "The planned AI contract",
       buildTitle: "AI proposes. Humans decide.",
       buildBody:
-        "AI can extract claims, write a position at its strongest, or label how a source aligns. But every AI contribution is flagged, must carry a source, and is confirmed by a human before it enters the record. The AI proposes structure; it never publishes a verdict.",
+        "AI is planned to propose claims, steelmans, and source-alignment labels, with every output kept unreviewed until a human decision. Today's prototype uses hand-built fixtures and deterministic mock analysis.",
       alignStep: "It helps align AI",
       alignTitle: "A corpus to align AI.",
       alignBody:
@@ -457,12 +462,12 @@ export const en = {
           body: "All prompts, algorithms, and moderation logic are built to be public and inspectable.",
         },
         {
-          title: "Non-profit",
-          body: "Designed as a non-profit: no engagement metrics to juice, no side to favor.",
+          title: "Public-interest purpose",
+          body: "Parallax is currently an open-source project, not a registered non-profit. Its target is independent public-interest governance without engagement incentives or a favored camp.",
         },
         {
           title: "Auditable",
-          body: "Every review decision is on the record; when the AI pipeline ships, every AI step is logged the same way. Neutrality is audited, not proclaimed — an external auditor is a deliverable, not a badge.",
+          body: "Every review decision is designed to stay on the record; when a live AI pipeline ships, every AI step must be logged the same way. Neutrality must be audited, not proclaimed — an external audit remains a deliverable, not a badge.",
         },
       ],
     },
@@ -471,8 +476,8 @@ export const en = {
       headline: "See a label you'd dispute?",
       headlineEm: "Touch it.",
       body:
-        "Parallax isn't read-only. Contest a source label, add a better source, or write the missing position — no account needed. Your draft never edits the page directly: it waits for review, with a written rationale, on the record.",
-      cta: "Open a live debate →",
+        "You can explore and test contributions in the local demo without an account. A connected backend requires sign-in for shared drafts; either way, a draft never edits a published page directly.",
+      cta: "Open a debate demo →",
     },
     whyNow: {
       eyebrow: "Why now",
@@ -480,8 +485,8 @@ export const en = {
       headlineEm: "finally buildable.",
       items: [
         {
-          title: "The validation method is proven.",
-          body: "Judgments confirmed only when they earn agreement across camps — not by majority — now work at scale. Community Notes showed it.",
+          title: "Cross-group agreement is a promising design reference.",
+          body: "Community Notes shows that cross-group scoring can work at platform scale. Parallax currently has an experimental two-camp gate; its thresholds, sampling, and anti-coordination safeguards still need validation.",
         },
         {
           title: "The build cost collapsed.",
@@ -504,7 +509,7 @@ export const en = {
       cards: [
         {
           title: "Mission lock",
-          body: "Parallax is being set up as a French association loi 1901 to hold the mission, the corpus, and the governance, with any commercial work in a legally separate subsidiary — so the red lines can't be quietly sold off.",
+          body: "No legal entity or association exists today. The target is an independent public-interest structure that holds the mission, corpus, and governance, with any commercial work legally separated.",
         },
         {
           title: "Open corpus",
@@ -512,7 +517,7 @@ export const en = {
         },
         {
           title: "No attention economy",
-          body: "No engagement metrics to optimize, no side to favor. Individual data — your quiz, your profile, your perception shift — is never sold; today it never leaves your browser.",
+          body: "The local demo keeps quiz, profile, and perception-shift data in the browser. Any backend data handling must be governed by a published privacy policy before public launch.",
         },
       ],
       fundingLine:
@@ -546,6 +551,14 @@ export const en = {
     emptyTitle: "No debate matches that search.",
     emptyBody: "Try a broader term, or clear the filters to see every dossier.",
     emptyClear: "Clear filters",
+    resultsCount: (n: number) => `${n} debate dossier${n === 1 ? "" : "s"} found.`,
+    dataLoading: "Updating the public library…",
+    dataLive:
+      "Live public records are connected. Built-in seed dossiers may still appear alongside them.",
+    dataFallback:
+      "The live library is unavailable. Showing the built-in demo dossiers, with their review status intact.",
+    dataLanguageDemo: "This language currently uses the built-in demo dossiers.",
+    dataDemo: "Built-in demo dossiers are active; no live library is configured.",
     noteStart: "Seed packets were assembled by hand from public sources and are marked",
     noteStrong: "unreviewed",
     noteEnd: "until independently checked. That status is part of the product, not a disclaimer.",
@@ -557,29 +570,39 @@ export const en = {
       `${n} claim${n === 1 ? "" : "s"} holding up`,
     shapeContested: (n: number) =>
       `${n} claim${n === 1 ? "" : "s"} contested`,
+    shapeProvisional: (n: number) =>
+      `${n} provisional claim${n === 1 ? "" : "s"} awaiting review`,
     shapeValues: (n: number) =>
       `${n} claim${n === 1 ? "" : "s"} down to values`,
   },
   atlas: {
     spineAria: "Epistemic shape of this debate",
-    spineSummary: (established: number, contested: number, values: number) =>
-      `${established} settled, ${contested} contested, ${values} down to values`,
+    spineSummary: (
+      established: number,
+      contested: number,
+      provisional: number,
+      values: number,
+    ) =>
+      `${established} established, ${contested} contested, ${provisional} provisional, ${values} values-dependent`,
     revisedPrefix: "Revised",
     claimsCounted: (n: number) => `${n} claim${n === 1 ? "" : "s"} on the books`,
     viewAria: "Order the library",
     temperaments: {
       settled: "Mostly settled",
       contested: "Contested",
+      provisional: "Awaiting review",
       values: "Values-dependent",
-    } as Record<"settled" | "contested" | "values", string>,
+    } as Record<"settled" | "contested" | "provisional" | "values", string>,
     legend: {
-      established: (n: number) => `${n} settled`,
+      established: (n: number) => `${n} established`,
       contested: (n: number) => `${n} contested`,
+      provisional: (n: number) => `${n} provisional`,
       values: (n: number) => `${n} down to values`,
     },
     views: {
       all: "All dossiers",
       contested: "Most contested",
+      provisional: "Most awaiting review",
       values: "Values-dependent",
       recent: "Recently revised",
     },
@@ -592,7 +615,7 @@ export const en = {
       links: (_n: number) => "source-to-claim labels",
       questions: (_n: number) => "questions opened",
       settledNote:
-        "Settled means evidence-backed, not a verdict — positions still disagree on what to DO with these facts.",
+        "These are review states, not truth scores: established requires an approved claim evaluation; provisional means independent review is still pending.",
     },
   },
   debatePage: {
@@ -717,6 +740,9 @@ export const en = {
     positionTitle: "Position title",
     positionTitlePlaceholder: "e.g. \"Yes, but only city-by-city referendum\"",
     sourceUrl: "Source URL",
+    sourceUrlHint:
+      "Public http(s) URL, up to 2,048 characters; no embedded credentials, sensitive query keys, or custom port.",
+    sourceUrlInvalid: "Enter a valid public source URL matching those limits.",
     optional: "(optional)",
     textareaPlaceholder: "Write it the way a careful reviewer would want to read it...",
     submit: "Submit for review",
@@ -745,7 +771,7 @@ export const en = {
       eyebrow: "From start to finish",
       title: "The life of a topic.",
       intro:
-        "A question comes in, gets taken apart, and never stops being inspectable — the same machine runs at every scale.",
+        "This is the target lifecycle: a question is decomposed without losing its sources, scope, review state, or audit trail. Today's prototype demonstrates only part of that loop.",
       steps: [
         {
           n: "1",
@@ -766,28 +792,28 @@ export const en = {
           key: "evidence",
           title: "Claims meet their sources",
           body:
-            "Each position rests on claims; each claim is tied to its sources with a precise alignment label. Sources are vetted — AI first, then people — and join a reusable library.",
+            "Each position rests on claims. In today's prototype, truth-apt claims can link to hand-labeled, unreviewed source cards; AI-assisted review and a reusable, versioned source library remain target behavior.",
         },
         {
           n: "4",
           key: "recurse",
           title: "Contested points fork off",
           body:
-            "A claim contested enough becomes its own scoped question — a sub-debate — and the cycle starts over. A big topic is an atlas of sub-debates, not a page.",
+            "In the target system, a sufficiently contested claim can become its own scoped question and preserve its links back to the parent debate. Today's prototype does not yet create sub-debates.",
         },
         {
           n: "5",
           key: "state",
-          title: "Everything sorts into three",
+          title: "Every claim shows its review state",
           body:
-            "At every level: established (survived scrutiny), contested (and exactly where it blocks), or values-dependent (a legitimate choice of priorities).",
+            "Established means an approved evaluation; contested means a reviewed challenge; provisional means independent review is still pending; values-dependent names a legitimate choice of priorities.",
         },
         {
           n: "6",
           key: "review",
           title: "Nothing changes silently",
           body:
-            "Sensitive judgments ship only when reviewers from opposing camps converge. Every step is on the record, and everything stays contestable.",
+            "The production target requires opposing-camp agreement for sensitive judgments and a traceable audit trail. Today's default prototype uses a local single-reviewer demo; the two-camp backend gate is experimental.",
         },
       ],
       recursionNote:
@@ -819,14 +845,14 @@ export const en = {
       "There is deliberately no \"verified true\". Truth usually needs synthesis across many sources and domain expertise. Claim-source alignment is narrower — and auditable. The label tells you what the source says about the claim; the verdict stays yours.",
     sources: {
       eyebrow: "Trusting the sources",
-      title: "Verified without an arbiter.",
+      title: "Source use, without a global reliability stamp.",
       lede:
         "The hardest question in any debate is whose sources to trust. Parallax never answers it for you by stamping a source \"reliable\" — the moment a platform plays referee, half its readers walk away. So we move the question, and show our work.",
       points: [
         {
           title: "Trust the claim, not the brand.",
           body:
-            "A source is never \"reliable\" in the abstract — only usable, or not, for a specific claim, in a specific field, over a specific period. We trace every citation back to its primary source and check it actually says what it is quoted as saying.",
+            "A source is never \"reliable\" in the abstract — only usable, or not, for a scoped claim. The target is to trace each citation to an exact source version and show the relationship; today's fixture coverage is partial and unreviewed.",
         },
         {
           title: "Two questions, kept apart.",
@@ -836,37 +862,37 @@ export const en = {
         {
           title: "Agreement across camps, not a majority.",
           body:
-            "A judgment about a source only stands when reviewers who usually disagree both accept it. A brigade can't push it through; a single camp can't veto it — the mechanism behind X's Community Notes.",
+            "The target requires agreement across reviewers from differing positions rather than a simple majority. The current two-camp gate is experimental; representative sampling and resistance to coordination have not been demonstrated.",
         },
         {
           title: "Nothing is deleted.",
           body:
-            "A weak source is flagged with its exact defect and pushed down — never erased. It stays on the record, with its reason, open to challenge.",
+            "The target keeps a challenged source visible with its exact defect and rationale rather than erasing the record. This full versioned source history is not implemented yet.",
         },
       ],
-      flowTitle: "How a source gets vetted",
+      flowTitle: "Target workflow for source review",
       flow: [
         {
           step: "01",
-          title: "An LLM checks first",
+          title: "An assistant prepares the checks",
           body:
-            "When a source comes in, the assistant traces it to its primary source, verifies the quote actually says what's claimed, and flags retractions or conflicts of interest — then drafts a neutral source card.",
+            "In the target workflow, an assistant would retrieve a source, propose citation and integrity checks, and draft a source card for human review. Today's analysis path produces deterministic mock artifacts.",
         },
         {
           step: "02",
-          title: "Then people analyze it",
+          title: "People make the review decision",
           body:
-            "Readers from different camps weigh its integrity and leave structured notes. Agreement across camps — not a show of hands — is what lets a verdict stand.",
+            "The target is structured review by people from differing positions. No production reviewer pool, sampling method, or coverage threshold is implemented yet.",
         },
         {
           step: "03",
-          title: "And it joins the library",
+          title: "A reviewed version can join the library",
           body:
-            "A source vetted by many becomes a reusable entry. Later debates cite it without re-litigating it, and the assistant can suggest already-verified sources as you build your case.",
+            "After sufficient scoped review, the target is a reusable, versioned source entry whose evidence, limits, and freshness remain visible. No reviewed source library exists in today's prototype.",
         },
       ],
       libraryLine:
-        "Verify a source once; reuse it everywhere. The longer Parallax runs, the stronger this commons of vetted evidence becomes — analyzed by thousands, owned by no one.",
+        "Review one source version for one scoped use; the target is to reuse it without losing scope, freshness, or limitations. This reusable library is not implemented yet.",
       keyline:
         "We can promise a fair process — never a comfortable conclusion. You do the trusting; Parallax does the disclosure.",
     },
@@ -888,9 +914,9 @@ export const en = {
       "publishes contentious changes without review",
     ],
     aiSourceRule:
-      "AI can take part too — but anything it adds is flagged \"AI-proposed\", verified before it counts, and must cite a source. In fact no argument enters without one, whether it comes from a person or a machine.",
+      "Target contract: AI outputs remain labeled \"AI-proposed, unreviewed\" until human review, with source provenance attached to every truth-apt claim.",
     note:
-      "In this prototype the seed structure was assembled by hand; the AI pipeline arrives in Milestone 4 and will be held to the same contract.",
+      "In this prototype, the seed structure was assembled by hand and remains unreviewed. The available analysis path is deterministic mock output, not a live AI review pipeline.",
     cta: "Read a debate with this lens",
   },
   review: {
@@ -941,25 +967,47 @@ export const en = {
     classroomsBody: "One debate, the values quiz, the steelman test: a full civics session where the homework is to state the other side fairly. Teacher packs arrive with the pilot program.",
     classroomsCta: "Ask about the pilot",
     proposeTitle: "Propose a topic",
-    proposeLede: "Good candidates are public-policy questions whose evidence is publicly inspectable. Drafts stay on your device until topic creation opens (Milestone 6).",
+    proposeLede:
+      "Your draft, sources, and optional email stay only in this browser. Nothing is submitted and no email is sent yet.",
+    proposeBackendLede:
+      "This creates a backend seed packet and a mock draft for review. No email address is collected or sent from this form.",
+    proposeBackendReady: "Backend mode: ready to create a seed packet and mock draft.",
+    proposeBackendSignIn: "Backend mode: sign in on You before creating a seed packet.",
+    proposeAuthRequired: "Sign in on the You page before creating a backend seed packet.",
     proposeQuestion: "The debate question",
     proposeQuestionPh: "Should …?",
     proposeWhy: "Why it matters now",
     proposeWhyPh: "What makes this debate worth mapping…",
     proposeSources: "Two public sources to start from",
+    proposeSourceOne: "First public source URL",
+    proposeSourceTwo: "Second public source URL",
+    proposeSourceInvalid:
+      "Enter a full public http(s) URL without embedded credentials or a custom port.",
+    proposeSourceNote: "Provided from the topic proposal form.",
+    proposeSeedPosition: "This topic should be mapped in Parallax.",
     proposeEmail: "Email",
     proposeEmailPh: "you@example.org",
-    proposeEmailHint: "Optional — only used to tell you when your topic goes live.",
+    proposeEmailHint:
+      "Optional local note — stored only with this browser draft. No email will be sent.",
     proposeSubmit: "Save my proposal",
-    proposeSavedToast: "Proposal saved on this device — topic creation opens with Milestone 6",
+    proposeSaving: "Saving…",
+    proposeCreating: "Creating…",
+    proposeBackendAction: "Create seed packet",
+    proposeSavedToast: "Proposal saved on this device",
+    proposeBackendSavedToast: "Seed packet and mock draft created in the backend",
     proposeSavedTitle: "Saved, on your device.",
-    proposeSavedBody: "When general topic creation opens, your draft will be right here, ready to submit through the same review pipeline as everything else.",
+    proposeBackendSavedTitle: "Seed packet created.",
+    proposeSavedBody:
+      "This draft remains in this browser. If you entered an email, it is stored only with the draft; no message was sent.",
+    proposeBackendSavedBody:
+      "The seed packet and its mock draft are now in the backend review flow. No email address was collected or sent.",
+    proposeGenericError: "Could not create the seed packet.",
     nameOrigin: "A parallax is how astronomers measure the distance to stars: the same object, sighted from two viewpoints, reveals a truth no single viewpoint can reach.",
     libraryEyebrow: "The library",
     libraryTitle: "What the debate establishes,",
     libraryTitleEm: "the library keeps.",
     libThesis: "Disagreement isn't the obstacle to truth — it's how truth is made. A claim that survives the strongest objection its opponents can bring is worth more than one a neutral checker stamped.",
-    libraryLede: "Every claim is built to end in one of three states — and all three are progress.",
+    libraryLede: "Every claim starts provisional and is designed to reach one of three reviewed outcomes — all three are progress.",
     libEstablished: "Established",
     libEstablishedDesc: "The state a claim earns when it survives cross-camp review against the best counter-evidence anyone brings. Dated, revisable — never \"final\". (Today every seed claim is still unreviewed — the bar is the point.)",
     libContested: "Contested",
@@ -971,24 +1019,24 @@ export const en = {
     stateEstablished: (n: number) => `${n} holding up`,
     stateContested: (n: number) => `${n} contested`,
     stateValues: (n: number) => `${n} values-dependent`,
-    stateNote: "Derived from claim-source alignment. Cross-camp review will refine these states.",
+    stateNote: "Derived from review status and auditable claim evaluations. A source-alignment label alone never establishes a claim.",
     dedupTitle: "Similar claims already on the map",
-    dedupHint: "Parallax merges duplicates instead of multiplying them. If your point is below, add a source or a distinction to it instead.",
+    dedupHint: "The prototype can suggest lexically similar claims; it does not yet perform semantic deduplication. If your point is below, add a source or distinction to it instead.",
     dedupUseIt: "This is my point",
     bridgeNote: "Production rule: a decision ships only when reviewers from opposing camps agree (bridging consensus). This prototype runs single-reviewer mode.",
-    stewardTitle: "Steward eligibility",
-    stewardHint: (done: number, total: number) => `Pass the steelman test on every position to earn moderation rights. ${done}/${total} earned.`,
-    stewardEligible: "Eligible — you have proven you can state every side fairly.",
+    stewardTitle: "Steward exercise",
+    stewardHint: (done: number, total: number) => `Local steelman badges: ${done}/${total}. A future governance model may use this as one eligibility signal; it grants no moderation rights today.`,
+    stewardEligible: "Exercise complete — recorded as a local badge, not a moderation role.",
     engineTitle: "How a topic advances",
     engineLede: "The engine behind every page — designed for objectivity at scale, against spam, and for completeness.",
     engineItems: [
-      { title: "A contribution is a diff, not a post", body: "Every submission is matched against the existing map first. Duplicates are merged, never multiplied — repetition and spam die at the gate, without censorship." },
-      { title: "Bridging consensus, not majority", body: "Labels and steelmans are validated when reviewers from opposing camps agree — the mechanism behind Community Notes. Majorities can brigade; bridges cannot." },
-      { title: "Moderation is earned by understanding", body: "To become a steward of a debate, pass the steelman test on every one of its positions. You may only moderate what you can state fairly." },
-      { title: "Big topics fractalize", body: "A vast question becomes an atlas of sub-questions sharing one global claim library — a claim is verified once, cited everywhere." },
-      { title: "AI does the mass work, humans judge", body: "Dedup, extraction, retrieval, first-pass labels: AI, fully audited. Validation, fairness, arbitration: humans, by bridging." },
+      { title: "A contribution is a diff, not a post", body: "Today's form can suggest similar fixture claims. Semantic deduplication and graph-level merges remain target behavior." },
+      { title: "Bridging consensus, not majority", body: "Parallax is designed to use cross-camp agreement rather than a simple majority. The default prototype uses a single reviewer; the backend's two-camp gate is experimental." },
+      { title: "Understanding before stewardship", body: "The local steelman exercise records a browser-only badge. Steward eligibility and moderation rights remain target governance behavior." },
+      { title: "Big topics can become an atlas", body: "The target is a graph of scoped sub-questions and reusable, versioned claim evaluations. Today's prototype has separate fixture debates; no global claim library exists." },
+      { title: "AI prepares; humans decide", body: "The planned AI pipeline would handle deduplication, extraction, retrieval, and first-pass labels with logged, reviewable outputs. Today's analysis path is deterministic mock data; human bridging is experimental." },
     ],
-    searchPh: "Search the debates…",
+    searchPh: "Search questions, arguments, claims, or sources…",
     allThemes: "All",
     revHistory: "history",
     revSeed: "seed structure published from the research packet",
@@ -1080,7 +1128,7 @@ export const en = {
       titleLine: "What you value.",
       titleEm: "Who you understand.",
       lede:
-        "Your quiz results, steelman badges, and perception shifts — all stored in this browser only. No account, no tracking, no server. Clearing your browser data clears this page.",
+        "Your quiz results, steelman badges, and perception shifts stay in this browser only. They are not synced to your account or the backend; clearing this browser's data clears this page.",
       emptyTitle: "Nothing here yet.",
       emptyBody:
         "Open a debate, take the one-minute values quiz, and try a steelman test. Your map builds itself.",
@@ -1119,7 +1167,7 @@ export const en = {
       you: "Your profile — values, badges",
       hintPage: "page",
       hintDebate: "debate",
-      placeholder: "Jump to a page or a debate…",
+      placeholder: "Search pages, debates, claims, or sources…",
       empty: "Nothing matches.",
     },
     debate: {
@@ -1163,11 +1211,15 @@ export const en = {
     shiftEmpty: "Not enough readers have gone in-and-out yet to show the shift.",
     change: "Change my answer",
     privacy:
-      "Only the anonymous total is ever stored. Your own pick stays in this browser and is never sold.",
+      "Signed-in backend mode stores a private ballot linked to your account so you can revise it. It is not exposed publicly; only coarse, k-anonymized aggregate bands are public.",
+    privacyLocal:
+      "Local demo: this pick stays in this browser and is not sent to a server.",
     demoNote:
       "Demo distribution — not live data. Live aggregates appear once the signal has readers.",
     signedOutNote:
-      "Sign in to register your position (keeps the count honest, never tied to you).",
+      "Sign in to store or revise a private ballot. Public readers see only coarse, k-anonymized aggregate bands.",
+    syncFailure:
+      "Your position was not recorded. Sign in if needed, then try again.",
   },
   claimEval: {
     stateLabel: {
@@ -1177,6 +1229,11 @@ export const en = {
     },
     byReview: (date: string) => `reviewed ${date}`,
     setState: "Record the state:",
+    establishedBridgeOnly:
+      "Established is calculated only after reviewers from opposing camps agree; it is never assigned manually.",
+    rationaleLabel: "Decision rationale",
+    rationaleHint:
+      "Explain why this claim should be marked contested or values-dependent (at least 8 characters).",
     savedToast: "Claim evaluation recorded — on the library record",
     failedToast: "Could not record — reviewer role required",
     bridge: {
@@ -1318,7 +1375,7 @@ export const en = {
     notTruth:
       "This is a rules check on integrity, not a verdict on truth. v1 guarantees identical mechanical rules for every source — the controversy and high-bar-domain scope come from cross-camp signals, not one reviewer’s say-so. A source is never “reliable” in the abstract; the floor is always scoped to a use.",
     libraryReuse:
-      "An assessment travels with the source, not the debate — assess a source once, and the floor re-scopes itself wherever that source is cited.",
+      "In the experimental backend, a URL-level source assessment can be reused across citations and re-scoped by rules. Versioned artifact reuse and freshness checks remain target behavior.",
     assess: {
       title: "Assess this source (integrity floor)",
       hint: "Declare the source’s mechanical attributes and any external proof. The verdict is computed by the rules, per claim — you don’t set it.",

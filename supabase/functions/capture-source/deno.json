@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.108.1"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.ns", "dom", "dom.iterable", "esnext"]
+  },
+  "tasks": {
+    "fmt": "deno fmt --check .",
+    "lint": "deno lint .",
+    "check": "deno check --frozen index.ts tests/config.test.ts tests/core.test.ts tests/source-capture.test.ts",
+    "test": "deno test --frozen --allow-read=../../config.toml tests"
+  }
+}

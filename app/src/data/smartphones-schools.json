@@ -206,7 +206,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Flagship UN report with a broad evidence synthesis; it openly advocates limiting smartphone use in schools, so its framing leans pro-restriction. Strong for international policy context; many of the studies it cites are correlational."
+      "quality_notes": "Flagship UN report with a broad evidence synthesis; it openly advocates limiting smartphone use in schools, so its framing leans pro-restriction. Strong for international policy context; many of the studies it cites are correlational.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -216,7 +217,8 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Widely cited quasi-experimental study (difference-in-differences across 91 English schools) by Beland and Murphy. Strong design for test-score effects, but the data predate 2013 and may not transfer to today's phones and apps."
+      "quality_notes": "Widely cited quasi-experimental study (difference-in-differences across 91 English schools) by Beland and Murphy. Strong design for test-score effects, but the data predate 2013 and may not transfer to today's phones and apps.",
+      "content_hash": null
     },
     {
       "id": "s3",
@@ -225,8 +227,9 @@
       "publisher": "UK Department for Education",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-04-28",
-      "quality_notes": "Official government guidance recommending phone-free school days. Good for what a major education ministry recommends and why; it is a policy position, not an impact evaluation."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Official statutory guidance updated 29 June 2026. Good for what the UK Department for Education requires and why; it is a primary policy source, not an impact evaluation.",
+      "content_hash": null
     },
     {
       "id": "s4",
@@ -236,17 +239,19 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Peer-reviewed University of Birmingham study of around 1,200 students in 30 English schools, the most direct comparison of restrictive and permissive policies to date. Cross-sectional design cannot establish causation, and it compares existing policies rather than evaluating a newly introduced ban."
+      "quality_notes": "Peer-reviewed University of Birmingham study of around 1,200 students in 30 English schools, the most direct comparison of restrictive and permissive policies to date. Cross-sectional design cannot establish causation, and it compares existing policies rather than evaluating a newly introduced ban.",
+      "content_hash": null
     },
     {
       "id": "s5",
-      "url": "https://www.commonsensemedia.org/research/constant-companion-a-week-in-the-life-of-a-young-persons-smartphone-use",
+      "url": "https://www.commonsensemedia.org/sites/default/files/research/report/2023-cs-smartphone-research-report_final-for-web.pdf",
       "title": "Constant Companion: A Week in the Life of a Young Person's Smartphone Use",
       "publisher": "Common Sense Media",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-04-28",
-      "quality_notes": "Nonprofit research using passive tracking of about 200 US 11- to 17-year-olds (Android only). Unusually direct usage data, including school-day use, but the sample is small and nonrepresentative, and the organization advocates for children's media health."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Versioned primary report using passive tracking of about 200 US 11- to 17-year-olds (Android only). Unusually direct usage data, including school-day use, but the sample is small and nonrepresentative, and the organization advocates for children's media health.",
+      "content_hash": "sha256:ba827858732c6baf782ebb5fd6ba30749143750990597fee022222b6af97adc6"
     },
     {
       "id": "s6",
@@ -256,7 +261,50 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Official Dutch government news item (in Dutch) on the education ministry's survey of nearly 600 secondary schools after the national classroom phone ban; staff report students are more focused and more social. Useful for reported effects at national scale, but it is based on staff perceptions and is the government reporting on its own policy."
+      "quality_notes": "Official Dutch government news item (in Dutch) on the education ministry's survey of nearly 600 secondary schools after the national classroom phone ban; staff report students are more focused and more social. Useful for reported effects at national scale, but it is based on staff perceptions and is the government reporting on its own policy.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c1_s5",
+      "source_id": "s5",
+      "text": "97% of participants used their phones, for a median of 43 minutes",
+      "locator": "Constant Companion, p. 5 (PDF p. 11), Key Finding 2",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c3_s4",
+      "source_id": "s4",
+      "text": "There is no evidence that restrictive school policies are associated with overall phone and social media use or better mental wellbeing in adolescents.",
+      "locator": "Abstract, Interpretation; PMID 40213498",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s4",
+      "source_id": "s4",
+      "text": "there was no evidence for differences when comparing usage time on weekdays or weekends",
+      "locator": "Abstract, Findings; PMID 40213498",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c5_s5",
+      "source_id": "s5",
+      "text": "policies about phone use in schools vary—sometimes even from classroom to classroom—and aren't always enforced",
+      "locator": "Constant Companion, executive summary, PDF p. 4",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s3",
+      "source_id": "s3",
+      "text": "All staff should consistently enforce the school's policy on the use of mobile phones.",
+      "locator": "Mobile phones in schools, section 'The role of staff'",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -273,6 +321,7 @@
       "id": "ev_c1_s5",
       "claim_id": "c1",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c1_s5",
       "label": "supports_claim",
       "rationale": "Tracking data showed participants received roughly a quarter of their daily notifications during school hours and used phones a median of 43 minutes during the school day, documenting the volume of interruption rather than measuring attention loss directly.",
       "confidence": 0.7,
@@ -300,6 +349,7 @@
       "id": "ev_c3_s4",
       "claim_id": "c3",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c3_s4",
       "label": "contradicts_claim",
       "rationale": "The SMART Schools study found no significant difference in mental wellbeing, anxiety, or depression between students at schools with restrictive phone policies and those at permissive ones.",
       "confidence": 0.8,
@@ -318,6 +368,7 @@
       "id": "ev_c4_s4",
       "claim_id": "c4",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c4_s4",
       "label": "supports_claim",
       "rationale": "Restrictive school policies were not associated with lower overall phone or social media time among adolescents; higher overall time, wherever it occurred, was what tracked worse wellbeing, sleep, and attainment.",
       "confidence": 0.8,
@@ -327,6 +378,7 @@
       "id": "ev_c5_s5",
       "claim_id": "c5",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c5_s5",
       "label": "supports_claim",
       "rationale": "Nearly all tracked participants used their phones during school hours, with a median of 43 minutes per school day, and the report notes that school rules vary classroom to classroom and are not consistently enforced.",
       "confidence": 0.7,
@@ -345,6 +397,7 @@
       "id": "ev_c6_s3",
       "claim_id": "c6",
       "source_id": "s3",
+      "source_excerpt_id": "ex_ev_c6_s3",
       "label": "partially_supports_claim",
       "rationale": "The DfE guidance asserts that consistent whole-school approaches are the most effective way to manage phones, but as policy guidance it relies on examples rather than systematic evaluation.",
       "confidence": 0.6,

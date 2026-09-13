@@ -1,369 +1,410 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import {
+  createClient,
+  type SupabaseClient as SupabaseClientType,
+} from "@supabase/supabase-js";
+import {
+  aiFailureCodeFor,
+  createDeadlineFetch,
+  type DnsResolver,
+  HttpError,
+  isSafeObjectId,
+  LIMITS,
+  parseAiJobClaim,
+  parseAllowedOrigins,
+  parseAnalyzeRequest,
+  parseSourceInputs,
+  readBoundedJson,
+  withTimeout,
+} from "./core.ts";
+import { fetchProvidedSource } from "./source-fetch.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+type Database = {
+  public: {
+    Tables: {
+      seed_packets: {
+        Row: {
+          id: string;
+          source_inputs: unknown;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+    };
+    Views: Record<string, never>;
+    Functions: {
+      claim_ai_job: {
+        Args: {
+          p_seed_packet_id: string;
+          p_actor_id: string;
+          p_claim_token: string;
+          p_lease_seconds: number;
+        };
+        Returns: unknown;
+      };
+      complete_mock_ai_job: {
+        Args: {
+          p_seed_packet_id: string;
+          p_actor_id: string;
+          p_claim_token: string;
+          p_retrievals: unknown;
+          p_provider: "mock";
+        };
+        Returns: string;
+      };
+      record_ai_job_failure: {
+        Args: {
+          p_seed_packet_id: string;
+          p_actor_id: string;
+          p_claim_token: string;
+          p_error_code:
+            | "openrouter_unavailable"
+            | "source_retrieval_failed"
+            | "analysis_failed"
+            | "invalid_analysis_result"
+            | "timeout"
+            | "interrupted"
+            | "unknown";
+        };
+        Returns: {
+          ok: boolean;
+          status: "failed";
+          error_code: string;
+          already_recorded: boolean;
+        };
+      };
+    };
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
+  };
+};
+
+const baseCorsHeaders = {
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-retry-count",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Max-Age": "600",
 };
 
-type SourceInput = {
-  url?: string;
-  note?: string;
-};
+let allowedOrigins: Set<string> | undefined;
 
-type Retrieval = {
-  url: string;
-  status: "found" | "missing" | "blocked" | "failed" | "partial";
-  title: string;
-  publisher: string;
-  excerpt: string;
-  note: string;
-  locator: string;
-  hash: string;
-};
+function configuredOrigins() {
+  allowedOrigins ??= parseAllowedOrigins(
+    Deno.env.get("CORS_ALLOWED_ORIGINS") ?? "",
+    Deno.env.get("SUPABASE_URL") ?? "",
+  );
+  return allowedOrigins;
+}
 
-const FETCH_TIMEOUT_MS = 4500;
-const MAX_SOURCE_BYTES = 128_000;
+function corsHeaders(request: Request) {
+  const origins = configuredOrigins();
+  const origin = request.headers.get("origin");
+  if (!origin) return { ...baseCorsHeaders, Vary: "Origin" };
+  if (!origins.has(origin)) return null;
+  return {
+    ...baseCorsHeaders,
+    "Access-Control-Allow-Origin": origin,
+    Vary: "Origin",
+  };
+}
 
-function json(status: number, body: unknown) {
-  return new Response(JSON.stringify(body), {
+function json(
+  request: Request,
+  status: number,
+  body: Record<string, unknown>,
+  requestId: string,
+  extraHeaders: Record<string, string> = {},
+) {
+  const cors = corsHeaders(request) ?? { ...baseCorsHeaders, Vary: "Origin" };
+  return new Response(JSON.stringify({ ...body, request_id: requestId }), {
     status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
+    headers: {
+      ...cors,
+      "cache-control": "no-store",
+      "content-type": "application/json; charset=utf-8",
+      "x-content-type-options": "nosniff",
+      ...extraHeaders,
+    },
   });
 }
 
-function isPrivateIpv4(ip: string) {
-  const parts = ip.split(".").map((part) => Number(part));
-  if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part))) return false;
-  const [a, b] = parts;
-  return (
-    a === 10 ||
-    a === 127 ||
-    (a === 169 && b === 254) ||
-    (a === 172 && b >= 16 && b <= 31) ||
-    (a === 192 && b === 168) ||
-    a === 0
-  );
+function bearerToken(request: Request) {
+  const authHeader = request.headers.get("authorization") ?? "";
+  return authHeader.match(/^Bearer\s+([^\s]+)$/i)?.[1] ?? null;
 }
 
-function isBlockedHost(hostname: string) {
-  const host = hostname.toLowerCase().replace(/\.$/, "");
-  return (
-    host === "localhost" ||
-    host.endsWith(".localhost") ||
-    host.endsWith(".local") ||
-    host === "metadata.google.internal" ||
-    host === "169.254.169.254" ||
-    host === "::1" ||
-    host.startsWith("[::1]") ||
-    isPrivateIpv4(host)
-  );
-}
-
-async function hashText(text: string) {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(text),
-  );
-  return Array.from(new Uint8Array(digest))
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-function extractTitle(text: string, fallback: string) {
-  const match = text.match(/<title[^>]*>([^<]{1,160})<\/title>/i);
-  return (match?.[1] ?? fallback).replace(/\s+/g, " ").trim().slice(0, 160);
-}
-
-function textExcerpt(text: string) {
-  return text
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 900);
-}
-
-async function rejectPrivateDns(hostname: string) {
-  if (isBlockedHost(hostname)) return true;
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(hostname)) return isPrivateIpv4(hostname);
+const resolveDns: DnsResolver = async (hostname, recordType) => {
   try {
-    const records = await Deno.resolveDns(hostname, "A");
-    return records.some(isPrivateIpv4);
+    return await withTimeout(
+      Deno.resolveDns(hostname, recordType),
+      LIMITS.dnsTimeoutMs,
+      new HttpError(504, "dns_timeout"),
+    );
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) return [];
+    throw error;
+  }
+};
+
+type SupabaseClient = SupabaseClientType<Database>;
+
+async function recordClaimFailure(
+  client: SupabaseClient,
+  seedPacketId: string,
+  actorId: string,
+  claimToken: string,
+  error: unknown,
+) {
+  try {
+    const result = await withTimeout(
+      client.rpc("record_ai_job_failure", {
+        p_seed_packet_id: seedPacketId,
+        p_actor_id: actorId,
+        p_claim_token: claimToken,
+        p_error_code: aiFailureCodeFor(error),
+      }),
+      LIMITS.databaseTimeoutMs,
+      new HttpError(504, "database_timeout"),
+    );
+    return !result.error && result.data?.ok === true &&
+      result.data.status === "failed" &&
+      typeof result.data.error_code === "string" &&
+      typeof result.data.already_recorded === "boolean";
   } catch {
-    return true;
+    // The original failure remains authoritative; this cleanup is best-effort.
+    return false;
   }
 }
 
-async function fetchProvidedSource(input: SourceInput): Promise<Retrieval> {
-  const rawUrl = (input.url ?? "").trim();
-  const note = (input.note ?? "").trim();
-  let url: URL;
+async function readPacket(client: SupabaseClient, seedPacketId: string) {
+  return await withTimeout(
+    client
+      .from("seed_packets")
+      .select("id,source_inputs")
+      .eq("id", seedPacketId)
+      .maybeSingle(),
+    LIMITS.databaseTimeoutMs,
+    new HttpError(504, "database_timeout"),
+  );
+}
+
+Deno.serve(async (request) => {
+  const requestId = crypto.randomUUID();
+  let cors: ReturnType<typeof corsHeaders>;
   try {
-    url = new URL(rawUrl);
+    cors = corsHeaders(request);
   } catch {
-    return {
-      url: rawUrl || "invalid-url",
-      status: "blocked",
-      title: "Invalid provided URL",
-      publisher: "Provided source",
-      excerpt: "",
-      note: note || "URL parsing failed before fetch.",
-      locator: "blocked-before-fetch",
-      hash: "",
-    };
+    console.error("analyze-seed CORS configuration rejected", {
+      request_id: requestId,
+    });
+    return new Response(
+      JSON.stringify({
+        error: "server_cors_misconfigured",
+        request_id: requestId,
+      }),
+      {
+        status: 500,
+        headers: {
+          ...baseCorsHeaders,
+          Vary: "Origin",
+          "cache-control": "no-store",
+          "content-type": "application/json; charset=utf-8",
+          "x-content-type-options": "nosniff",
+        },
+      },
+    );
+  }
+  if (!cors) {
+    return new Response(
+      JSON.stringify({ error: "cors_origin_denied", request_id: requestId }),
+      {
+        status: 403,
+        headers: {
+          ...baseCorsHeaders,
+          Vary: "Origin",
+          "cache-control": "no-store",
+          "content-type": "application/json; charset=utf-8",
+          "x-content-type-options": "nosniff",
+        },
+      },
+    );
+  }
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: cors });
+  }
+  if (request.method !== "POST") {
+    return json(request, 405, { error: "method_not_allowed" }, requestId);
   }
 
-  if (!["http:", "https:"].includes(url.protocol) || await rejectPrivateDns(url.hostname)) {
-    return {
-      url: url.toString(),
-      status: "blocked",
-      title: "Blocked provided URL",
-      publisher: url.hostname,
-      excerpt: "",
-      note: note || "Blocked by SSRF guard before fetch.",
-      locator: "blocked-before-fetch",
-      hash: "",
-    };
-  }
+  let adminClient: SupabaseClient | undefined;
+  let claimedSeedPacketId: string | undefined;
+  let verifiedActorId: string | undefined;
+  let activeClaimToken: string | undefined;
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const response = await fetch(url, {
-      signal: controller.signal,
-      redirect: "manual",
-      headers: {
-        "accept": "text/html,text/plain,application/xhtml+xml,application/json;q=0.8,*/*;q=0.2",
-        "user-agent": "ParallaxSourceFetcher/0.1",
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !anonKey || !serviceRoleKey) {
+      throw new HttpError(500, "server_env_missing");
+    }
+
+    const token = bearerToken(request);
+    if (!token) throw new HttpError(401, "auth_required");
+    const authorization = `Bearer ${token}`;
+    const client = createClient<Database>(supabaseUrl, anonKey, {
+      global: {
+        headers: { Authorization: authorization },
+        fetch: createDeadlineFetch(LIMITS.authTimeoutMs),
+      },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
       },
     });
+    adminClient = createClient<Database>(supabaseUrl, serviceRoleKey, {
+      global: { fetch: createDeadlineFetch(LIMITS.databaseTimeoutMs) },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    });
+    const authResult = await withTimeout(
+      client.auth.getUser(token),
+      LIMITS.authTimeoutMs,
+      new HttpError(504, "auth_timeout"),
+    );
+    const user = authResult.data.user;
+    if (authResult.error || !user) throw new HttpError(401, "auth_required");
+    verifiedActorId = user.id;
 
-    if (!response.ok) {
-      return {
-        url: url.toString(),
-        status: response.status === 404 ? "missing" : "failed",
-        title: `HTTP ${response.status}`,
-        publisher: url.hostname,
-        excerpt: "",
-        note: note || "HTTP response did not return a usable source body.",
-        locator: "http-status",
-        hash: "",
-      };
+    const body = await readBoundedJson(request);
+    const parsed = parseAnalyzeRequest(body);
+    if (parsed.provider === "openrouter") {
+      throw new HttpError(503, "live_provider_unavailable");
     }
 
-    const reader = response.body?.getReader();
-    if (!reader) {
-      return {
-        url: url.toString(),
-        status: "failed",
-        title: "Empty response",
-        publisher: url.hostname,
-        excerpt: "",
-        note: note || "The response body was empty.",
-        locator: "empty-body",
-        hash: "",
-      };
+    const packetResult = await readPacket(client, parsed.seedPacketId);
+    if (packetResult.error) {
+      throw new HttpError(503, "database_unavailable");
+    }
+    if (!packetResult.data) {
+      throw new HttpError(404, "seed_packet_not_found");
+    }
+    const packet = packetResult.data;
+    const sourceInputs = parseSourceInputs(packet.source_inputs);
+    const claimToken = crypto.randomUUID();
+    const claimResult = await withTimeout(
+      adminClient.rpc("claim_ai_job", {
+        p_seed_packet_id: parsed.seedPacketId,
+        p_actor_id: user.id,
+        p_claim_token: claimToken,
+        p_lease_seconds: Math.ceil(LIMITS.analysisLeaseMs / 1_000),
+      }),
+      LIMITS.databaseTimeoutMs,
+      new HttpError(504, "database_timeout"),
+    );
+    if (claimResult.error) throw new HttpError(503, "analysis_claim_failed");
+    const claim = parseAiJobClaim(claimResult.data);
+    if (claim.state === "completed") {
+      return json(request, 200, {
+        revision_id: claim.revisionId,
+        provider: "mock",
+        reused: true,
+        retrievals: [],
+      }, requestId);
+    }
+    if (claim.state === "in_progress") {
+      throw new HttpError(409, "analysis_in_progress");
+    }
+    if (claim.state === "quota_exceeded") {
+      return json(
+        request,
+        429,
+        {
+          error: "analysis_quota_exceeded",
+          retry_after_seconds: claim.retryAfterSeconds,
+        },
+        requestId,
+        { "Retry-After": String(claim.retryAfterSeconds) },
+      );
+    }
+    if (claim.state === "failed") {
+      throw new HttpError(409, "analysis_attempt_failed");
+    }
+    if (claim.claimToken !== claimToken) {
+      throw new HttpError(503, "invalid_claim_result");
+    }
+    claimedSeedPacketId = parsed.seedPacketId;
+    activeClaimToken = claimToken;
+
+    let retrievals;
+    try {
+      retrievals = await Promise.all(
+        sourceInputs.map((input) => fetchProvidedSource(input, { resolveDns })),
+      );
+    } catch {
+      throw new HttpError(502, "source_retrieval_failed");
     }
 
-    const chunks: Uint8Array[] = [];
-    let total = 0;
-    let partial = false;
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      if (value) {
-        total += value.byteLength;
-        if (total > MAX_SOURCE_BYTES) {
-          partial = true;
-          chunks.push(value.slice(0, Math.max(0, value.byteLength - (total - MAX_SOURCE_BYTES))));
-          await reader.cancel();
-          break;
-        }
-        chunks.push(value);
+    const rpcResult = await withTimeout(
+      adminClient.rpc("complete_mock_ai_job", {
+        p_seed_packet_id: parsed.seedPacketId,
+        p_actor_id: user.id,
+        p_claim_token: claimToken,
+        p_retrievals: retrievals,
+        p_provider: "mock",
+      }),
+      LIMITS.databaseTimeoutMs,
+      new HttpError(504, "database_timeout"),
+    );
+    if (rpcResult.error) {
+      throw new HttpError(503, "analysis_failed");
+    }
+    if (!isSafeObjectId(rpcResult.data)) {
+      throw new HttpError(503, "invalid_analysis_result");
+    }
+
+    return json(request, 200, {
+      revision_id: rpcResult.data,
+      provider: "mock",
+      reused: false,
+      retrievals: retrievals.map((
+        { url, status, title, publisher, locator },
+      ) => ({
+        url,
+        status,
+        title,
+        publisher,
+        locator,
+      })),
+    }, requestId);
+  } catch (error) {
+    if (
+      adminClient && claimedSeedPacketId && verifiedActorId && activeClaimToken
+    ) {
+      const recorded = await recordClaimFailure(
+        adminClient,
+        claimedSeedPacketId,
+        verifiedActorId,
+        activeClaimToken,
+        error,
+      );
+      if (!recorded) {
+        console.warn("analyze-seed failure state not recorded", {
+          request_id: requestId,
+        });
       }
     }
-
-    const raw = new TextDecoder("utf-8", { fatal: false }).decode(
-      chunks.reduce((acc, chunk) => {
-        const next = new Uint8Array(acc.length + chunk.length);
-        next.set(acc);
-        next.set(chunk, acc.length);
-        return next;
-      }, new Uint8Array()),
-    );
-    const excerpt = textExcerpt(raw);
-    return {
-      url: url.toString(),
-      status: partial ? "partial" : "found",
-      title: extractTitle(raw, url.hostname),
-      publisher: url.hostname,
-      excerpt,
-      note: note || "Fetched text is untrusted and stored only as a bounded excerpt.",
-      locator: partial ? "first 128KB" : "bounded fetch excerpt",
-      hash: await hashText(raw.slice(0, MAX_SOURCE_BYTES)),
-    };
-  } catch (error) {
-    return {
-      url: url.toString(),
-      status: error instanceof DOMException && error.name === "AbortError" ? "failed" : "failed",
-      title: "Fetch failed",
-      publisher: url.hostname,
-      excerpt: "",
-      note: note || "Fetch failed or timed out before a safe excerpt could be stored.",
-      locator: "fetch-error",
-      hash: "",
-    };
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-function envNumber(name: string, fallback: number) {
-  const raw = Deno.env.get(name);
-  if (!raw) return fallback;
-  const parsed = Number(raw);
-  return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-async function assertOpenRouterBudget() {
-  const liveEnabled = Deno.env.get("AI_LIVE_ENABLED") === "true";
-  const key = Deno.env.get("OPENROUTER_API_KEY");
-  const maxCalls = envNumber("AI_LIVE_TEST_MAX_CALLS", 10);
-  const hardBudget = envNumber("AI_HARD_BUDGET_USD", 5);
-  if (!liveEnabled) throw new Error("OpenRouter live smoke is disabled");
-  if (!key) throw new Error("OpenRouter key is not configured server-side");
-  if (maxCalls < 1) throw new Error("OpenRouter live call cap is zero");
-  if (hardBudget > 5) throw new Error("OpenRouter hard budget exceeds goal cap");
-
-  const response = await fetch("https://openrouter.ai/api/v1/key", {
-    headers: { authorization: `Bearer ${key}` },
-    signal: AbortSignal.timeout(3500),
-  });
-  if (!response.ok) throw new Error("OpenRouter budget check failed");
-  const body = await response.json();
-  const usage = Number(body?.data?.usage ?? body?.usage ?? 0);
-  const limit = Number(body?.data?.limit ?? body?.limit ?? hardBudget);
-  if (Number.isFinite(usage) && Number.isFinite(limit) && usage >= limit) {
-    throw new Error("OpenRouter budget exhausted");
-  }
-}
-
-async function smallOpenRouterSmoke() {
-  await assertOpenRouterBudget();
-  const key = Deno.env.get("OPENROUTER_API_KEY")!;
-  const model = Deno.env.get("OPENROUTER_MODEL") ?? "deepseek/deepseek-v4-flash";
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${key}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: "Return a terse JSON readiness ping." },
-        { role: "user", content: "Respond with {\"ok\":true} only." },
-      ],
-      max_tokens: 24,
-      temperature: 0,
-    }),
-    signal: AbortSignal.timeout(7000),
-  });
-  if (!response.ok) throw new Error("OpenRouter smoke request failed");
-  return await response.json();
-}
-
-Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (req.method !== "POST") return json(405, { error: "method_not_allowed" });
-
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!supabaseUrl || !anonKey || !serviceRoleKey) {
-    return json(500, { error: "server_env_missing" });
-  }
-
-  const authHeader = req.headers.get("authorization") ?? "";
-  const token = authHeader.match(/^Bearer\s+(.+)$/i)?.[1];
-  if (!token) return json(401, { error: "auth_required" });
-  const authed = createClient(supabaseUrl, anonKey, {
-    auth: { persistSession: false },
-  });
-  const {
-    data: { user },
-    error: userError,
-  } = await authed.auth.getUser(token);
-  if (userError || !user) return json(401, { error: "auth_required" });
-
-  const body = await req.json().catch(() => ({}));
-  const seedPacketId = String(body.seed_packet_id ?? "");
-  const requestedProvider = body.provider === "openrouter" ? "openrouter" : "mock";
-  if (!/^[0-9a-f-]{36}$/i.test(seedPacketId)) {
-    return json(400, { error: "invalid_seed_packet_id" });
-  }
-
-  const admin = createClient(supabaseUrl, serviceRoleKey, {
-    auth: { persistSession: false },
-  });
-  const { data: packet, error: packetError } = await admin
-    .from("seed_packets")
-    .select("id, created_by, source_inputs")
-    .eq("id", seedPacketId)
-    .single();
-
-  if (packetError || !packet) return json(404, { error: "seed_packet_not_found" });
-  if (packet.created_by !== user.id) {
-    const { data: profile } = await admin
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-    if (!["reviewer", "admin"].includes(profile?.role ?? "")) {
-      return json(403, { error: "not_allowed" });
+    if (error instanceof HttpError) {
+      return json(request, error.status, { error: error.code }, requestId);
     }
+    console.error("analyze-seed internal failure", {
+      request_id: requestId,
+      error_type: error instanceof Error ? error.name : "unknown",
+    });
+    return json(request, 500, { error: "internal_error" }, requestId);
   }
-
-  if (requestedProvider === "openrouter") {
-    try {
-      await smallOpenRouterSmoke();
-    } catch (error) {
-      return json(402, {
-        error: "openrouter_smoke_skipped",
-        message: error instanceof Error ? error.message : "OpenRouter smoke failed",
-      });
-    }
-  }
-
-  const inputs = Array.isArray(packet.source_inputs)
-    ? packet.source_inputs as SourceInput[]
-    : [];
-  const retrievals = await Promise.all(
-    inputs.slice(0, 8).map((input) => fetchProvidedSource(input)),
-  );
-
-  const { data: revisionId, error: rpcError } = await admin.rpc("complete_mock_ai_job", {
-    p_seed_packet_id: seedPacketId,
-    p_actor_id: user.id,
-    p_retrievals: retrievals,
-    p_provider: requestedProvider,
-  });
-
-  if (rpcError) {
-    return json(500, { error: "analysis_failed", message: rpcError.message });
-  }
-
-  return json(200, {
-    revision_id: revisionId,
-    provider: requestedProvider,
-    retrievals: retrievals.map(({ url, status, title, publisher, locator }) => ({
-      url,
-      status,
-      title,
-      publisher,
-      locator,
-    })),
-  });
 });

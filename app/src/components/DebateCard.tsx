@@ -52,16 +52,20 @@ export function DebateCard({
     debate.revision.revision_number +
     (store.revision_bumps[debate.topic.id] ?? 0);
 
-  const { established, contested, values, total, temperament } =
+  const { established, contested, provisional, values, total, temperament } =
     debateShape(debate);
 
   // Dot/segment colours mirror the canonical library-of-truths mapping used by
-  // the debate-page StateStrip: established -> supports (green), contested ->
-  // partial (amber), values -> unclear (slate). A min flex-basis guarantees a
-  // 1-claim sliver stays perceivable next to a 6-claim green segment.
+  // the debate-page StateStrip: established -> green, contested -> red,
+  // provisional -> amber, values -> slate. A min flex-basis guarantees a
+  // 1-claim sliver stays perceivable next to a much larger segment.
   const segments: {
     state: ClaimState;
-    dot: "supports_claim" | "partially_supports_claim" | "unclear";
+    dot:
+      | "supports_claim"
+      | "partially_supports_claim"
+      | "contradicts_claim"
+      | "unclear";
     n: number;
     label: string;
   }[] = [
@@ -73,9 +77,15 @@ export function DebateCard({
     },
     {
       state: "contested",
-      dot: "partially_supports_claim",
+      dot: "contradicts_claim",
       n: contested,
       label: t.debateCard.shapeContested(contested),
+    },
+    {
+      state: "provisional",
+      dot: "partially_supports_claim",
+      n: provisional,
+      label: t.debateCard.shapeProvisional(provisional),
     },
     {
       state: "values",
@@ -122,18 +132,23 @@ export function DebateCard({
       {/* Proportional spine: the same instrument as the corpus masthead, at
           card scale. The bar carries its own meaning — inline counts + a
           legend below it, never a tooltip-only signal. */}
-      <div className="atlas-spine" aria-label={t.atlas.spineAria}>
+      <div className="atlas-spine">
         <div
           className={`atlas-spine__bar${armed ? " atlas-spine__bar--armed" : ""}`}
           role="img"
-          aria-label={t.atlas.spineSummary(established, contested, values)}
+          aria-label={t.atlas.spineSummary(
+            established,
+            contested,
+            provisional,
+            values,
+          )}
         >
           {present.map((s) => (
             <span
               key={s.state}
               className={`atlas-spine__seg atlas-spine__seg--${s.state}`}
               style={{ flexGrow: s.n }}
-              aria-label={s.label}
+              aria-hidden="true"
               title={s.label}
             />
           ))}

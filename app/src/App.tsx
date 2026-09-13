@@ -113,13 +113,13 @@ export default function App() {
   const { t } = useI18n();
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a className="skip-link" href="#app-content">
         {t.features.skipToContent}
       </a>
       <ScrollToTop />
       <RouteHead />
       <Masthead />
-      <div id="main" tabIndex={-1} className="app-main">
+      <div id="app-content" tabIndex={-1} className="app-main">
         <ErrorBoundary>
           <Suspense fallback={<RouteFallback />}>
             <Routes>

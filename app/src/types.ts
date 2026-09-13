@@ -8,6 +8,14 @@ export type EvidenceLabel =
   | "does_not_support_claim"
   | "unclear";
 
+export type EvidenceAssessmentState =
+  | "legacy_unverified"
+  | "not_assessed"
+  | "pending_review"
+  | "assessed"
+  | "inconclusive"
+  | "error";
+
 export type ClaimType =
   | "factual"
   | "causal"
@@ -57,6 +65,7 @@ export interface Argument {
   claim_ids: string[];
   generated_by: GeneratedBy;
   review_status: ReviewStatus;
+  origin_dossier_submission_id?: string | null;
 }
 
 export interface Claim {
@@ -67,6 +76,7 @@ export interface Claim {
   evidence_link_ids: string[];
   generated_by: GeneratedBy;
   review_status: ReviewStatus;
+  origin_dossier_submission_id?: string | null;
 }
 
 export interface Source {
@@ -75,9 +85,32 @@ export interface Source {
   title: string;
   publisher: string;
   source_type: "article" | "paper" | "report" | "law" | "dataset" | "video" | "other";
-  retrieval_status: "found" | "missing" | "blocked" | "partial";
+  retrieval_status: "found" | "missing" | "blocked" | "failed" | "partial";
   retrieved_at: string;
   quality_notes: string;
+  /** SHA-256 of the exact retrieved artefact, qualified as `sha256:<hex>`.
+   *  `null` means the source is known but no reproducible artefact hash is
+   *  available; omission is reserved for legacy backend payloads. */
+  content_hash?: string | null;
+  /** Private capture provenance exposed only as an opaque immutable reference. */
+  source_artifact_id?: string | null;
+  origin_dossier_submission_id?: string | null;
+}
+
+export interface SourceExcerpt {
+  id: string;
+  source_id: string;
+  /** Exact source text. Translated mirrors must keep these bytes unchanged. */
+  text: string;
+  /** Human-inspectable page, section, paragraph, table, or other locator. */
+  locator: string;
+  extracted_by: "human" | "ai" | "system";
+  created_at?: string;
+  start_offset?: number | null;
+  end_offset?: number | null;
+  offset_unit?: "utf8_bytes_v1" | null;
+  excerpt_hash?: string | null;
+  origin_dossier_submission_id?: string | null;
 }
 
 export interface EvidenceLink {
@@ -88,6 +121,14 @@ export interface EvidenceLink {
   rationale: string;
   confidence: number;
   review_status: ReviewStatus;
+  /** Hardened backend assessment state. Missing means a legacy fixture/payload
+   *  and must never be treated as reviewed evidence. */
+  assessment_state?: EvidenceAssessmentState;
+  /** Optional exact passage backing this claim-source alignment. */
+  source_excerpt_id?: string | null;
+  /** Search coverage role, deliberately independent from the evidence label. */
+  research_role?: "support" | "counter" | null;
+  origin_dossier_submission_id?: string | null;
 }
 
 export interface Value {
@@ -163,6 +204,8 @@ export interface DebateFixture {
   arguments: Argument[];
   claims: Claim[];
   sources: Source[];
+  /** Exact passages are separate artefacts so one source remains one source. */
+  source_excerpts?: SourceExcerpt[];
   evidence_links: EvidenceLink[];
   values: Value[];
   tradeoffs: TradeOff[];
@@ -234,7 +277,15 @@ export type IntegrityVerdict =
   | "meets_floor" // no rule fired — the client renders NO chip (not an endorsement)
   | "attribution_required"
   | "context_required"
-  | "below_floor";
+  | "below_floor"
+  | "unknown";
+
+export type SourceAssessmentState =
+  | "unassessed"
+  | "stale"
+  | "legacy_unverified"
+  | "pending_review"
+  | "confirmed";
 
 export type FloorRuleId =
   | "ugc_controversial_factual"
@@ -258,9 +309,11 @@ export interface IntegrityAttributes {
 
 export interface SourceAssessment {
   source_key: string; // normalized url — the overlay join key
-  content_hash: string | null; // inert client-side in v1
+  content_hash: string | null;
+  assessment_state: SourceAssessmentState;
   floor_verdict: IntegrityVerdict;
   rule_id: FloorRuleId | (string & {}); // forward-compat; unknown → render nothing
+  rationale?: string;
   is_demo: boolean;
   attributes: IntegrityAttributes;
 }

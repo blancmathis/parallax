@@ -8,11 +8,22 @@ export type DebateMeta = { slug: string; question: string; summary?: string };
 
 // One origin var, two readers: client build sees VITE_SITE_ORIGIN; the Node
 // prerender (tsx) sees process.env.SITE_ORIGIN. Same value, set both in CF Pages.
+const PROCESS_ENV = (globalThis as {
+  process?: { env?: Record<string, string | undefined> };
+}).process?.env;
 const ENV_ORIGIN =
   (import.meta.env?.VITE_SITE_ORIGIN as string | undefined) ??
-  (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env
-    ?.SITE_ORIGIN;
-export const SITE_ORIGIN = (ENV_ORIGIN ?? "https://parallax.org").replace(/\/+$/, "");
+  PROCESS_ENV?.SITE_ORIGIN;
+const LOCAL_FALLBACK_ALLOWED =
+  Boolean(import.meta.env?.DEV) || PROCESS_ENV?.SITE_ORIGIN_ALLOW_LOCAL === "1";
+if (!ENV_ORIGIN && !LOCAL_FALLBACK_ALLOWED) {
+  throw new Error(
+    "VITE_SITE_ORIGIN and SITE_ORIGIN are unset. Refusing to generate a guessed public canonical.",
+  );
+}
+export const SITE_ORIGIN = (
+  ENV_ORIGIN ?? (import.meta.env?.DEV ? "http://127.0.0.1:5173" : "http://127.0.0.1:4173")
+).replace(/\/+$/, "");
 const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
 export const LOCALES: Locale[] = ["en", "fr"];
 const OG_LOCALE: Record<Locale, string> = { en: "en_US", fr: "fr_FR" };
@@ -81,6 +92,7 @@ export function buildHead(
   route: RouteKey,
   locale: Locale,
   debate?: DebateMeta,
+  options: { debateLookupUnavailable?: boolean } = {},
 ): HeadModel {
   const t = dictionaries[locale];
   const other: Locale = locale === "en" ? "fr" : "en";
@@ -129,7 +141,20 @@ export function buildHead(
       robots = "noindex,follow";
       break;
     case "debate": {
-      if (!debate) return buildHead({ kind: "notfound" }, locale);
+      if (!debate) {
+        if (!options.debateLookupUnavailable) {
+          return buildHead({ kind: "notfound" }, locale);
+        }
+        // The client may still be loading a backend-only debate, or the live
+        // corpus may be temporarily unavailable. Keep the requested canonical
+        // instead of falsely declaring /404, but do not index an unresolved page.
+        title = t.meta.titleDebates;
+        description = t.meta.descriptionDebates;
+        ogTitle = title;
+        ogDescription = description;
+        robots = "noindex,follow";
+        break;
+      }
       title = `${debate.question} — Parallax`;
       const raw = (debate.summary ?? "").trim();
       description = raw.length ? raw : `${debate.question} ${t.meta.debateTail}`;

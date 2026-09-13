@@ -1,11 +1,14 @@
 .DS_Store
 .idea/
 .vscode/
+.wrangler/
 
 node_modules/
 dist/
 dist-ssr/
 coverage/
+playwright-report/
+test-results/
 *.log
 
 .env

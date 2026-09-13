@@ -14,9 +14,8 @@
 // is idempotent: it splits the current seed at the first published-topic insert
 // and at the draft-demo topic, regenerates the middle, and rewrites the file.
 //
-// Published rows are written with review_status = 'approved' and the published
-// status flipped in a two-phase pass (insert as draft → flip), exactly as the
-// original congestion block did and as publish_revision() would leave them.
+// Published rows preserve the fixtures' review_status. Publishing a revision
+// is not evidence review: unreviewed seed objects must remain unreviewed in SQL.
 // We do NOT call publish_revision() (it needs auth.uid() + admin role).
 
 import { readFileSync, writeFileSync } from "node:fs";
@@ -45,6 +44,26 @@ const num = (n) => (n === null || n === undefined ? "null" : String(n));
 const arr = (xs) =>
   !xs || xs.length === 0 ? `'{}'::text[]` : `array[${xs.map((x) => q(x)).join(", ")}]::text[]`;
 const slugOf = (topicId) => topicId.replace(/^topic_/, "").replace(/_/g, "-");
+const reviewStatus = (item) => q(item?.review_status ?? "unreviewed");
+
+function revisionReviewStatus(fx) {
+  const reviewables = [
+    ...fx.positions,
+    ...fx.arguments,
+    ...fx.claims,
+    ...fx.evidence_links,
+    ...fx.tradeoffs,
+  ];
+  if (reviewables.some((item) => item.review_status === "rejected")) {
+    return "rejected";
+  }
+  if (reviewables.some((item) => item.review_status === "contested")) {
+    return "contested";
+  }
+  return reviewables.every((item) => item.review_status === "approved")
+    ? "approved"
+    : "unreviewed";
+}
 
 // Two emit modes. LOCAL keeps the exact bytes the RLS matrix depends on (admin
 // uuid in created_by / published_by / human-audit actor_id). CLOUD is
@@ -79,13 +98,13 @@ function debateBlock(fx, mode = LOCAL) {
 
   // 2. revision (draft)
   out.push(`insert into public.debate_revisions (id, topic_id, revision_number, status, review_status, generated_by, created_by, created_at) values`);
-  out.push(`  (${q(rev)}, ${q(t.id)}, ${num(fx.revision.revision_number)}, 'draft', 'approved', 'human', ${mode.author}, ${q(t.created_at)});`);
+  out.push(`  (${q(rev)}, ${q(t.id)}, ${num(fx.revision.revision_number)}, 'draft', ${q(revisionReviewStatus(fx))}, 'human', ${mode.author}, ${q(t.created_at)});`);
 
   // 3. positions
   out.push(`insert into public.positions (id, revision_id, topic_id, title, short_summary, steelman, status, generated_by, review_status, sort_order) values`);
   out.push(
     fx.positions
-      .map((p, i) => `  (${q(pid(p.id))}, ${q(rev)}, ${q(t.id)}, ${q(p.title)}, ${q(p.short_summary)}, ${q(p.steelman)}, 'published', ${q(p.generated_by)}, 'approved', ${i + 1})`)
+      .map((p, i) => `  (${q(pid(p.id))}, ${q(rev)}, ${q(t.id)}, ${q(p.title)}, ${q(p.short_summary)}, ${q(p.steelman)}, 'published', ${q(p.generated_by)}, ${reviewStatus(p)}, ${i + 1})`)
       .join(",\n") + ";"
   );
 
@@ -93,7 +112,7 @@ function debateBlock(fx, mode = LOCAL) {
   out.push(`insert into public.claims (id, revision_id, topic_id, text, claim_type, generated_by, review_status, sort_order) values`);
   out.push(
     fx.claims
-      .map((c, i) => `  (${q(pid(c.id))}, ${q(rev)}, ${q(t.id)}, ${q(c.text)}, ${arr(c.claim_type)}, ${q(c.generated_by)}, 'approved', ${i + 1})`)
+      .map((c, i) => `  (${q(pid(c.id))}, ${q(rev)}, ${q(t.id)}, ${q(c.text)}, ${arr(c.claim_type)}, ${q(c.generated_by)}, ${reviewStatus(c)}, ${i + 1})`)
       .join(",\n") + ";"
   );
 
@@ -101,27 +120,54 @@ function debateBlock(fx, mode = LOCAL) {
   out.push(`insert into public.debate_arguments (id, revision_id, position_id, direction, summary, claim_ids, generated_by, review_status, sort_order) values`);
   out.push(
     fx.arguments
-      .map((a, i) => `  (${q(pid(a.id))}, ${q(rev)}, ${q(pid(a.position_id))}, ${q(a.direction)}, ${q(a.summary)}, ${arr((a.claim_ids || []).map(pid))}, ${q(a.generated_by)}, 'approved', ${i + 1})`)
+      .map((a, i) => `  (${q(pid(a.id))}, ${q(rev)}, ${q(pid(a.position_id))}, ${q(a.direction)}, ${q(a.summary)}, ${arr((a.claim_ids || []).map(pid))}, ${q(a.generated_by)}, ${reviewStatus(a)}, ${i + 1})`)
       .join(",\n") + ";"
   );
 
   // 6. sources
-  out.push(`insert into public.sources (id, revision_id, topic_id, url, title, publisher, source_type, retrieval_status, retrieved_at, quality_notes, sort_order) values`);
+  out.push(`insert into public.sources (id, revision_id, topic_id, url, title, publisher, source_type, retrieval_status, retrieved_at, quality_notes, content_hash, sort_order) values`);
   out.push(
     fx.sources
-      .map((s, i) => `  (${q(pid(s.id))}, ${q(rev)}, ${q(t.id)}, ${q(s.url)}, ${q(s.title)}, ${q(s.publisher)}, ${q(s.source_type)}, ${q(s.retrieval_status)}, ${q(s.retrieved_at)}, ${q(s.quality_notes)}, ${i + 1})`)
+      .map((s, i) => `  (${q(pid(s.id))}, ${q(rev)}, ${q(t.id)}, ${q(s.url)}, ${q(s.title)}, ${q(s.publisher)}, ${q(s.source_type)}, ${q(s.retrieval_status)}, ${q(s.retrieved_at)}, ${q(s.quality_notes)}, ${q(s.content_hash)}, ${i + 1})`)
       .join(",\n") + ";"
   );
 
-  // 7. evidence_links (claim_id + source_id are FKs; preserve labels exactly)
+  // 7. exact source excerpts (optional, but deterministic when present)
+  const excerpts = fx.source_excerpts || [];
+  const excerptsById = new Map();
+  if (excerpts.length > 0) {
+    const sourceIds = new Set(fx.sources.map((source) => source.id));
+    for (const excerpt of excerpts) {
+      if (excerptsById.has(excerpt.id)) throw new Error(`duplicate source excerpt ${excerpt.id}`);
+      if (!sourceIds.has(excerpt.source_id)) throw new Error(`missing source ${excerpt.source_id} for excerpt ${excerpt.id}`);
+      excerptsById.set(excerpt.id, excerpt);
+    }
+    out.push(`insert into public.source_excerpts (id, revision_id, source_id, text, locator, extracted_by) values`);
+    out.push(
+      excerpts
+        .map((excerpt) => `  (${q(pid(excerpt.id))}, ${q(rev)}, ${q(pid(excerpt.source_id))}, ${q(excerpt.text)}, ${q(excerpt.locator)}, ${q(excerpt.extracted_by)})`)
+        .join(",\n") + ";"
+    );
+  }
+
+  for (const link of fx.evidence_links) {
+    if (!link.source_excerpt_id) continue;
+    const excerpt = excerptsById.get(link.source_excerpt_id);
+    if (!excerpt) throw new Error(`missing excerpt ${link.source_excerpt_id} for evidence ${link.id}`);
+    if (excerpt.source_id !== link.source_id) {
+      throw new Error(`source mismatch for excerpt ${excerpt.id} and evidence ${link.id}`);
+    }
+  }
+
+  // 8. evidence_links (claim/source/excerpt ids are FKs; preserve labels exactly)
   out.push(`insert into public.evidence_links (id, revision_id, claim_id, source_id, source_excerpt_id, label, rationale, confidence, review_status, sort_order) values`);
   out.push(
     fx.evidence_links
-      .map((e, i) => `  (${q(pid(e.id))}, ${q(rev)}, ${q(pid(e.claim_id))}, ${q(pid(e.source_id))}, null, ${q(e.label)}, ${q(e.rationale)}, ${num(e.confidence)}, 'approved', ${i + 1})`)
+      .map((e, i) => `  (${q(pid(e.id))}, ${q(rev)}, ${q(pid(e.claim_id))}, ${q(pid(e.source_id))}, ${e.source_excerpt_id ? q(pid(e.source_excerpt_id)) : "null"}, ${q(e.label)}, ${q(e.rationale)}, ${num(e.confidence)}, ${reviewStatus(e)}, ${i + 1})`)
       .join(",\n") + ";"
   );
 
-  // 8. debate_values
+  // 9. debate_values
   out.push(`insert into public.debate_values (id, revision_id, topic_id, name, description, tension_with, sort_order) values`);
   out.push(
     fx.values
@@ -129,20 +175,20 @@ function debateBlock(fx, mode = LOCAL) {
       .join(",\n") + ";"
   );
 
-  // 9. value_positions (one row per value/position pair)
+  // 10. value_positions (one row per value/position pair)
   const vp = fx.values.flatMap((v) => (v.position_ids || []).map((p) => `  (${q(pid(v.id))}, ${q(pid(p))})`));
   out.push(`insert into public.value_positions (value_id, position_id) values`);
   out.push(vp.join(",\n") + ";");
 
-  // 10. tradeoffs
+  // 11. tradeoffs
   out.push(`insert into public.tradeoffs (id, revision_id, topic_id, position_id, gain, cost, risk, review_status) values`);
   out.push(
     fx.tradeoffs
-      .map((tr) => `  (${q(pid(tr.id))}, ${q(rev)}, ${q(t.id)}, ${q(pid(tr.position_id))}, ${q(tr.gain)}, ${q(tr.cost)}, ${q(tr.risk)}, 'approved')`)
+      .map((tr) => `  (${q(pid(tr.id))}, ${q(rev)}, ${q(t.id)}, ${q(pid(tr.position_id))}, ${q(tr.gain)}, ${q(tr.cost)}, ${q(tr.risk)}, ${reviewStatus(tr)})`)
       .join(",\n") + ";"
   );
 
-  // 11. audit_events (id defaults to uuid; revision_id must equal published rev)
+  // 12. audit_events (id defaults to uuid; revision_id must equal published rev)
   out.push(`insert into public.audit_events (topic_id, revision_id, actor_type, actor_id, event_type, input_object_ids, output_object_ids, summary, created_at) values`);
   out.push(
     fx.audit_events

@@ -4,12 +4,12 @@ import { analyzeSeedPacket, createSeedPacket } from "../lib/backend";
 import { useAuth } from "../lib/auth";
 import { isSupabaseConfigured } from "../lib/supabase";
 import { toast } from "../lib/toast-store";
+import { safeHttpUrl } from "../lib/url";
 
 /**
- * Topic proposal — the UI for Milestone 6, working ahead of its backend.
- * Drafts are saved locally so nothing a future contributor writes is lost.
- * An optional email lets us notify the proposer when topic creation opens,
- * turning the Milestone-6 wait into a completing action rather than a dead end.
+ * Topic proposal — local mode preserves a draft on this device; backend mode
+ * creates the currently available seed packet and mock draft. Email is local
+ * draft metadata only and is never presented as a notification subscription.
  */
 
 const KEY = "parallax.topic-proposals.v1";
@@ -22,6 +22,7 @@ export function ProposeTopic({
   onClose: () => void;
 }) {
   const { t } = useI18n();
+  const backendMode = isSupabaseConfigured;
   const [question, setQuestion] = useState("");
   const [why, setWhy] = useState("");
   const [s1, setS1] = useState("");
@@ -30,6 +31,10 @@ export function ProposeTopic({
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [sourceErrors, setSourceErrors] = useState<[boolean, boolean]>([
+    false,
+    false,
+  ]);
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
   const auth = useAuth();
@@ -89,20 +94,32 @@ export function ProposeTopic({
 
   const submit = async () => {
     if (!valid) return;
+    const rawSources = [s1.trim(), s2.trim()];
+    const invalidSources = rawSources.map(
+      (url) => url.length > 0 && !safeHttpUrl(url),
+    ) as [boolean, boolean];
+    setSourceErrors(invalidSources);
+    if (invalidSources.some(Boolean)) return;
+    const validatedSources = rawSources.flatMap((url) => {
+      const safeUrl = safeHttpUrl(url);
+      return safeUrl ? [safeUrl] : [];
+    });
+
     setSubmitting(true);
     setError("");
     try {
-      if (isSupabaseConfigured) {
+      if (backendMode) {
         if (!auth.user) {
-          setError("Sign in on the You page before creating a backend seed packet.");
+          setError(t.features.proposeAuthRequired);
           return;
         }
-        const sources = [s1.trim(), s2.trim()]
-          .filter((url) => url.startsWith("http"))
-          .map((url) => ({ url, note: "Provided from the topic proposal form." }));
+        const sources = validatedSources.map((url) => ({
+          url,
+          note: t.features.proposeSourceNote,
+        }));
         const packetId = await createSeedPacket({
           question: question.trim(),
-          initialPosition: "This topic should be mapped in Parallax.",
+          initialPosition: t.features.proposeSeedPosition,
           initialArguments: [why.trim()],
           sources,
         });
@@ -112,16 +129,21 @@ export function ProposeTopic({
         prev.push({
           question: question.trim(),
           why: why.trim(),
-          sources: [s1.trim(), s2.trim()].filter(Boolean),
+          sources: validatedSources,
           email: email.trim() || undefined,
           created_at: new Date().toISOString(),
         });
         localStorage.setItem(KEY, JSON.stringify(prev));
       }
       setDone(true);
-      toast(t.features.proposeSavedToast, "success");
+      toast(
+        backendMode
+          ? t.features.proposeBackendSavedToast
+          : t.features.proposeSavedToast,
+        "success",
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create the seed packet.");
+      setError(err instanceof Error ? err.message : t.features.proposeGenericError);
     } finally {
       setSubmitting(false);
     }
@@ -154,11 +176,21 @@ export function ProposeTopic({
 
         {done ? (
           <div className="modal__done">
-            <span className="stamp stamp--inline" aria-hidden="true">
-              ✓
-            </span>
-            <h4>{t.features.proposeSavedTitle}</h4>
-            <p>{t.features.proposeSavedBody}</p>
+            <div role="status" aria-live="polite">
+              <span className="stamp stamp--inline" aria-hidden="true">
+                ✓
+              </span>
+              <h4>
+                {backendMode
+                  ? t.features.proposeBackendSavedTitle
+                  : t.features.proposeSavedTitle}
+              </h4>
+              <p>
+                {backendMode
+                  ? t.features.proposeBackendSavedBody
+                  : t.features.proposeSavedBody}
+              </p>
+            </div>
             <div className="modal__doneactions">
               <button className="btn btn--ghost btn--small" onClick={onClose}>
                 {t.common.actions.close}
@@ -168,13 +200,13 @@ export function ProposeTopic({
         ) : (
           <div className="modal__body slideover__body">
             <p className="section__lede" style={{ marginTop: 0, fontSize: 14.5 }}>
-              {t.features.proposeLede}
+              {backendMode ? t.features.proposeBackendLede : t.features.proposeLede}
             </p>
-            {isSupabaseConfigured && (
+            {backendMode && (
               <p className="backend-note">
                 {auth.user
-                  ? "Backend mode: this creates a seed packet and mock AI draft."
-                  : "Backend mode: sign in before creating a seed packet."}
+                  ? t.features.proposeBackendReady
+                  : t.features.proposeBackendSignIn}
               </p>
             )}
             <div className="field">
@@ -203,45 +235,105 @@ export function ProposeTopic({
               />
             </div>
             <div className="field">
-              <label className="field__label">{t.features.proposeSources}</label>
-              <input
-                className="field__input"
-                placeholder="https://…"
-                value={s1}
-                onChange={(e) => setS1(e.target.value)}
-              />
-              <input
-                className="field__input"
-                placeholder="https://…"
-                value={s2}
-                onChange={(e) => setS2(e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label className="field__label" htmlFor="propose-email">
-                {t.features.proposeEmail}
+              <span className="field__label">{t.features.proposeSources}</span>
+              <label className="sr-only" htmlFor="propose-source-1">
+                {t.features.proposeSourceOne}
               </label>
               <input
-                id="propose-email"
+                id="propose-source-1"
                 className="field__input"
-                type="email"
-                inputMode="email"
-                placeholder={t.features.proposeEmailPh}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="url"
+                inputMode="url"
+                placeholder="https://…"
+                value={s1}
+                onChange={(e) => {
+                  setS1(e.target.value);
+                  setSourceErrors(([, second]) => [false, second]);
+                }}
+                aria-invalid={sourceErrors[0] || undefined}
+                aria-describedby={
+                  sourceErrors[0] ? "propose-source-1-error" : undefined
+                }
               />
-              <p className="field__hint">{t.features.proposeEmailHint}</p>
+              {sourceErrors[0] && (
+                <p
+                  className="form-error"
+                  id="propose-source-1-error"
+                  role="alert"
+                >
+                  {t.features.proposeSourceInvalid}
+                </p>
+              )}
+              <label className="sr-only" htmlFor="propose-source-2">
+                {t.features.proposeSourceTwo}
+              </label>
+              <input
+                id="propose-source-2"
+                className="field__input"
+                type="url"
+                inputMode="url"
+                placeholder="https://…"
+                value={s2}
+                onChange={(e) => {
+                  setS2(e.target.value);
+                  setSourceErrors(([first]) => [first, false]);
+                }}
+                aria-invalid={sourceErrors[1] || undefined}
+                aria-describedby={
+                  sourceErrors[1] ? "propose-source-2-error" : undefined
+                }
+              />
+              {sourceErrors[1] && (
+                <p
+                  className="form-error"
+                  id="propose-source-2-error"
+                  role="alert"
+                >
+                  {t.features.proposeSourceInvalid}
+                </p>
+              )}
             </div>
+            {!backendMode && (
+              <div className="field">
+                <label className="field__label" htmlFor="propose-email">
+                  {t.features.proposeEmail}
+                </label>
+                <input
+                  id="propose-email"
+                  className="field__input"
+                  type="email"
+                  inputMode="email"
+                  placeholder={t.features.proposeEmailPh}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-describedby="propose-email-hint"
+                />
+                <p className="field__hint" id="propose-email-hint">
+                  {t.features.proposeEmailHint}
+                </p>
+              </div>
+            )}
             <div className="slideover__actions">
               <button
+                type="button"
                 className="btn btn--primary"
                 disabled={!valid || submitting}
                 onClick={submit}
               >
-                {submitting ? "Creating..." : t.features.proposeSubmit}
+                {submitting
+                  ? backendMode
+                    ? t.features.proposeCreating
+                    : t.features.proposeSaving
+                  : backendMode
+                    ? t.features.proposeBackendAction
+                    : t.features.proposeSubmit}
               </button>
             </div>
-            {error && <p className="form-error">{error}</p>}
+            {error && (
+              <p className="form-error" role="alert" aria-live="assertive">
+                {error}
+              </p>
+            )}
           </div>
         )}
       </div>

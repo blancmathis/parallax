@@ -15,19 +15,19 @@
     <meta name="theme-color" content="#eef1f4" />
     <meta name="color-scheme" content="light" />
 
-    <!-- Canonical / social. parallax.org is the default origin; SITE_ORIGIN /
-         VITE_SITE_ORIGIN override it at build. The prerender (scripts/prerender.ts)
-         rewrites every data-pxh tag per route+locale; unmarked tags are shared. -->
-    <link rel="canonical" href="https://parallax.org/" data-pxh="1" />
+    <!-- Canonical / social. These localhost values make the raw development
+         shell safe. Every deployable build must provide SITE_ORIGIN and
+         VITE_SITE_ORIGIN; prerender rewrites every data-pxh tag per route. -->
+    <link rel="canonical" href="http://127.0.0.1:5173/" data-pxh="1" />
 
     <meta property="og:site_name" content="Parallax" />
     <meta property="og:title" data-pxh="1" content="Parallax — The atlas of disagreement" />
     <meta property="og:description" data-pxh="1" content="Most disagreements are about values, not facts. Parallax lays the debate out flat — positions, evidence, values, trade-offs — so you can see why people actually disagree." />
     <meta property="og:type" data-pxh="1" content="website" />
-    <meta property="og:url" data-pxh="1" content="https://parallax.org/" />
+    <meta property="og:url" data-pxh="1" content="http://127.0.0.1:5173/" />
     <meta property="og:locale" data-pxh="1" content="en_US" />
     <meta property="og:locale:alternate" data-pxh="1" content="fr_FR" />
-    <meta property="og:image" data-pxh="1" content="https://parallax.org/og-image.png" />
+    <meta property="og:image" data-pxh="1" content="http://127.0.0.1:5173/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Parallax — the atlas of disagreement. Two offset circles, petrol and ember on a blueprint ground." />
@@ -35,27 +35,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" data-pxh="1" content="Parallax — The atlas of disagreement" />
     <meta name="twitter:description" data-pxh="1" content="Understand every view — including your own. Every claim tied to its sources, every value named. No winners declared." />
-    <meta name="twitter:image" data-pxh="1" content="https://parallax.org/og-image.png" />
+    <meta name="twitter:image" data-pxh="1" content="http://127.0.0.1:5173/og-image.png" />
     <meta
       name="twitter:image:alt"
       content="Parallax — the atlas of disagreement. Two offset circles, petrol and ember on a blueprint ground."
-    />
-
-    <!-- Fonts. Variable axes trimmed to the weights actually used in the design
-         system (Fraunces 400/500/600/700, Archivo 400/500/600/700, Plex Mono
-         400/500/600). display=swap + preconnect avoid a blocking dependency. To
-         elevate further for a non-profit, self-host via @fontsource and drop the
-         third-party render dependency. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Spline+Sans:wght@400..700&family=Spline+Sans+Mono:wght@400..600&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Spline+Sans:wght@400..700&family=Spline+Sans+Mono:wght@400..600&display=swap"
-      rel="stylesheet"
     />
 
     <!-- Identity mark: oxide filled circle + paper-stroked outline circle on ink,

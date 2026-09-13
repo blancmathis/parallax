@@ -6,12 +6,11 @@ import { useI18n } from "../i18n";
 import { useDebates } from "../lib/backend";
 import { useCountUp, usePageTitle } from "../lib/ui";
 
-// Contact address for the founder/partner + classroom CTAs. Overridable at build
-// (VITE_CONTACT_EMAIL) so a fork/relaunch isn't hard-wired to one inbox.
+// Optional controlled contact channel. Omitting it removes contact CTAs instead
+// of publishing a placeholder or an inbox the project does not control.
 const CONTACT_EMAIL =
-  (import.meta.env?.VITE_CONTACT_EMAIL as string | undefined)?.trim() ||
-  "bonjour@parallax.org";
-const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+  (import.meta.env?.VITE_CONTACT_EMAIL as string | undefined)?.trim() || null;
+const CONTACT_MAILTO = CONTACT_EMAIL ? `mailto:${CONTACT_EMAIL}` : null;
 
 /**
  * The Convergence. Reduced-motion-safe arming for the hero schematic.
@@ -532,11 +531,13 @@ export default function Landing() {
             ))}
           </div>
           <p className="founder__funding">{t.landing.founder.fundingLine}</p>
-          <div className="founder__actions">
-            <a className="btn btn--primary" href={CONTACT_MAILTO}>
-              {t.landing.founder.cta}
-            </a>
-          </div>
+          {CONTACT_MAILTO ? (
+            <div className="founder__actions">
+              <a className="btn btn--primary" href={CONTACT_MAILTO}>
+                {t.landing.founder.cta}
+              </a>
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -565,11 +566,13 @@ export default function Landing() {
             <h2 className="section__title">{t.features.classroomsTitle}</h2>
             <p className="section__lede">{t.features.classroomsBody}</p>
           </div>
-          <div className="classrooms__cta">
-            <a className="btn btn--ghost" href={CONTACT_MAILTO}>
-              {t.features.classroomsCta}
-            </a>
-          </div>
+          {CONTACT_MAILTO ? (
+            <div className="classrooms__cta">
+              <a className="btn btn--ghost" href={CONTACT_MAILTO}>
+                {t.features.classroomsCta}
+              </a>
+            </div>
+          ) : null}
         </div>
       </section>
 

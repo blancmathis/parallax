@@ -1,7 +1,7 @@
 {
   "name": "parallax",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0-beta.1",
   "description": "An open-source Peerlab project for making disagreement inspectable.",
   "license": "Apache-2.0",
   "author": "Peerlab",
@@ -14,37 +14,70 @@
     "url": "https://github.com/Swarek/parallax/issues"
   },
   "type": "module",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "packageManager": "npm@10.9.8",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && npm run prerender && npm run gen:seo && npm run check:seo",
+    "build:test": "SITE_ORIGIN=http://127.0.0.1:4173 VITE_SITE_ORIGIN=http://127.0.0.1:4173 VITE_SUPABASE_URL= VITE_SUPABASE_ANON_KEY= npm run build",
+    "build:e2e:backend": "npm run check:e2e:backend-env && SITE_ORIGIN=http://127.0.0.1:5173 VITE_SITE_ORIGIN=http://127.0.0.1:5173 VITE_LOCAL_TEST_IDENTITIES=0 npm run build",
     "prerender": "tsx scripts/prerender.ts",
     "gen:seo": "node scripts/gen-seo.mjs",
     "check:seo": "node scripts/check-seo.mjs",
+    "check:bundle": "node scripts/check-bundle-budget.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "check": "tsc -b",
-    "check:fixtures": "node scripts/check-fixtures.mjs"
+    "check:fixtures": "node scripts/check-fixtures.mjs",
+    "check:metadata": "node scripts/check-repository-metadata.mjs",
+    "check:e2e:backend-env": "node scripts/check-backend-e2e-env.mjs",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "npm run build:test && npm run check:bundle && playwright test",
+    "test:e2e:backend": "npm run build:e2e:backend && playwright test --config playwright.backend.config.ts",
+    "test:e2e:report": "playwright show-report",
+    "test:rls": "bash scripts/test-rls.sh",
+    "test:supabase:smoke": "bash scripts/test-supabase-smoke.sh",
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "qa": "npm run check && npm run lint && npm run check:fixtures && npm run check:metadata && npm run test:coverage && npm run build:test && npm run check:bundle && npm run audit:prod",
+    "qa:release": "npm run qa && playwright test"
   },
   "dependencies": {
+    "@fontsource-variable/newsreader": "5.3.0",
+    "@fontsource-variable/spline-sans": "5.3.0",
+    "@fontsource-variable/spline-sans-mono": "5.3.0",
     "@supabase/supabase-js": "^2.108.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.17.0",
+    "react-router-dom": "^7.18.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.6",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^10.3.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.9.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "jsdom": "^30.0.1",
     "tsx": "^4.22.4",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   }
 }

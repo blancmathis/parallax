@@ -22,7 +22,7 @@ returns void
 language plpgsql
 as $$
 begin
-  if not ok then
+  if ok is distinct from true then
     raise exception 'assertion failed: %', name;
   end if;
 end;
@@ -38,6 +38,14 @@ select pg_temp.assert_true(
   'anon sees no draft revisions',
   not exists (select 1 from public.debate_revisions where status = 'draft')
 );
+select pg_temp.assert_true(
+  'anon has no raw audit, review, or exact-count access',
+  not has_table_privilege('anon', 'public.audit_events', 'select')
+  and not has_table_privilege('anon', 'public.reviews', 'select')
+  and not has_table_privilege('anon', 'public.position_signal_counts', 'select')
+);
+select pg_temp.expect_error($$ select * from public.audit_events $$);
+select pg_temp.expect_error($$ select * from public.reviews $$);
 select pg_temp.expect_error($$
   insert into public.contributions (topic_id, type, body, created_by)
   values ('topic_congestion_pricing', 'new_claim', 'anon write must fail', '00000000-0000-0000-0000-000000000101')
@@ -62,7 +70,7 @@ values (
 select pg_temp.expect_error($$select public.review_revision('rev_draft_demo_1', 'approve', 'normal user must fail')$$);
 select pg_temp.expect_error($$select public.publish_revision('rev_draft_demo_1')$$);
 select pg_temp.expect_error($$update public.profiles set role = 'admin' where id = '00000000-0000-0000-0000-000000000101'$$);
-update public.claims set text = 'mutated' where id = 'cp_c1';
+select pg_temp.expect_error($$update public.claims set text = 'mutated' where id = 'cp_c1'$$);
 select pg_temp.assert_true(
   'normal user cannot mutate published claim',
   (select text <> 'mutated' from public.claims where id = 'cp_c1')
@@ -78,7 +86,13 @@ reset role;
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000103', true);
 select pg_temp.assert_true('admin role detected', public.is_admin());
-select public.publish_revision('rev_draft_demo_1');
+select pg_temp.expect_error($$select public.publish_revision('rev_draft_demo_1')$$);
+reset role;
+select pg_temp.assert_true(
+  'incomplete reviewed draft remains unpublished',
+  (select status = 'draft' and published_at is null
+     from public.debate_revisions where id = 'rev_draft_demo_1')
+);
 
 -- ————— Position signal (D15) —————
 reset role;
@@ -99,68 +113,70 @@ select pg_temp.assert_true(
   'anon reads unreleased signal without error',
   (select (public.get_position_signal('topic_congestion_pricing') ->> 'released') = 'false')
 );
--- (d) anon cannot read the staff-only pulse table
+-- (d) raw counts, ballots and pulse are private rather than merely empty.
 select pg_temp.assert_true(
-  'anon sees no pulse rows', not exists (select 1 from public.position_signal_pulse)
+  'anon has no direct signal-table access',
+  not has_table_privilege('anon', 'public.position_signal_counts', 'select')
+  and not has_table_privilege('anon', 'public.position_signal_ballots', 'select')
+  and not has_table_privilege('anon', 'public.position_signal_pulse', 'select')
 );
+select pg_temp.expect_error($$ select * from public.position_signal_counts $$);
+select pg_temp.expect_error($$ select * from public.position_signal_ballots $$);
+select pg_temp.expect_error($$ select * from public.position_signal_pulse $$);
 
 reset role;
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000101', true);
--- (e) authed cast succeeds; first cast => bucket count 1
+-- (e) authed cast succeeds and is caller-scoped.
 select public.cast_position_signal('topic_congestion_pricing', 'before', 'pos_a');
 select pg_temp.assert_true(
-  'first cast increments bucket to 1',
-  (select count = 1 from public.position_signal_counts
-   where topic_id='topic_congestion_pricing' and phase='before' and position_id='pos_a')
+  'first cast is returned by the private caller RPC',
+  public.get_my_position_signal('topic_congestion_pricing')->>'before' = 'pos_a'
 );
--- (f) revise: decrement old + increment new, count conserved
-select public.cast_position_signal('topic_congestion_pricing', 'before', 'pos_b', 'pos_a');
-select pg_temp.assert_true(
-  'revise moves the count (old=0,new=1)',
-  (select coalesce((select count from public.position_signal_counts
-     where topic_id='topic_congestion_pricing' and phase='before' and position_id='pos_a'),0) = 0)
-  and (select count = 1 from public.position_signal_counts
-     where topic_id='topic_congestion_pricing' and phase='before' and position_id='pos_b')
-);
--- (g) THE RED LINE: no per-actor/individual row exists; assert no identity column.
-select pg_temp.assert_true(
-  'counts table has no identity column',
-  not exists (
-    select 1 from information_schema.columns
-    where table_schema='public' and table_name='position_signal_counts'
-      and column_name in ('user_id','voter','reader_key','choice_hash','actor','created_by')
-  )
-);
--- (h) authed non-reviewer cannot read pulse (RLS)
-select pg_temp.assert_true(
-  'normal user sees no pulse rows', not exists (select 1 from public.position_signal_pulse)
-);
-
+-- Repeating a cast is idempotent. The client-supplied previous bucket is ignored.
+select public.cast_position_signal('topic_congestion_pricing', 'before', 'pos_a', 'pos_b');
 reset role;
-set local role authenticated;
-select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000102', true);
--- (i) reviewer sees pulse VOLUME, but it carries no actor/position — cannot
--- confirm whether user ...101 voted, nor for which position (oracle eliminated).
 select pg_temp.assert_true(
-  'reviewer sees actor-less pulse only',
-  (select count(*) >= 1 from public.position_signal_pulse
-   where topic_id='topic_congestion_pricing')
-  and not exists (
-    select 1 from information_schema.columns
-    where table_schema='public' and table_name='position_signal_pulse'
-      and column_name not in ('topic_id','minute','casts'))
+  'repeated cast keeps exactly one private ballot',
+  (select count(*) = 1
+     from public.position_signal_ballots
+    where user_id='00000000-0000-0000-0000-000000000101'
+      and topic_id='topic_congestion_pricing' and phase='before'
+      and position_id='pos_a')
+);
+set local role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000101', true);
+select public.cast_position_signal('topic_congestion_pricing', 'before', 'pos_b', 'spoofed_previous');
+select pg_temp.assert_true(
+  'revision replaces the caller ballot server-side',
+  public.get_my_position_signal('topic_congestion_pricing')->>'before' = 'pos_b'
+);
+select pg_temp.assert_true(
+  'normal user has no direct signal-table access',
+  not has_table_privilege('authenticated', 'public.position_signal_counts', 'select')
+  and not has_table_privilege('authenticated', 'public.position_signal_ballots', 'select')
+  and not has_table_privilege('authenticated', 'public.position_signal_pulse', 'select')
+);
+reset role;
+select pg_temp.assert_true(
+  'revision still keeps one physical private ballot',
+  (select count(*) = 1
+     from public.position_signal_ballots
+    where user_id='00000000-0000-0000-0000-000000000101'
+      and topic_id='topic_congestion_pricing' and phase='before'
+      and position_id='pos_b')
 );
 
 -- ————— Claim evaluations (G2 / Library of Truths) —————
 reset role;
 set local role anon;
 select set_config('request.jwt.claim.sub', '', true);
--- (a) anon sees ZERO rows of the identity-bearing table (RLS staff-only blocks)
+-- (a) the identity-bearing table is not directly exposed.
 select pg_temp.assert_true(
-  'anon sees no claim_evaluations rows directly',
-  not exists (select 1 from public.claim_evaluations)
+  'anon has no direct claim evaluation access',
+  not has_table_privilege('anon', 'public.claim_evaluations', 'select')
 );
+select pg_temp.expect_error($$ select * from public.claim_evaluations $$);
 -- (b) anon cannot evaluate (account-gated + reviewer)
 select pg_temp.expect_error($$
   select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'established')
@@ -177,16 +193,27 @@ $$);
 reset role;
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000102', true);
--- (d) reviewer can evaluate; record stored
-select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'established', 'Survived cross-camp review.');
+-- (d) a single reviewer cannot establish a claim; a reasoned contested/values
+-- assessment remains allowed.
+select pg_temp.expect_error($$
+  select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'established', 'One reviewer is insufficient.')
+$$);
+select pg_temp.expect_error($$
+  select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'contested', ' ')
+$$);
+select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'contested', 'Evidence remains materially disputed.');
+reset role;
 select pg_temp.assert_true(
   'reviewer evaluation stored',
-  (select state = 'established' from public.claim_evaluations
+  (select state = 'contested' and rationale = 'Evidence remains materially disputed.'
+     from public.claim_evaluations
    where topic_id='topic_congestion_pricing' and claim_id='cp_c1')
 );
 -- (e) invalid state rejected
+set local role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000102', true);
 select pg_temp.expect_error($$
-  select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'winner')
+  select public.evaluate_claim('topic_congestion_pricing', 'cp_c1', 'winner', 'Invalid state.')
 $$);
 
 reset role;
@@ -195,18 +222,17 @@ select set_config('request.jwt.claim.sub', '', true);
 -- (f) anon reads the evaluation via the public RPC...
 select pg_temp.assert_true(
   'anon reads evaluation via rpc',
-  (public.get_claim_evaluations('topic_congestion_pricing')::text like '%established%')
+  (public.get_claim_evaluations('topic_congestion_pricing')::text like '%contested%')
 );
 -- (g) THE RED LINE: the public read NEVER exposes who evaluated (evaluated_by)
 select pg_temp.assert_true(
   'public read omits evaluator identity',
   position('evaluated_by' in public.get_claim_evaluations('topic_congestion_pricing')::text) = 0
 );
--- (h) ...and STILL sees zero rows of the identity-bearing table directly, even
--- though a row now exists (RLS blocks => evaluated_by never reaches anon)
+-- (h) ...and direct table access remains unavailable after a real evaluation.
 select pg_temp.assert_true(
-  'anon still sees no identity rows after a real evaluation',
-  not exists (select 1 from public.claim_evaluations)
+  'anon still has no identity table access after a real evaluation',
+  not has_table_privilege('anon', 'public.claim_evaluations', 'select')
 );
 
 -- ═══════════════ BRIDGING (cross-camp consensus gate) ═══════════════
@@ -219,9 +245,13 @@ select pg_temp.expect_error($$ select public.set_reviewer_camp('topic_congestion
 select pg_temp.expect_error($$ insert into public.claim_endorsements(topic_id,claim_id,reviewer_id,state)
   values ('topic_congestion_pricing','cp_c2','00000000-0000-0000-0000-000000000102','established') $$);
 select pg_temp.expect_error($$ select public.recompute_bridging('topic_congestion_pricing','cp_c2') $$);
-select pg_temp.assert_true('anon sees no endorsements', not exists(select 1 from public.claim_endorsements));
-select pg_temp.assert_true('anon sees no camps', not exists(select 1 from public.reviewer_camps));
-select pg_temp.assert_true('anon sees no bridge_audit', not exists(select 1 from public.bridge_audit));
+select pg_temp.assert_true('anon has no direct bridge identity-table access',
+  not has_table_privilege('anon','public.claim_endorsements','select')
+  and not has_table_privilege('anon','public.reviewer_camps','select')
+  and not has_table_privilege('anon','public.bridge_audit','select'));
+select pg_temp.expect_error($$ select * from public.claim_endorsements $$);
+select pg_temp.expect_error($$ select * from public.reviewer_camps $$);
+select pg_temp.expect_error($$ select * from public.bridge_audit $$);
 
 -- (c) normal user (101) cannot endorse/declare/recompute
 reset role; set local role authenticated;
@@ -235,30 +265,35 @@ reset role; set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000102',true);
 select pg_temp.expect_error($$ select public.endorse_claim_state('topic_congestion_pricing','cp_c2','established') $$);
 
--- (e) camp resolution: published position -> ordinal; null/spoof -> __undecided__
+-- (e) camp resolution is exposed only through caller-scoped RPCs.
 select pg_temp.assert_true('cp_pos_a -> pos_a',
   public.set_reviewer_camp('topic_congestion_pricing','cp_pos_a') = 'pos_a');
-select pg_temp.assert_true('null -> __undecided__',
-  public.camp_of_position('topic_congestion_pricing', null) = '__undecided__');
-select pg_temp.assert_true('raw pos_a is NOT a trusted camp (spoof rejected)',
-  public.camp_of_position('topic_congestion_pricing','pos_a') = '__undecided__');
+select pg_temp.assert_true('reviewer reads only their own camp',
+  public.get_my_reviewer_camp('topic_congestion_pricing') = 'pos_a');
+select pg_temp.assert_true('internal camp resolver is not callable',
+  not has_function_privilege('authenticated','public.camp_of_position(text,text)','execute'));
+select pg_temp.expect_error($$ select public.camp_of_position('topic_congestion_pricing', null) $$);
 
--- (f) ONE CAMP => pending, reaching BOTH read paths; no bridge row
+-- (f) ONE CAMP stays publicly masked and has no physical bridge row.
 select public.endorse_claim_state('topic_congestion_pricing','cp_c2','established');
-select pg_temp.assert_true('single camp => pending in get_claim_bridging',
-  public.get_claim_bridging('topic_congestion_pricing')::text like '%pending_single_camp%');
-select pg_temp.assert_true('single camp => pending reaches get_claim_evaluations (union read)',
-  public.get_claim_evaluations('topic_congestion_pricing')::text like '%pending_single_camp%');
+select pg_temp.assert_true('single endorsement is publicly insufficient',
+  public.get_claim_bridging('topic_congestion_pricing')::text like '%insufficient%'
+  and public.get_claim_bridging('topic_congestion_pricing')::text like '%withheld%');
+reset role;
 select pg_temp.assert_true('single camp => no bridge row',
   not exists(select 1 from public.claim_evaluations where claim_id='cp_c2' and authored_by='bridge'));
 
--- (g) TWO DISTINCT CAMPS, same state => BRIDGED, reflected into claim_evaluations
-reset role; set local role authenticated;
+-- (g) TWO DISTINCT CAMPS produce a physical bridge, still masked publicly while
+-- fewer than five reviewers have endorsed.
+set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000103',true);
 select public.set_reviewer_camp('topic_congestion_pricing','cp_pos_b');
 select public.endorse_claim_state('topic_congestion_pricing','cp_c2','established');
-select pg_temp.assert_true('two camps => bridged_established',
-  public.get_claim_bridging('topic_congestion_pricing')::text like '%bridged_established%');
+select pg_temp.assert_true('two endorsers remain publicly masked below the privacy floor',
+  public.get_claim_bridging('topic_congestion_pricing')::text like '%insufficient%'
+  and public.get_claim_bridging('topic_congestion_pricing')::text like '%withheld%'
+  and public.get_claim_bridging('topic_congestion_pricing')::text not like '%bridged_established%');
+reset role;
 select pg_temp.assert_true('bridged reflected into claim_evaluations.state',
   (select state='established' from public.claim_evaluations where claim_id='cp_c2'));
 select pg_temp.assert_true('bridge row is authored_by=bridge with null evaluated_by',
@@ -266,20 +301,26 @@ select pg_temp.assert_true('bridge row is authored_by=bridge with null evaluated
    from public.claim_evaluations where claim_id='cp_c2'));
 
 -- (h) CAMP-FLIP COLLAPSE (live-join, no manual delete): 103 pos_b -> pos_a
+set local role authenticated;
+select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000103',true);
 select public.set_reviewer_camp('topic_congestion_pricing','cp_pos_a');
-select pg_temp.assert_true('flip collapses to single camp => pending',
-  public.get_claim_bridging('topic_congestion_pricing')::text like '%pending_single_camp%');
+select pg_temp.assert_true('flip remains publicly masked',
+  public.get_claim_bridging('topic_congestion_pricing')::text like '%insufficient%');
+reset role;
 select pg_temp.assert_true('flip clears the bridge row (no manual delete)',
   not exists(select 1 from public.claim_evaluations where claim_id='cp_c2' and authored_by='bridge'));
 
 -- (i) NON-DESTRUCTIVE: a human G2 eval is never clobbered by a bridge recompute
-select public.evaluate_claim('topic_congestion_pricing','cp_c1','contested','human reason');
+set local role authenticated;
+select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000103',true);
+select public.evaluate_claim('topic_congestion_pricing','cp_c1','values','human reason');
 select public.endorse_claim_state('topic_congestion_pricing','cp_c1','established'); -- 103 pos_a
 reset role; set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000102',true);
 select public.endorse_claim_state('topic_congestion_pricing','cp_c1','established'); -- 102 pos_a (same camp)
+reset role;
 select pg_temp.assert_true('human eval survives bridge recompute',
-  (select state='contested' and authored_by='reviewer' and rationale='human reason'
+  (select state='values' and authored_by='reviewer' and rationale='human reason'
    from public.claim_evaluations where claim_id='cp_c1'));
 
 -- (j) PRIVACY: anon payload + read RPCs leak NO auth.users uuid, camp, or audit
@@ -302,9 +343,9 @@ select pg_temp.assert_true('bridging read omits identity & camp',
 select pg_temp.assert_true('eval read omits evaluator',
   position('evaluated_by' in public.get_claim_evaluations('topic_congestion_pricing')::text)=0);
 select pg_temp.assert_true('anon still blind to identity tables after real activity',
-  not exists(select 1 from public.claim_endorsements)
-  and not exists(select 1 from public.reviewer_camps)
-  and not exists(select 1 from public.bridge_audit));
+  not has_table_privilege('anon','public.claim_endorsements','select')
+  and not has_table_privilege('anon','public.reviewer_camps','select')
+  and not has_table_privilege('anon','public.bridge_audit','select'));
 
 -- (k) grant survival after CREATE OR REPLACE of get_claim_evaluations
 select pg_temp.assert_true('anon retains execute on get_claim_evaluations',
@@ -337,11 +378,12 @@ select pg_temp.assert_true('documented_fabrication WITH proof => below_floor',
      'documented_fabrication','independent','journalistic','unknown','none', false, array['factual'], true))
    = 'below_floor');
 
--- anon: RLS returns zero rows of the identity-bearing table; internal rule fn
--- sealed; public read returns an array.
+-- anon: the identity-bearing table is private; internal rule fn is sealed;
+-- public read returns an array.
 set local role anon; select set_config('request.jwt.claim.sub','',true);
-select pg_temp.assert_true('anon sees no source_integrity rows directly (RLS staff-only)',
-  not exists (select 1 from public.source_integrity));
+select pg_temp.assert_true('anon has no direct source_integrity access',
+  not has_table_privilege('anon','public.source_integrity','select'));
+select pg_temp.expect_error($$ select * from public.source_integrity $$);
 select pg_temp.expect_error($$ select * from public.source_floor_verdict('ugc','none','none',
   'none_known','unknown','none','unverified','none', true, array['factual'], false) $$);
 select pg_temp.assert_true('anon get_source_floor returns array',
@@ -352,7 +394,7 @@ reset role; set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000101',true);
 select pg_temp.expect_error($$ select public.assess_source_floor('topic_congestion_pricing',
   'https://rosap.ntl.bts.gov/view/dot/42199','opinion','named_author','documented','none_known',
-  'independent','journalistic','unknown','none','','') $$);
+  'independent','journalistic','unknown','A reasoned assessment.','none','','') $$);
 select pg_temp.expect_error($$ select * from public.source_floor_verdict('ugc','none','none',
   'none_known','unknown','none','unverified','none', true, array['factual'], false) $$);
 
@@ -361,7 +403,8 @@ reset role; set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000102',true);
 select public.assess_source_floor('topic_congestion_pricing',
   'https://rosap.ntl.bts.gov/view/dot/42199',
-  'opinion','named_author','documented','none_known','independent','journalistic','unknown','none','','');
+  'opinion','named_author','documented','none_known','independent','journalistic','unknown',
+  'The page is attributable but expresses an editorial position.','none','','');
 select pg_temp.assert_true('reviewer write surfaces a computed verdict via read',
   exists (select 1 from jsonb_array_elements(public.get_source_floor('topic_congestion_pricing')) e
           where e->'attributes'->>'content_genre' = 'opinion'
@@ -375,8 +418,8 @@ select pg_temp.assert_true('anon fixtures payload leaks no source-assess identit
   (select position('00000000-0000-0000-0000-000000000102' in debate::text)=0
       and position('source_assessed' in debate::text)=0
    from public.published_debate_fixtures where topic_id='topic_congestion_pricing'));
-select pg_temp.assert_true('anon blind to source_integrity table',
-  not exists (select 1 from public.source_integrity));
+select pg_temp.assert_true('anon remains blind to source_integrity table',
+  not has_table_privilege('anon','public.source_integrity','select'));
 
 -- grant survival.
 select pg_temp.assert_true('anon retains execute on get_source_floor',

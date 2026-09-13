@@ -242,7 +242,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Consensus assessment by the UN climate science body; the strongest available source for what modeled mitigation pathways assume. Scenario ranges are wide and aggregate many models, so single-number citations need care."
+      "quality_notes": "Consensus assessment by the UN climate science body; the strongest available source for what modeled mitigation pathways assume. Scenario ranges are wide and aggregate many models, so single-number citations need care.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -252,37 +253,41 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Influential intergovernmental modeling exercise. Its nuclear figures are scenario outputs conditional on policy, not forecasts, and the IEA has historically underestimated renewables growth."
+      "quality_notes": "Influential intergovernmental modeling exercise. Its nuclear figures are scenario outputs conditional on policy, not forecasts, and the IEA has historically underestimated renewables growth.",
+      "content_hash": null
     },
     {
       "id": "s3",
-      "url": "https://www.lazard.com/research-insights/levelized-cost-of-energyplus/",
-      "title": "Levelized Cost of Energy+ (LCOE+)",
+      "url": "https://www.lazard.com/media/kcfconhf/lazards-lcoeplus_vf.pdf",
+      "title": "Levelized Cost of Energy+ — July 2026 (LCOE v19.0 / LCOS v11.0)",
       "publisher": "Lazard",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Widely cited investment-bank benchmark for U.S. generation costs. LCOE excludes system integration and firming costs, which understates the value of dispatchable plants, and its new-nuclear estimates rest on very few recent U.S. data points."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Exact July 2026 LCOE+ report (LCOE v19.0 / LCOS v11.0), a widely cited investment-bank benchmark for U.S. generation costs. LCOE excludes system integration and firming costs, which understates the value of dispatchable plants, and its new-nuclear estimates rest on very few recent U.S. data points.",
+      "content_hash": null
     },
     {
       "id": "s4",
-      "url": "https://www.worldnuclearreport.org/",
-      "title": "World Nuclear Industry Status Report",
+      "url": "https://www.worldnuclearreport.org/IMG/pdf/wnisr2025-v2.pdf",
+      "title": "World Nuclear Industry Status Report 2025 (v2)",
       "publisher": "Mycle Schneider Consulting",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Detailed annual dataset on reactor construction starts, delays, and costs. Editorially nuclear-skeptic: its trend data is widely used, but its framing consistently argues against new nuclear."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Versioned 2025 v2 report with detailed annual data on reactor construction starts, delays, and costs. Editorially nuclear-skeptic: its trend data is widely used, but its framing consistently argues against new nuclear.",
+      "content_hash": "sha256:c07bb64e0877b640ac81e3b3c6faf18e7715b90595b95e4ee08ebbd85bae8688"
     },
     {
       "id": "s5",
-      "url": "https://energy.mit.edu/research/future-nuclear-energy-carbon-constrained-world/",
+      "url": "https://energy.mit.edu/wp-content/uploads/2018/09/The-Future-of-Nuclear-Energy-in-a-Carbon-Constrained-World.pdf",
       "title": "The Future of Nuclear Energy in a Carbon-Constrained World",
       "publisher": "MIT Energy Initiative",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Major university study with system-cost modeling. Pro-nuclear-policy leaning in its recommendations, though candid about the industry's cost failures; published 2018, so its cost data predates the most recent projects."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Exact 2018 MIT report with system-cost modeling. Pro-nuclear-policy leaning in its recommendations, though candid about the industry's cost failures; its cost data predates the most recent projects.",
+      "content_hash": "sha256:1ee81638b8d14c6c574056ac4ad0361b85c41ee35068f3748c98a29bf28455b3"
     },
     {
       "id": "s6",
@@ -292,7 +297,34 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Accessible synthesis of peer-reviewed mortality estimates per unit of energy. Good for orders of magnitude; the underlying death-rate estimates carry real uncertainty, especially for chronic air-pollution impacts."
+      "quality_notes": "Accessible synthesis of peer-reviewed mortality estimates per unit of energy. Good for orders of magnitude; the underlying death-rate estimates carry real uncertainty, especially for chronic air-pollution impacts.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c3_s5",
+      "source_id": "s5",
+      "text": "Without that contribution, the cost of achieving deep decarbonization targets increases significantly.",
+      "locator": "MIT report, Executive Summary, p. xiii",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s3",
+      "source_id": "s3",
+      "text": "Unsubsidized renewable energy remains the most cost-competitive form of new-build generation on an LCOE basis.",
+      "locator": "Lazard LCOE v19.0, Executive Summary, p. 3",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s4",
+      "source_id": "s4",
+      "text": "All reactors under construction in at least six of the 11 countries hosting building sites have experienced, often year-long, delays.",
+      "locator": "WNISR 2025 v2, Construction Times, p. 24",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -327,6 +359,7 @@
       "id": "ev_c3_s5",
       "claim_id": "c3",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c3_s5",
       "label": "supports_claim",
       "rationale": "The MIT study's system modeling finds that excluding firm low-carbon options such as nuclear substantially raises the average cost of deep decarbonization.",
       "confidence": 0.8,
@@ -345,6 +378,7 @@
       "id": "ev_c4_s3",
       "claim_id": "c4",
       "source_id": "s3",
+      "source_excerpt_id": "ex_ev_c4_s3",
       "label": "supports_claim",
       "rationale": "Lazard's levelized cost analysis places new nuclear well above utility-scale solar and onshore wind per megawatt-hour, even across its wide estimate ranges.",
       "confidence": 0.85,
@@ -381,6 +415,7 @@
       "id": "ev_c6_s4",
       "claim_id": "c6",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c6_s4",
       "label": "contradicts_claim",
       "rationale": "WNISR documents nuclear's shrinking share of global generation and roughly decade-long average project timelines, concluding the technology scales too slowly to matter for 2050 targets.",
       "confidence": 0.75,
