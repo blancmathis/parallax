@@ -34,24 +34,30 @@ export default function LegalPage({
             <p>
               {copy.director} : {identity.publicationDirector}
             </p>
-            <p>
-              {isPlaceholder(identity.postalAddress) ? (
-                copy.addressPending
-              ) : (
-                <>
-                  {copy.address} : {identity.postalAddress}
-                </>
-              )}
-            </p>
-            <p>
-              {isPlaceholder(identity.phone) ? (
-                copy.phonePending
-              ) : (
-                <>
-                  {copy.phone} : {identity.phone}
-                </>
-              )}
-            </p>
+            {identity.publisherStatus === "non-professional" ? (
+              <p className="legal-editor__status">{copy.nonProfessional}</p>
+            ) : (
+              <>
+                <p>
+                  {isPlaceholder(identity.postalAddress ?? "") ? (
+                    copy.addressPending
+                  ) : (
+                    <>
+                      {copy.address} : {identity.postalAddress}
+                    </>
+                  )}
+                </p>
+                <p>
+                  {isPlaceholder(identity.phone ?? "") ? (
+                    copy.phonePending
+                  ) : (
+                    <>
+                      {copy.phone} : {identity.phone}
+                    </>
+                  )}
+                </p>
+              </>
+            )}
             <p>
               {CONTACT_MAILTO ? (
                 <>

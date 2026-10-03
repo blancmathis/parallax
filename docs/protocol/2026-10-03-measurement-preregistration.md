@@ -21,10 +21,15 @@ factual accuracy?
 - One debate in the confirmatory run: the pilot debate, in its reviewed
   version (steelmen signed, excerpts verified). The page version is frozen by
   its Git commit hash, recorded here before launch.
-- **Primary sample:** a paid online panel of adults living in France. Both arms
-  must finish before payment, which keeps attrition low and symmetric.
-- **Secondary sample:** the same randomization embedded on the public site.
-  It is analysed with the same script and reported as exploratory.
+- **Sample:** unpaid adult volunteers living in France, randomized on the
+  public site and through partner invitations (teachers' networks, press).
+  The project has no budget, so there is no paid panel. Attrition is the main
+  threat: a reader in Arm B can leave after reading and before answering. The
+  completion rule in "Decision rules" applies, and both completion rates are
+  published.
+- If a funder pays for a panel later, an amendment makes the panel the
+  confirmatory sample before its first participant is randomized; the site
+  sample then becomes exploratory.
 
 ## Measures
 
@@ -88,8 +93,8 @@ until data exist; the sample size does not change when it becomes known.
 
 ## Data and privacy
 
-No account, no IP address stored, no persistent identifier, no cookie. Panel
-identifiers stay with the panel provider. One anonymous record per completed
+No account, no IP address stored, no persistent identifier, no cookie. One
+anonymous record per completed
 reading, with the date only. Stated positions are opinions: no record can be
 linked to a person, and the on-site variant shows a clear notice before the
 first question. A legal review of this collection is required before launch.

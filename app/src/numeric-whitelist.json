@@ -33,5 +33,10 @@
     "selector": ".legal-host__phone",
     "numbers": ["1", "650", "319", "8930"],
     "reason": "Cloudflare contact phone published in https://www.cloudflare.com/privacypolicy/; a legal contact detail, not a measured result."
+  },
+  {
+    "selector": ".legal-editor__status",
+    "numbers": ["1", "2004", "575", "21"],
+    "reason": "Legal reference: article 1-1, II of French law no. 2004-575 of 21 June 2004 (LCEN); not a measured result."
   }
 ]

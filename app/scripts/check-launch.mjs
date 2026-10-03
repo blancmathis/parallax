@@ -30,13 +30,20 @@ export function launchErrors(identity, readPage) {
     }
   }
   inspect(identity, "");
-  for (const key of [
-    "editor",
-    "publicationDirector",
-    "postalAddress",
-    "phone",
-    "contactEmail",
-  ]) {
+  if (
+    !["non-professional", "professional"].includes(identity.publisherStatus)
+  ) {
+    errors.push(
+      "identity.publisherStatus must be non-professional or professional",
+    );
+  }
+  // A non-professional publisher may withhold address and phone (LCEN
+  // art. 1-1, II); a professional one must publish both.
+  const required = ["editor", "publicationDirector", "contactEmail"];
+  if (identity.publisherStatus !== "non-professional") {
+    required.push("postalAddress", "phone");
+  }
+  for (const key of required) {
     if (typeof identity[key] !== "string" || !identity[key].trim()) {
       errors.push(`identity.${key} is missing`);
     }

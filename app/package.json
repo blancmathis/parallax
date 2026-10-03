@@ -21,6 +21,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && npm run prerender && npm run gen:seo && npm run check:seo",
+    "build:pages": "SITE_ORIGIN=https://parallax-debats.pages.dev VITE_SITE_ORIGIN=https://parallax-debats.pages.dev npm run build && npm run check:launch",
     "build:test": "SITE_ORIGIN=http://127.0.0.1:4173 VITE_SITE_ORIGIN=http://127.0.0.1:4173 npm run build",
     "prerender": "NODE_ENV=production tsx scripts/prerender.ts",
     "gen:seo": "node scripts/gen-seo.mjs",

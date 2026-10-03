@@ -17,15 +17,30 @@ function legalHtml(file: string): string {
 }
 
 describe("launch gate", () => {
-  it("blocks the checked-in identity placeholders", () => {
-    expect(launchErrors(identity, legalHtml)).toContain(
-      "identity.postalAddress is a placeholder",
+  it("accepts the checked-in non-professional identity", () => {
+    expect(launchErrors(identity, legalHtml)).toEqual([]);
+  });
+
+  it("requires address and phone from a professional publisher", () => {
+    const professional = { ...identity, publisherStatus: "professional" };
+    expect(launchErrors(professional, legalHtml)).toEqual(
+      expect.arrayContaining([
+        "identity.postalAddress is missing",
+        "identity.phone is missing",
+      ]),
     );
-    expect(launchErrors(identity, legalHtml)).toContain(
-      "identity.phone is a placeholder",
-    );
-    expect(launchErrors(identity, legalHtml)).toContain(
-      "identity.contactEmail is a placeholder",
+    const placeholders = {
+      ...professional,
+      postalAddress: "TODO_POSTAL_ADDRESS",
+      phone: "TODO_PHONE",
+      contactEmail: "TODO_CONTACT_EMAIL",
+    };
+    expect(launchErrors(placeholders, legalHtml)).toEqual(
+      expect.arrayContaining([
+        "identity.postalAddress is a placeholder",
+        "identity.phone is a placeholder",
+        "identity.contactEmail is a placeholder",
+      ]),
     );
   });
 
@@ -33,6 +48,7 @@ describe("launch gate", () => {
     // Synthetic checker inputs only; the site identity is left untouched.
     const completed = {
       ...identity,
+      publisherStatus: "professional",
       postalAddress: "Postal address supplied by the editor",
       phone: "+33 1 00 00 00 00",
       contactEmail: "contact@parallax.org",

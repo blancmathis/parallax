@@ -10,9 +10,11 @@ written for the frozen Supabase backend and a team.
 1. A change lands on `main` through a reviewed pull request. Content changes
    are commits to the debate files, so the Git history is the public record of
    every revision.
-2. Cloudflare Pages builds `main`: root directory `app`, build command
-   `npm ci && npm run build`, output directory `dist`, environment
-   `SITE_ORIGIN` and `VITE_SITE_ORIGIN` set to the public origin.
+2. Cloudflare Pages project `parallax-debats` builds `main`: root directory
+   `app`, build command `npm run build:pages`, output directory `dist`. The
+   script sets the public origin (`https://parallax-debats.pages.dev`; there
+   is no paid domain) and runs the launch gate, so a build with placeholder
+   legal identity fails. Node comes from `app/.node-version`.
 3. The build prerenders every route in French (`/`) and English (`/en/`), with
    the page text in the HTML.
 4. Rollback: in the Pages dashboard, redeploy the previous deployment. One click.

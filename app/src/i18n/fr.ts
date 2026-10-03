@@ -145,6 +145,8 @@ export const fr = {
     addressPending: "Adresse postale à renseigner avant publication.",
     phone: "Téléphone",
     phonePending: "Numéro de téléphone à renseigner avant publication.",
+    nonProfessional:
+      "Parallax est édité à titre non professionnel. Conformément à l'article 1-1, II de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, l'adresse et le téléphone de l'éditeur ne sont pas publiés : ils sont communiqués à l'hébergeur ci-dessous.",
     emailPending: "Courriel de contact à renseigner avant publication.",
     hostTitle: "Hébergeur",
     hostPolicy: "Politique de confidentialité de Cloudflare",

@@ -198,6 +198,8 @@ export const en = {
     addressPending: "Postal address to be supplied before publication.",
     phone: "Phone",
     phonePending: "Phone number to be supplied before publication.",
+    nonProfessional:
+      "Parallax is published on a non-professional basis. Under article 1-1, II of French law no. 2004-575 of 21 June 2004 (LCEN), the publisher's address and phone number are not published: they are supplied to the hosting provider below.",
     emailPending: "Contact email to be supplied before publication.",
     hostTitle: "Hosting provider",
     hostPolicy: "Cloudflare privacy policy",

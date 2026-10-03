@@ -97,5 +97,6 @@ Date :
 | 3 | Signatures ; révisions demandées par les relecteurs |
 | 4 | Seconde lecture si révision ; publication de la version relue |
 
-L'indemnité (50 € par relecture) dépend du budget ; elle est annoncée dans
-l'invitation dès qu'elle est décidée.
+La relecture est bénévole : le projet n'a pas de budget (décision du
+2026-10-03). Si un financement arrive, une indemnité est annoncée à tous les
+relecteurs, y compris ceux qui ont déjà signé.
