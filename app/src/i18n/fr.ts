@@ -143,6 +143,8 @@ export const fr = {
     address: "Adresse postale",
     email: "Courriel de contact",
     addressPending: "Adresse postale à renseigner avant publication.",
+    phone: "Téléphone",
+    phonePending: "Numéro de téléphone à renseigner avant publication.",
     emailPending: "Courriel de contact à renseigner avant publication.",
     hostTitle: "Hébergeur",
     hostPolicy: "Politique de confidentialité de Cloudflare",

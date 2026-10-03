@@ -44,6 +44,15 @@ export default function LegalPage({
               )}
             </p>
             <p>
+              {isPlaceholder(identity.phone) ? (
+                copy.phonePending
+              ) : (
+                <>
+                  {copy.phone} : {identity.phone}
+                </>
+              )}
+            </p>
+            <p>
               {CONTACT_MAILTO ? (
                 <>
                   {copy.email} :{" "}

@@ -34,6 +34,7 @@ export function launchErrors(identity, readPage) {
     "editor",
     "publicationDirector",
     "postalAddress",
+    "phone",
     "contactEmail",
   ]) {
     if (typeof identity[key] !== "string" || !identity[key].trim()) {

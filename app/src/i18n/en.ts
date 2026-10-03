@@ -196,6 +196,8 @@ export const en = {
     address: "Postal address",
     email: "Contact email",
     addressPending: "Postal address to be supplied before publication.",
+    phone: "Phone",
+    phonePending: "Phone number to be supplied before publication.",
     emailPending: "Contact email to be supplied before publication.",
     hostTitle: "Hosting provider",
     hostPolicy: "Cloudflare privacy policy",

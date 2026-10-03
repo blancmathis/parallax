@@ -22,6 +22,9 @@ describe("launch gate", () => {
       "identity.postalAddress is a placeholder",
     );
     expect(launchErrors(identity, legalHtml)).toContain(
+      "identity.phone is a placeholder",
+    );
+    expect(launchErrors(identity, legalHtml)).toContain(
       "identity.contactEmail is a placeholder",
     );
   });
@@ -31,6 +34,7 @@ describe("launch gate", () => {
     const completed = {
       ...identity,
       postalAddress: "Postal address supplied by the editor",
+      phone: "+33 1 00 00 00 00",
       contactEmail: "contact@parallax.org",
     };
     expect(launchErrors(completed, legalHtml)).toEqual([]);
