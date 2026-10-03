@@ -12,7 +12,7 @@ const packageJson = JSON.parse(
 function githubRepository(value) {
   if (typeof value !== "string") return null;
   const match = value.match(
-    /github\.com(?::|\/)([^/\s:#]+)\/([^/\s#]+)(?:[\s/#]|$)/i,
+    /github\.com(?::|\/)([^/\s:#]+)\/([^/\s#)]+)(?:[\s/#)]|$)/i,
   );
   if (!match) return null;
   return `${match[1]}/${match[2].replace(/\.git$/i, "")}`;
@@ -39,7 +39,7 @@ if (!expected) {
     errors.push(`package.json bugs.url must be ${expectedUrls.bugs}`);
   }
 
-  for (const relativePath of ["README.md", "SECURITY.md"]) {
+  for (const relativePath of ["README.md", "SECURITY.md", "CONTRIBUTING.md"]) {
     const contents = readFileSync(resolve(repositoryRoot, relativePath), "utf8");
     const references = [
       ...contents.matchAll(

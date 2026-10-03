@@ -1,8 +1,7 @@
 # Cloudflare Pages static-asset headers. Pages Functions must set their own
-# response headers. CSP is strict by design: the production build emits external
-# module scripts, so any future inline script must use a reviewed hash or nonce.
+# response headers. The FR/EN prerender emits complete reading bodies and
+# external module scripts only; the build rejects inline hydration scripts.
 /*
-  Cache-Control: public, max-age=0, must-revalidate
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

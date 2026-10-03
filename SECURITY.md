@@ -9,17 +9,15 @@ The project is maintained by Peerlab.
 
 | Layer | Status |
 | --- | --- |
-| Fixture-backed browser app | **Current prototype.** It requires no account or secret. Personal quiz/profile data and the local mock contribution/review overlay are stored in the browser. |
-| Supabase auth, RLS, revision workflow, aggregate signals, source assessment, and Edge Function | **Experimental.** A disposable bootstrap, SQL matrices, Edge tests, and CI jobs exist, but they are not a production-security guarantee. |
-| External source processing and provider access | **Experimental.** Fetched documents are untrusted input. Provider keys and service credentials must remain server-side. |
+| Static reading site | **Current prototype.** No account or secret is required. The only browser storage is the last language (`parallax.locale`). |
+| Content rendering | **Current.** Fixture strings and excerpts are rendered as text; external sources open as links. The reading app does not fetch or process source documents. |
+| Archived backend | **Frozen / inactive.** The site does not use `supabase/`, and CI runs frontend checks only. |
 | Production threat model, independent security review, incident response, backup/restore proof, and availability guarantees | **Target / not provided.** |
 
-The SQL policy and hardening tests under [`supabase/tests/`](supabase/tests/),
-and the Edge checks under
-[`supabase/functions/analyze-seed/`](supabase/functions/analyze-seed/), are useful
-evidence only when run against or alongside the disposable environment at the
-exact commit being evaluated. They do not establish security for an untested
-hosted deployment.
+The frontend checks cover the fixture-backed reading interface, static HTML,
+hydration, accessibility, and dependencies. The launch gate also blocks missing
+publisher contact details and missing legal pages. Hosted security headers and
+hosting configuration still require verification at deployment.
 
 Do not process secrets, private documents, personal allegations, or regulated
 data through the prototype. A structured or reviewed dossier is provisional;
@@ -31,7 +29,7 @@ Do not disclose vulnerabilities, credentials, private data, or exploitation
 steps in a public issue or pull request.
 
 Use GitHub's
-[private vulnerability reporting form](https://github.com/Swarek/parallax/security/advisories/new).
+[private vulnerability reporting form](https://github.com/blancmathis/parallax/security/advisories/new).
 
 If the private form is unavailable, open a public issue containing only the
 words "Private security contact requested" and no technical details. A
@@ -45,14 +43,10 @@ Include, when possible:
 - a minimal proof of concept without real user data;
 - any suggested mitigation.
 
-Reports involving exposed secrets, authorization bypass, cross-site scripting,
-server-side request forgery, database policies, unsafe content rendering, or
-dependency compromise are especially important.
-
-For source-processing reports, also include whether an untrusted document could
-influence prompts, tools, network access, stored excerpts, rendered content, or
-audit records. Do not attach the real malicious/private document when a minimal
-synthetic reproduction is sufficient.
+Reports involving exposed secrets, cross-site scripting, unsafe content
+rendering, security headers, privacy regressions, or dependency compromise are
+especially important. Use a minimal synthetic reproduction and do not attach
+private source documents.
 
 ## Supported versions
 

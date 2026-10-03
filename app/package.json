@@ -5,13 +5,13 @@
   "description": "An open-source Peerlab project for making disagreement inspectable.",
   "license": "Apache-2.0",
   "author": "Peerlab",
-  "homepage": "https://github.com/Swarek/parallax#readme",
+  "homepage": "https://github.com/blancmathis/parallax#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Swarek/parallax.git"
+    "url": "git+https://github.com/blancmathis/parallax.git"
   },
   "bugs": {
-    "url": "https://github.com/Swarek/parallax/issues"
+    "url": "https://github.com/blancmathis/parallax/issues"
   },
   "type": "module",
   "engines": {

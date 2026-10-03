@@ -7,7 +7,7 @@ Parallax is developed and maintained by **Peerlab**.
 Parallax is an open-source platform for turning difficult public questions into
 structured, auditable debate maps. Instead of flattening everything into a
 comment thread, it separates positions, arguments, claims, sources, values,
-trade-offs, review decisions, and revision history.
+trade-offs, and the Git history of each dossier.
 
 Parallax does not declare winners or present AI output as truth. It helps
 readers inspect what each position depends on, where sources align with a
@@ -19,11 +19,10 @@ Parallax is an actively developed prototype, not a finished public service.
 
 | Layer | Status | What that means today |
 | --- | --- | --- |
-| Browser demonstrations | **Current** | English and French interfaces render three fixture-backed debates without an account, database, or API key. |
-| Contribution and review loop | **Mock** | In the default app, drafts, decisions, revision bumps, and extra audit events are stored in browser `localStorage`; published fixtures are not mutated. |
-| Supabase workflow | **Experimental** | Auth, contributions, revisions, position signals, claim evaluations, source assessments, and seed-packet analysis have code and database contracts. A guarded disposable local bootstrap and CI integration tests exist; no hosted full-stack release has been proven. |
-| AI analysis | **Mock** | The usable analysis path produces deterministic mock artifacts. Requests for the unavailable live provider fail explicitly; there is no live model analysis path. |
-| Verification engine | **Target** | Exact excerpts, versioned source artifacts, reproducible research, adversarial review, and scoped procedural conclusions are not yet implemented end to end. |
+| Reading site | **Current** | French at `/`, English under `/en/`; three fixture-backed drafts with a prerendered reading body and no account, database, or API key. |
+| Human review | **Pending** | Drafts were prepared with AI tools. No named reviewer or supporter has signed them yet; coverage is computed from the fixtures. |
+| Source alignment | **Draft** | Labels and stored excerpts are inspectable but unreviewed. Links without an excerpt are marked as unverified. |
+| Backend archive | **Frozen** | The retained `supabase/` tree is inactive; the reading site and CI do not use it. |
 
 Parallax does not provide production guarantees, comprehensive topic coverage,
 or automated factual verification. Its bounded target is an exact, structured,
@@ -37,36 +36,35 @@ Requirements: Node.js `>=22.22.2 <23` or `>=24.15.0`, and npm `10.9.8`, as
 declared by [`app/package.json`](app/package.json).
 
 ```bash
-git clone https://github.com/Swarek/parallax.git
+git clone https://github.com/blancmathis/parallax.git
 cd parallax/app
 npm ci
 npm run dev
 ```
 
-The printed local URL opens the fixture-backed version. No account, database,
-or API key is required. It proves the browser demonstration and local mock
-workflow only; it does not exercise Supabase, RLS, the Edge Function, or a live
-model provider.
+The printed local URL opens the fixture-backed reading site. No account,
+database, or API key is required.
 
 The maintained frontend quality gates are:
 
 ```bash
 npm run qa
 npx playwright install chromium # first local browser run only
-npm run qa:release
+npm run test:e2e
 ```
 
-`qa` covers TypeScript, lint, fixture structure, unit/runtime-contract tests,
-coverage, a test-origin production build, bundle budgets, and the production
-dependency audit. `qa:release` adds the fixture-backed and local-mock Playwright
-journeys. Neither command is backend proof.
+`qa` covers TypeScript, lint, fixture structure, repository metadata,
+unit/runtime-contract tests, coverage, a test-origin production build, bundle
+budgets, and the production dependency audit. The browser suite covers French
+and English on desktop and mobile, language navigation, legal routes, and
+reading a dossier without JavaScript.
 
-For the destructive but disposable local Supabase bootstrap, role accounts,
-backend/Edge checks, and optional hosted deployment, follow the exact
-prerequisites and commands in
-[`docs/deployment/deploy-runbook.md`](docs/deployment/deploy-runbook.md). Never
-put service-role, database, JWT, or model-provider secrets in frontend
-variables.
+Before publishing, complete the postal address and contact email in
+[`app/src/config/identity.json`](app/src/config/identity.json), set `SITE_ORIGIN`
+and `VITE_SITE_ORIGIN` to the same controlled origin, and build again. Then run
+`npm run check:launch`. It fails while identity placeholders remain, while a
+legal page is missing, or while the build still contains an old placeholder.
+`npm run qa:release` includes this publication gate after the frontend checks.
 
 ## What is implemented
 
@@ -76,25 +74,19 @@ Current in the default fixture-backed app:
   trade-offs.
 - Source panels that describe claim-source alignment rather than assigning a
   global reliability score.
-- Local mock contribution drafts, review decisions, revision overlays, and
-  audit events.
-- Demonstration position signals and browser-derived claim summaries.
-- Keyboard-accessible, responsive English and French interfaces.
-
-Experimental behind an optional Supabase configuration:
-
-- authentication, persistent contribution/review paths, revision publication,
-  position signals, claim evaluations, and source-integrity assessments;
-- a guarded seed-analysis Edge Function whose output is currently
-  deterministic mock data. The unavailable live-provider request fails closed.
+- A draft notice, AI preparation disclosure, computed source/excerpt coverage,
+  and a link to each fixture's Git history.
+- Keyboard-accessible, responsive French and English reading interfaces.
+- A short home page, project page, legal notice, privacy page, and contact page.
+- Static HTML reading content hydrated by React 19.
 
 Not implemented end to end:
 
-- a six-stage live AI analysis pipeline or live model-provider integration;
+- named human review, supporter signatures, or reviewed publication;
 - exact source excerpts and locators for every truth-apt claim;
 - a versioned source-artifact registry with freshness and change handling;
-- the global claim graph, cross-camp governance, and general-purpose factual
-  verification described in the target documents.
+- cross-camp governance and the general-purpose verification in the target
+  documents.
 
 The implementation roadmap and completion criteria live in
 [`docs/04-roadmap.md`](docs/04-roadmap.md).
@@ -116,11 +108,10 @@ The implementation roadmap and completion criteria live in
 
 | Path | Purpose |
 | --- | --- |
-| `app/` | Vite, React, and TypeScript browser application |
+| `app/` | Vite, React 19, TypeScript, and static HTML generation |
 | `app/src/data/` | English and French demonstration fixtures |
-| `supabase/migrations/` | Database schema, policies, and backend functions |
-| `supabase/functions/` | Server-side analysis edge function |
-| `supabase/tests/` | SQL security and behavior checks |
+| `app/src/config/identity.json` | Publisher identity and required launch coordinates |
+| `supabase/` | Frozen backend archive; unused by the reading site |
 | `docs/INDEX.md` | Documentation navigation and status vocabulary |
 | `docs/01-vision.md` | Product problem and principles |
 | `docs/02-product.md` | Product decisions and bounded MVP |
