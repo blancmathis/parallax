@@ -562,9 +562,12 @@ First product flow:
 
 ## Seed Debate Packet
 
-The current browser input contract is validated by `seedPacketSchema` in
-[`app/src/lib/backend.ts`](../app/src/lib/backend.ts). It is an input to a
-provisional analysis job, not proof that the source contents were verified.
+**Archived (2026-10-03).** The browser seed form and its `seedPacketSchema`
+were cut with user-triggered analysis; they remain under the tag
+`archive/workspace-20260913`. The shape below is kept as the input format of
+the target offline pipeline (D20 in [02-product.md](02-product.md)). It is an
+input to a provisional analysis, not proof that the source contents were
+verified.
 
 ```json
 {
