@@ -2546,3 +2546,8 @@
 .preview--reading .preview__grid {
   margin-top: 20px;
 }
+
+/* Keep the unreviewed stamp readable at the existing small text size. */
+.hero .stamp {
+  opacity: 1;
+}

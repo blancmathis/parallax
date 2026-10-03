@@ -59,7 +59,7 @@ describe("debate library epistemic shape", () => {
   it("renders exclusive corpus/card counts and sorts the two states separately", async () => {
     const user = userEvent.setup();
     const { container } = render(
-      <MemoryRouter initialEntries={["/debates"]}>
+      <MemoryRouter initialEntries={["/en/debates"]}>
         <I18nProvider>
           <DebatesIndex />
         </I18nProvider>

@@ -38,6 +38,9 @@ function formatAxeViolations(
 }
 
 export async function assertPageHealth(page: Page): Promise<void> {
+  // Audit the supported reduced-motion reading state. Prerendered text is
+  // visible before entrance animations settle; those fades distort contrast.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.evaluate(async () => {
     await document.fonts?.ready;
   });

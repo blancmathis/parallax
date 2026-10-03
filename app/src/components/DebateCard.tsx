@@ -46,11 +46,22 @@ export function DebateCard({
   const { t, locale } = useI18n();
   const armed = useMotionArmed();
   const revision = debate.revision.revision_number;
+  // Show a fixture date in static HTML and the first hydration render. Relative
+  // time is a client enhancement, so an old build cannot cause a mismatch.
+  const [revised, setRevised] = useState(
+    debate.revision.published_at.slice(0, 10),
+  );
+  useEffect(() => {
+    const frame = requestAnimationFrame(() =>
+      setRevised(relativeDate(debate.revision.published_at, locale)),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [debate.revision.published_at, locale]);
 
   const { established, contested, provisional, values, total, temperament } =
     debateShape(debate);
 
-  // Dot/segment colours mirror the canonical library-of-truths mapping used by
+  // Dot/segment colours mirror the canonical claim-state mapping used by
   // the debate-page StateStrip: established -> green, contested -> red,
   // provisional -> amber, values -> slate. A min flex-basis guarantees a
   // 1-claim sliver stays perceivable next to a much larger segment.
@@ -175,7 +186,7 @@ export function DebateCard({
       {!compact && (
         <span className="atlas-card__revised">
           {t.atlas.revisedPrefix}{" "}
-          {relativeDate(debate.revision.published_at, locale)}
+          {revised}
           {total > 0 ? ` · ${t.atlas.claimsCounted(total)}` : ""}
         </span>
       )}

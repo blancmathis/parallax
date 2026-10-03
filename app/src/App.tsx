@@ -91,18 +91,19 @@ class ErrorBoundary extends Component<
   }
 }
 
-/** The route table, mounted under both `/*` (EN) and `/fr/*` (FR). React Router
- *  matches these against the pathname remaining after the locale prefix is
- *  consumed, so `/fr/method` → `/method` and `useParams().slug` still resolves. */
+/** The same reading components serve FR at / and EN under /en/. */
 function AppRoutes() {
+  const { locale } = useI18n();
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/debates" element={<DebatesIndex />} />
       <Route path="/debates/:slug" element={<DebatePage />} />
       <Route path="/method" element={<Method />} />
-      <Route path="/projet" element={<Project />} />
-      <Route path="/project" element={<Project />} />
+      <Route
+        path={locale === "fr" ? "/projet" : "/project"}
+        element={<Project />}
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -122,7 +123,7 @@ export default function App() {
         <ErrorBoundary>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/fr/*" element={<AppRoutes />} />
+              <Route path="/en/*" element={<AppRoutes />} />
               <Route path="/*" element={<AppRoutes />} />
             </Routes>
           </Suspense>

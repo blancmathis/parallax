@@ -22,7 +22,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build && npm run prerender && npm run gen:seo && npm run check:seo",
     "build:test": "SITE_ORIGIN=http://127.0.0.1:4173 VITE_SITE_ORIGIN=http://127.0.0.1:4173 npm run build",
-    "prerender": "tsx scripts/prerender.ts",
+    "prerender": "NODE_ENV=production tsx scripts/prerender.ts",
     "gen:seo": "node scripts/gen-seo.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:bundle": "node scripts/check-bundle-budget.mjs",

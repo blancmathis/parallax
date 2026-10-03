@@ -33,5 +33,6 @@ export function useToasts(): Toast[] {
       return () => listeners.delete(l);
     },
     () => toasts,
+    () => toasts,
   );
 }

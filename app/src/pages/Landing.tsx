@@ -52,9 +52,6 @@ export default function Landing() {
               <Link to="/debates" className="btn btn--primary">
                 {t.landing.hero.primaryCta}
               </Link>
-              <Link to="/method" className="btn btn--ghost">
-                {t.landing.hero.secondaryCta}
-              </Link>
             </div>
           </Reveal>
 
@@ -71,7 +68,6 @@ export default function Landing() {
             <br />
             <em>{t.common.counts.previewStats(totalClaims, totalSources, totalLinks)}</em>
           </h2>
-          <p className="preview__note">{t.landing.preview.note}</p>
           <div className="preview__grid">
             {debates.map((d, i) => (
               <DebateCard key={d.topic.id} debate={d} index={i} />

@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import '@fontsource-variable/newsreader/standard.css'
 import '@fontsource-variable/newsreader/standard-italic.css'
@@ -9,12 +9,19 @@ import './index.css'
 import App from './App.tsx'
 import { I18nProvider } from './i18n/provider'
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!
+const app = (
   <StrictMode>
     <BrowserRouter>
       <I18nProvider>
         <App />
       </I18nProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
+
+if (root.hasChildNodes()) {
+  hydrateRoot(root, app)
+} else {
+  createRoot(root).render(app)
+}

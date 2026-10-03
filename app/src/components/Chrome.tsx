@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LocaleLink as Link, LocaleNavLink as NavLink } from "../i18n/links";
-import { localeFromPath } from "../i18n/provider";
+import { localeFromPath, localizedPath } from "../i18n/paths";
 import { useI18n, type Locale } from "../i18n";
 
 // Keep the masthead CTA on the featured reading route.
@@ -15,12 +15,9 @@ export function ScrollToTop() {
   return null;
 }
 
-/** Swap the /fr prefix on the current path, preserving the rest of the route. */
+/** Preserve the current route, query and hash when switching languages. */
 function pathForLocale(pathname: string, target: Locale): string {
-  if (localeFromPath(pathname) === target) return pathname;
-  if (target === "fr") return pathname === "/" ? "/fr" : `/fr${pathname}`;
-  const stripped = pathname.replace(/^\/fr(?=\/|$)/, "");
-  return stripped === "" ? "/" : stripped;
+  return localizedPath(pathname, target);
 }
 
 function LocaleSwitch({ className = "" }: { className?: string }) {

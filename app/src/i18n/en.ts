@@ -178,7 +178,7 @@ export const en = {
     menuClose: "Close menu",
   },
   landing: {
-    draftNote: "This is the intended method. The current dossiers are drafts prepared with AI tools, with no named human review or signatures yet.",
+    draftNote: "Intended method: these drafts prepared with AI tools still await human review and signatures.",
     projectMission: "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to align AI.",
     methodSummary: "Present each position at its strongest, connect claims to exact source excerpts, then name the values and uncertainties behind the disagreement. Review should make every step inspectable.",
     reviewers: {

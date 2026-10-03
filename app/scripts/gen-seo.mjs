@@ -2,11 +2,7 @@ import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Dependency-free sitemap.xml + robots.txt. Reads the EN fixtures for the debate
-// slugs (never imports src/ React). Indexable set only: /, /debates,
-// /debates/<slug>×N, /method — × {en, fr}. /review and /you are noindex and are
-// kept OUT of the sitemap (their crawlable <meta robots=noindex,follow> handles
-// the rest). Reciprocal hreflang clusters (en, fr, x-default→en).
+// Static reading routes, with reciprocal French-default hreflang clusters.
 
 const here = dirname(fileURLToPath(import.meta.url));
 const DATA = join(here, "../src/data");
@@ -37,15 +33,15 @@ const slugs = readdirSync(DATA)
   .filter(Boolean)
   .sort();
 
-const enPaths = ["/", "/debates", ...slugs.map((s) => `/debates/${s}`), "/method"];
-const frPath = (en) => (en === "/" ? "/fr" : `/fr${en}`);
+const frPaths = ["/", "/debates", ...slugs.map((s) => `/debates/${s}`), "/method", "/projet"];
+const enPath = (fr) => fr === "/" ? "/en/" : fr === "/projet" ? "/en/project" : `/en${fr}`;
 const abs = (p) => `${ORIGIN}${p}`;
 
-function urlEntry(loc, en) {
+function urlEntry(loc, fr) {
   const alts = [
-    ["en", abs(en)],
-    ["fr", abs(frPath(en))],
-    ["x-default", abs(en)],
+    ["fr", abs(fr)],
+    ["en", abs(enPath(fr))],
+    ["x-default", abs(fr)],
   ];
   const links = alts
     .map(([hl, href]) => `    <xhtml:link rel="alternate" hreflang="${hl}" href="${href}" />`)
@@ -53,7 +49,7 @@ function urlEntry(loc, en) {
   return `  <url>\n    <loc>${loc}</loc>\n${links}\n  </url>`;
 }
 
-const urls = enPaths.flatMap((en) => [urlEntry(abs(en), en), urlEntry(abs(frPath(en)), en)]);
+const urls = frPaths.flatMap((fr) => [urlEntry(abs(fr), fr), urlEntry(abs(enPath(fr)), fr)]);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>\n`;
 writeFileSync(join(DIST, "sitemap.xml"), sitemap);
 writeFileSync(join(DIST, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${abs("/sitemap.xml")}\n`);

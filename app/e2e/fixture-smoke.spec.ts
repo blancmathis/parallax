@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import {
   assertPageHealth,
@@ -17,9 +18,9 @@ const locales: readonly LocaleFixture[] = [
   {
     label: "English",
     lang: "en",
-    homePath: "/",
-    debatesPath: "/debates",
-    debatePath: "/debates/smartphones-schools",
+    homePath: "/en/",
+    debatesPath: "/en/debates",
+    debatePath: "/en/debates/smartphones-schools",
     debateQuestions: [
       "Should cities implement congestion pricing for cars?",
       "Should schools ban smartphones during class?",
@@ -29,9 +30,9 @@ const locales: readonly LocaleFixture[] = [
   {
     label: "French",
     lang: "fr",
-    homePath: "/fr",
-    debatesPath: "/fr/debates",
-    debatePath: "/fr/debates/smartphones-schools",
+    homePath: "/",
+    debatesPath: "/debates",
+    debatePath: "/debates/smartphones-schools",
     debateQuestions: [
       "Les villes devraient-elles instaurer un péage de congestion pour les voitures ?",
       "Les écoles devraient-elles interdire les smartphones pendant les cours ?",
@@ -61,6 +62,24 @@ for (const locale of locales) {
       await page.goto(locale.homePath);
       await expectPathAndLanguage(page, locale.homePath, locale.lang);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await expect(page.locator("main > section")).toHaveCount(4);
+      await expect(page.locator("a.dcard").first()).toBeInViewport();
+      runtime.assertNoErrors();
+      await assertPageHealth(page);
+    });
+
+    test("language switch preserves project route, query and hash", async ({ page }) => {
+      const runtime = monitorRuntimeErrors(page);
+      const projectPath = locale.lang === "fr" ? "/projet" : "/en/project";
+      const target = locale.lang === "fr" ? "EN" : "FR";
+      const targetPath = locale.lang === "fr" ? "/en/project" : "/projet";
+      await page.goto(`${projectPath}?read=project#about`);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await page.locator(".masthead__right").getByRole("button", { name: target, exact: true }).click();
+      await expect.poll(() => new URL(page.url()).pathname).toBe(targetPath);
+      expect(new URL(page.url()).search).toBe("?read=project");
+      expect(new URL(page.url()).hash).toBe("#about");
+      await expect(page.locator("html")).toHaveAttribute("lang", target.toLowerCase());
       runtime.assertNoErrors();
       await assertPageHealth(page);
     });
@@ -107,3 +126,19 @@ for (const locale of locales) {
 
   });
 }
+
+test.describe("static reading without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+  for (const locale of locales) {
+    test(`${locale.label} dossier contains its fixture steelman`, async ({ page }) => {
+      const fixture = JSON.parse(readFileSync(
+        new URL(`../src/data/${locale.lang === "fr" ? "fr/" : ""}smartphones-schools.json`, import.meta.url),
+        "utf8",
+      )) as { positions: { steelman: string }[] };
+      await page.goto(locale.debatePath);
+      await expect(page.locator("html")).toHaveAttribute("lang", locale.lang);
+      await expect(page.locator(".steelman p").first()).toHaveText(fixture.positions[0].steelman);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(locale.debateQuestions[1]);
+    });
+  }
+});

@@ -1,11 +1,5 @@
-# Intentionally no catch-all rewrite.
-#
-# The production build emits one flat <route>.html file per known EN/FR route
-# plus a top-level 404.html. Cloudflare serves each flat file at its slashless
-# route, matching the application's canonical URLs. Pages evaluates _redirects
-# before asset matching, so a wildcard SPA rewrite would mask those prerendered
-# documents, hashed assets, and the real 404 response.
-#
-# A database-only route added after the last build needs a new prerendered build
-# or an explicit asset-first Pages Function/SSR implementation. Do not restore a
-# wildcard rewrite to simulate support for that case.
+# Known static HTML assets are served directly, with no SPA catch-all rewrite.
+# French is canonical at /; retain redirects for the former /fr routes.
+/fr / 301
+/fr/* /:splat 301
+/en /en/ 301

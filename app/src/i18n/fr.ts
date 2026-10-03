@@ -125,7 +125,7 @@ export const fr = {
     menuClose: "Fermer le menu",
   },
   landing: {
-    draftNote: "C’est la méthode visée. Les dossiers actuels sont des brouillons préparés avec des outils d’IA, sans relecture humaine nominative ni signature à ce jour.",
+    draftNote: "Méthode visée : ces brouillons préparés avec des outils d’IA attendent une relecture humaine et une signature.",
     projectMission: "Un socle de réflexion sourcée et auditable : une boussole pour les humains, un corpus pour aligner les IA.",
     methodSummary: "Présenter chaque position dans sa version la plus forte, relier les affirmations aux extraits de leurs sources, puis nommer les valeurs et les incertitudes qui expliquent le désaccord. La relecture doit rendre chaque étape vérifiable.",
     reviewers: {
@@ -245,7 +245,7 @@ export const fr = {
     },
     preview: {
       eyebrow: "Les dossiers",
-      title: "Trois dossiers de départ, ouverts dès le premier jour.",
+      title: "Les dossiers à relire.",
       note: "Assemblés à la main depuis des sources publiques et marqués non relus jusqu'à vérification indépendante. Ce statut fait partie du produit, ce n'est pas une clause de style.",
       allDebates: "Tous les débats ->",
     },

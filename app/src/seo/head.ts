@@ -1,4 +1,5 @@
 import { dictionaries, type Locale } from "../i18n";
+import { localizedPath } from "../i18n/paths";
 
 /** Minimal per-debate facts the head needs. Injected by the caller (the client
  *  reads it from the fixtures via getDebates; the prerender reads JSON via fs) so
@@ -25,13 +26,14 @@ export const SITE_ORIGIN = (
   ENV_ORIGIN ?? (import.meta.env?.DEV ? "http://127.0.0.1:5173" : "http://127.0.0.1:4173")
 ).replace(/\/+$/, "");
 const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
-export const LOCALES: Locale[] = ["en", "fr"];
+export const LOCALES: Locale[] = ["fr", "en"];
 const OG_LOCALE: Record<Locale, string> = { en: "en_US", fr: "fr_FR" };
 
 export type RouteKey =
   | { kind: "home" }
   | { kind: "debates" }
   | { kind: "method" }
+  | { kind: "project" }
   | { kind: "debate"; slug: string }
   | { kind: "notfound" };
 
@@ -43,6 +45,8 @@ export function pathForRoute(r: RouteKey): string {
       return "/debates";
     case "method":
       return "/method";
+    case "project":
+      return "/projet";
     case "debate":
       return `/debates/${r.slug}`;
     case "notfound":
@@ -51,9 +55,7 @@ export function pathForRoute(r: RouteKey): string {
 }
 
 export function urlFor(localePath: string, locale: Locale): string {
-  const clean = localePath === "/" ? "" : localePath;
-  const path = locale === "fr" ? `/fr${clean}` : clean;
-  return `${SITE_ORIGIN}${path === "" ? "/" : path}`;
+  return `${SITE_ORIGIN}${localizedPath(localePath, locale)}`;
 }
 
 function clamp(s: string, max = 160): string {
@@ -113,6 +115,12 @@ export function buildHead(
       ogTitle = title;
       ogDescription = description;
       break;
+    case "project":
+      title = `${t.chrome.project} — Parallax`;
+      description = t.landing.projectMission;
+      ogTitle = title;
+      ogDescription = description;
+      break;
     case "notfound":
       title = t.meta.titleNotFound;
       description = t.meta.descriptionNotFound;
@@ -167,7 +175,7 @@ export function buildHead(
     alternates: [
       { hreflang: "en", href: urlFor(localePath, "en") },
       { hreflang: "fr", href: urlFor(localePath, "fr") },
-      { hreflang: "x-default", href: urlFor(localePath, "en") },
+      { hreflang: "x-default", href: urlFor(localePath, "fr") },
     ],
   };
 }

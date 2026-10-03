@@ -111,17 +111,20 @@ function ClaimRow({
   anchorId: string;
   sharedWith?: string[];
 }) {
-  const [open, setOpen] = useState(
-    () => window.location.hash.slice(1) === anchorId,
-  );
-  const [linked] = useState(open);
+  const [open, setOpen] = useState(false);
+  const [linked, setLinked] = useState(false);
   const { locale, t } = useI18n();
   const links = debate.evidence_links.filter((l) => l.claim_id === claim.id);
 
   useEffect(() => {
-    if (linked)
+    if (window.location.hash.slice(1) !== anchorId) return;
+    const frame = requestAnimationFrame(() => {
+      setOpen(true);
+      setLinked(true);
       document.getElementById(anchorId)?.scrollIntoView({ block: "center" });
-  }, [linked, anchorId]);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [anchorId]);
 
   const state = claimState(debate, claim);
   const stateClass = state === "provisional" ? "contested" : state;

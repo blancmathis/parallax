@@ -6,6 +6,7 @@ import { debateBySlug, getDebates, letterOf, slugOf } from "../../src/data";
 import { coverageFor } from "../../src/data/coverage";
 import { claimSharedBy, claimState, debateShape } from "../../src/data/state";
 import { dictionaries, I18nProvider, type Locale } from "../../src/i18n";
+import { localizedPath } from "../../src/i18n/paths";
 import whitelist from "../../src/numeric-whitelist.json";
 import type { DebateFixture, EvidenceLabel } from "../../src/types";
 
@@ -160,7 +161,9 @@ function computedRules(
     {
       selector: ".atlas-card__revised",
       texts: [
-        `${t.atlas.revisedPrefix} ${relative}${s.total > 0 ? ` · ${t.atlas.claimsCounted(s.total)}` : ""}`,
+        ...[relative, debate.revision.published_at.slice(0, 10)].map(
+          (date) => `${t.atlas.revisedPrefix} ${date}${s.total > 0 ? ` · ${t.atlas.claimsCounted(s.total)}` : ""}`,
+        ),
       ],
     },
     {
@@ -377,7 +380,6 @@ afterEach(() => vi.restoreAllMocks());
 
 describe("displayed number provenance", () => {
   for (const locale of ["en", "fr"] as const) {
-    const prefix = locale === "fr" ? "/fr" : "";
     const routes = [
       "",
       "/debates",
@@ -397,7 +399,7 @@ describe("displayed number provenance", () => {
           ? debateBySlug(route.split("/").pop() ?? "", locale)
           : undefined;
         const { container } = render(
-          <MemoryRouter initialEntries={[`${prefix}${route}` || "/"]}>
+          <MemoryRouter initialEntries={[localizedPath(route || "/", locale)]}>
             <I18nProvider>
               <App />
             </I18nProvider>

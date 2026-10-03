@@ -60,12 +60,8 @@ export default function DebatesIndex() {
   // inside useCountUp). The static default — should JS never run — is the final
   // number, because we pass the resolved total as the count-up target.
   const mastheadRef = useRef<HTMLElement | null>(null);
-  // Lazy initial state: reduced-motion readers start "counted" at mount (the
-  // count-up snaps to the resolved total), so the effect's only job is to arm
-  // the observer for motion users — it never sets state synchronously.
-  const [counting, setCounting] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  // The initial state is identical on the server and during hydration.
+  const [counting, setCounting] = useState(false);
   useEffect(() => {
     if (counting) return;
     const el = mastheadRef.current;

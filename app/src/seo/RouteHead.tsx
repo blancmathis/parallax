@@ -5,15 +5,17 @@ import { useLocation } from "react-router-dom";
 import { buildHead, type RouteKey, type DebateMeta } from "./head";
 import { getDebates, slugOf } from "../data";
 import { useI18n } from "../i18n";
+import { unlocalizedPath } from "../i18n/paths";
 
 /** Map a (locale-stripped) pathname to the SEO route key. */
 export function routeFromPath(pathname: string): RouteKey {
-  const p = pathname.replace(/^\/fr(?=\/|$)/, "").replace(/\/+$/, "") || "/";
+  const p = unlocalizedPath(pathname).replace(/\/+$/, "") || "/";
   if (p === "/") return { kind: "home" };
   if (p === "/debates") return { kind: "debates" };
   if (p.startsWith("/debates/"))
     return { kind: "debate", slug: p.slice("/debates/".length).replace(/\/$/, "") };
   if (p === "/method") return { kind: "method" };
+  if (p === "/projet") return { kind: "project" };
   return { kind: "notfound" };
 }
 
