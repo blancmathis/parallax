@@ -106,6 +106,7 @@ export function Masthead() {
         <nav className="masthead__nav" aria-label={t.chrome.primaryNavLabel}>
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
+          <NavLink to="/projet">{t.chrome.project}</NavLink>
         </nav>
         <div className="masthead__right">
           <button
@@ -144,6 +145,7 @@ export function Masthead() {
         >
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
+          <NavLink to="/projet">{t.chrome.project}</NavLink>
           <div className="masthead__sheetfoot">
             <LocaleSwitch />
           </div>
@@ -171,6 +173,7 @@ export function Footer() {
               <h4>{t.chrome.explore}</h4>
               <Link to="/debates">{t.chrome.allDebates}</Link>
               <Link to="/method">{t.chrome.howItWorks}</Link>
+              <Link to="/projet">{t.chrome.project}</Link>
             </div>
             <div>
               <h4>{t.chrome.principles}</h4>

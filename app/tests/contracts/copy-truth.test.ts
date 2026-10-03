@@ -24,6 +24,10 @@ describe("product copy truth contract", () => {
     expect(copy).not.toMatch(/IA, entièrement auditée/i);
     expect(copy).not.toMatch(/verified without an arbiter/i);
     expect(copy).not.toMatch(/vérifiées sans arbitre/i);
+    expect(copy).not.toMatch(/bibliothèque (?:vivante|de vérités)/i);
+    expect(copy).not.toMatch(/réponses claires/i);
+    expect(copy).not.toMatch(/(?:living library|library of truths)/i);
+    expect(copy).not.toMatch(/clear(?:, structured, sourced)? answers/i);
   });
 
   it("does not claim a legal non-profit status that does not exist", () => {

@@ -14,6 +14,7 @@ import "./features.css";
 // surfaces in one chunk.
 const DebatesIndex = lazy(() => import("./pages/DebatesIndex"));
 const DebatePage = lazy(() => import("./pages/DebatePage"));
+const Project = lazy(() => import("./pages/Project"));
 const Method = lazy(() => import("./pages/Method"));
 
 function NotFound() {
@@ -100,6 +101,8 @@ function AppRoutes() {
       <Route path="/debates" element={<DebatesIndex />} />
       <Route path="/debates/:slug" element={<DebatePage />} />
       <Route path="/method" element={<Method />} />
+      <Route path="/projet" element={<Project />} />
+      <Route path="/project" element={<Project />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -125,12 +125,22 @@ export const fr = {
     menuClose: "Fermer le menu",
   },
   landing: {
+    draftNote: "C’est la méthode visée. Les dossiers actuels sont des brouillons préparés avec des outils d’IA, sans relecture humaine nominative ni signature à ce jour.",
+    projectMission: "Un socle de réflexion sourcée et auditable : une boussole pour les humains, un corpus pour aligner les IA.",
+    methodSummary: "Présenter chaque position dans sa version la plus forte, relier les affirmations aux extraits de leurs sources, puis nommer les valeurs et les incertitudes qui expliquent le désaccord. La relecture doit rendre chaque étape vérifiable.",
+    reviewers: {
+      eyebrow: "Appel aux relecteurs",
+      headline: "Vous défendez une position ?",
+      headlineEm: "Aidez-nous à la rendre juste.",
+      body: "Nous cherchons des partisans de chaque position et des relecteurs des sources. Les dossiers attendent encore cette relecture : découvrez le protocole et les modalités de signature.",
+      cta: "Participer à la relecture",
+    },
     hero: {
       kicker: "L'atlas du désaccord",
-      titleLine: "La bibliothèque vivante des",
-      titleEm: "grands débats.",
+      titleLine: "Le dossier de chaque grand débat,",
+      titleEm: "relu par ceux qui ne sont pas d’accord.",
       lede:
-        "On y fait avancer chaque grande question vers des réponses claires, structurées et sourcées. Tous les points de vue, à leur meilleur.",
+        "Chaque position à son meilleur, signée par ses partisans. Chaque fait relié à l'extrait exact de sa source. Ce qui reste — valeurs, paris sur l'avenir, confiance — dit sans désigner de vainqueur.",
       primaryCta: "Explorer les débats",
       secondaryCta: "Lire la méthode",
     },

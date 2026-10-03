@@ -178,12 +178,22 @@ export const en = {
     menuClose: "Close menu",
   },
   landing: {
+    draftNote: "This is the intended method. The current dossiers are drafts prepared with AI tools, with no named human review or signatures yet.",
+    projectMission: "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to align AI.",
+    methodSummary: "Present each position at its strongest, connect claims to exact source excerpts, then name the values and uncertainties behind the disagreement. Review should make every step inspectable.",
+    reviewers: {
+      eyebrow: "Call for reviewers",
+      headline: "Do you defend a position?",
+      headlineEm: "Help us represent it fairly.",
+      body: "We are looking for supporters of each position and source reviewers. The dossiers still await that review: read the protocol and how to sign a review.",
+      cta: "Take part in the review",
+    },
     hero: {
       kicker: "The atlas of disagreement",
-      titleLine: "The living library of the",
-      titleEm: "great debates.",
+      titleLine: "The dossier on every great debate,",
+      titleEm: "reviewed by those who disagree.",
       lede:
-        "Here, we advance every great question toward clear, structured, sourced answers. Every viewpoint, at its strongest.",
+        "Every position at its strongest, signed by its supporters. Every fact tied to the exact excerpt of its source. What remains — values, bets on the future, trust — stated without naming a winner.",
       primaryCta: "Explore the debates",
       secondaryCta: "Read the method",
     },

@@ -2505,3 +2505,44 @@
   line-height: 1.6;
   color: var(--ink-soft);
 }
+
+/* The reading home brings the existing dossier cards into the first viewport. */
+.lhero--reading {
+  padding: 32px 0 24px;
+}
+
+.lhero--reading .lhero__kicker {
+  margin-bottom: 14px;
+}
+
+.lhero--reading .lhero__title {
+  font-size: clamp(32px, 4.6vw, 58px);
+  line-height: 1.05;
+}
+
+.lhero--reading .lhero__lede {
+  margin-top: 18px;
+  max-width: 78ch;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.lhero--reading .lhero__actions {
+  margin-top: 18px;
+}
+
+.preview--reading {
+  padding: 24px 0 48px;
+}
+
+.preview--reading .section__title {
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.preview--reading .section__title em {
+  font-size: 18px;
+}
+
+.preview--reading .preview__grid {
+  margin-top: 20px;
+}
