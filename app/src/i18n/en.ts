@@ -150,7 +150,7 @@ export const en = {
   },
   chrome: {
     footerMotto:
-      "Most disagreements are about values, not facts. When we see each other's values clearly, we stop being enemies.",
+      "Once the facts are laid out, what remains is values, bets on the future and trust. Seen clearly, an opponent stops being an enemy.",
     explore: "Explore",
     principles: "Principles",
     project: "Project",
@@ -598,7 +598,7 @@ export const en = {
     eyebrow: "The method",
     titleStart: "How to read",
     mission:
-      "Most serious disagreements are about values, not facts. When we can see each other's values clearly — what each side is protecting, and what it is willing to pay — we stop treating the other as an enemy and start treating them as a person who weighs the world differently.",
+      "Serious disagreements are rarely about facts alone. Once the facts are laid out, values, bets on the future and trust remain. When we can see each other's values clearly — what each side is protecting, and what it is willing to pay — we stop treating the other as an enemy and start treating them as a person who weighs the world differently.",
     lede:
       "The product does not tell you what to think. It organizes a debate so you can think clearly — and shows its work at every step.",
     filtersEyebrow: "The three filters",

@@ -97,7 +97,7 @@ export const fr = {
   },
   chrome: {
     footerMotto:
-      "La plupart des désaccords portent sur des valeurs, pas sur des faits. Quand les valeurs de chacun deviennent lisibles, l'adversaire cesse d'être un ennemi.",
+      "Une fois les faits posés, il reste des valeurs, des paris sur l'avenir et de la confiance. Vu clairement, l'adversaire cesse d'être un ennemi.",
     explore: "Explorer",
     principles: "Principes",
     project: "Projet",
@@ -575,7 +575,7 @@ export const fr = {
     eyebrow: "La méthode",
     titleStart: "Comment lire",
     mission:
-      "La plupart des désaccords sérieux portent sur des valeurs, pas sur des faits. Quand on voit clairement les valeurs de chacun — ce que chaque camp protège, et le prix qu'il est prêt à payer — on cesse de traiter l'autre en ennemi et on le voit comme quelqu'un qui pèse le monde autrement.",
+      "Les désaccords sérieux portent rarement sur les seuls faits. Une fois les faits posés, il reste des valeurs, des paris sur l'avenir et de la confiance. Quand on voit clairement les valeurs de chacun — ce que chaque camp protège, et le prix qu'il est prêt à payer — on cesse de traiter l'autre en ennemi et on le voit comme quelqu'un qui pèse le monde autrement.",
     lede:
       "Le produit ne vous dit pas quoi penser. Il organise un débat pour vous permettre de penser clairement — et montre son travail à chaque étape.",
     filtersEyebrow: "Les trois filtres",

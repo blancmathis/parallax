@@ -23,6 +23,8 @@ describe("product copy truth contract", () => {
     expect(copy).not.toMatch(/AI, fully audited/i);
     expect(copy).not.toMatch(/IA, entièrement auditée/i);
     expect(copy).not.toMatch(/verified without an arbiter/i);
+    expect(copy).not.toMatch(/about values, not facts/i);
+    expect(copy).not.toMatch(/valeurs, pas sur des faits/i);
     expect(copy).not.toMatch(/vérifiées sans arbitre/i);
     expect(copy).not.toMatch(/bibliothèque (?:vivante|de vérités)/i);
     expect(copy).not.toMatch(/réponses claires/i);
