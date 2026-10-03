@@ -1,179 +1,91 @@
 # Roadmap
 
-This document owns implementation status and the evidence required to move a
-capability from target to current. Product policy belongs in
-[02-product.md](02-product.md); conceptual data and engine targets belong in
-[03-data-model.md](03-data-model.md), [07-engine.md](07-engine.md), and
-[08-sources.md](08-sources.md).
+This document owns implementation status, the sequenced plan, and the gates
+that move work forward. Product decisions live in
+[02-product.md](02-product.md) (D16–D25 set the 2026-10-03 direction);
+publication and the launch gate live in
+[deployment/publishing.md](deployment/publishing.md).
 
-The build principle remains the smallest loop that proves a useful structured
-dossier:
+## Current status (2026-10-03)
 
-> seed packet → provisional structure → debate page → contribution → review →
-> revised debate page.
+**Current:** a read-only static site. French at `/`, English under `/en/`.
+Every route is prerendered with its text in the HTML. Three debates
+(congestion pricing, smartphones in schools, nuclear power) are **unreviewed
+drafts**, prepared with AI tools, and say so at the top of the page with a
+coverage line computed from the files. The content lives in
+[`app/src/data`](../app/src/data); its Git history is the public record.
 
-The dossier must be exact about its sources, scope, provenance, uncertainty,
-and review state. It is provisional and revisable, not an oracle of truth.
+**Archived (tag `archive/workspace-20260913`):** the Supabase backend
+(39 tables), accounts, contribution and review flows, the position signal,
+the values quiz, the steelman test and badges, the verification-engine
+research, and the team operations runbooks. Nothing was deleted; the tag
+keeps it all. The `supabase/` directory on `main` is frozen and unused by the
+site.
 
-## Status legend
+**North star:** readers misjudge the other side less after reading. Measured
+only through the [pre-registered protocol](protocol/2026-10-03-measurement-preregistration.md).
 
-| Status | Meaning |
+## Phase 1 — two weeks: online and honest
+
+| Step | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 1. Triage the branch | `main` holds the UI, its tests, front CI and state docs; archive tag on `de6c866` | front CI green on `main` | triage over 3 days: restart from `main`, copy only `app/src` and its tests |
+| 2. Remove what misleads | no demo aggregate, scripted audit log, badge, values quiz, or dead link | a test fails when a displayed number has no source | none: not negotiable |
+| 3. Prerender the body | every debate readable without JavaScript, French by default | debate text present in the raw HTML | hydration blocked over 3 days: plain static rendering |
+| 4. Go online, read-only | domain, 3 debates marked "Brouillon non relu", legal notice, privacy, contact | public address; HTTP check green | — |
+| 5. Pre-register the measure | [one-page protocol](protocol/2026-10-03-measurement-preregistration.md), dated | hypothesis, primary measure, sample size and stop rule written before any data | — |
+| 6. Recruit reviewers | 6 reviewers, 2 per position, for the pilot debate ([kit](relecture/README.md)) | 6 written agreements | under 3 agreements in 3 weeks: change the pilot topic |
+
+**Gate 1:** the five controls of the [launch gate](deployment/publishing.md#launch-gate).
+
+## Phase 2 — ninety days: prove or refute the loop
+
+| Month | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 1. One exemplary debate | the pilot on the new template: prediction, real voices, signed steelmen, cruxes with excerpts | 100% of factual claims with a verified excerpt; 3 of 3 steelmen signed "faithful"; 8 of 10 testers find the crux | no supporter signs after two revisions: rework the steelman template |
+| 2. Pipeline and challenges | offline AI pipeline; 4 debates; "Contester" button; public register; newsletter | 12 hours of work per debate, measured; model–human agreement measured on the gold set | over 25 hours for the fourth debate: shrink the template |
+| 3. The measure | 8 debates; randomized trial; 2 pilot classes | effect ≥ 0.3 point on 7, or prediction error −20%; 30 challenges received, 10 accepted | CI excludes +0.2 point: redo the loop before a ninth debate |
+
+**Gate 2** is the only one that can reverse the plan: without a measured
+effect at day 90, the loop is redesigned before more debates are written.
+
+## Phase 3 — twelve months: useful to others
+
+| Months | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 4–6 | 15 debates; association created; 2 funding applications filed; teacher kit tested in 5 classes | 5 teachers reuse it without a reminder; measure replicated at two weeks | no teacher reuses it: the school channel is wrong, switch to the press |
+| 7–9 | 25 debates; reviewer accounts; grounded AI dialogue experiment; one media partner | 30 active reviewers, present in every camp; 30% of accepted corrections from non-invited people | under 300 complete readings a month despite 20 debates: become a tool for classes or newsrooms |
+| 10–12 | 30 debates; corpus exported under an open licence; first "steelman fidelity" evaluation set; decision on open contributions | funding secured; 1,000 complete readings a month | neither funding nor use: maintenance mode, or hand the corpus over |
+
+## Cut on 2026-10-03
+
+The values quiz and personal reweighting; the position signal and per-account
+ballots; steelman badges and the guardian role earned by a test; demo
+aggregates, the fixture audit log and composite voices; user-triggered
+analysis (`analyze-seed`) and "propose a topic"; the eight-attribute integrity
+floor; the two parallel contribution systems and the role separation between
+accounts; the ten-row readiness gate; twelve of the sixteen landing blocks and
+the funder pitch (moved to the Project page); the words "library of truths"
+and "clear answers".
+
+## Deferred, with the trigger that reopens each item
+
+| Work | Reopen when |
 | --- | --- |
-| **Current** | Present in the default fixture-backed browser app; available validation evidence is stated separately and may be structural rather than behavioral. |
-| **Mock** | Demonstrates the product loop with local or deterministic artifacts. |
-| **Experimental** | Optional code or database contracts exist and may have local integration tests, but no complete release receipt proves the hosted end-to-end behavior. |
-| **Target** | Required behavior remains to be implemented and validated. |
+| Algorithmic bridging | 300 active reviewers spread across the camps |
+| Public accounts and uninvited contributions | 30% of accepted corrections come from non-invited people, and answers stay under 14 days |
+| Global graph, fractal sub-debates, semantic dedup | 50 debates and ten claims really shared between debates |
+| Guardians, random juries, appeals | 100 reviewers and a first conflict the editor cannot settle alone |
+| Verification engine, certificates | a third party commits in writing to a pilot |
+| Paid feeds, commercial evaluation sets, subsidiary | 50 reviewed debates and a written request from a lab |
+| Dialogue with an AI | months 7–9, as an experiment under a randomized trial |
+| Student accounts, GAR connection | ten schools using it regularly |
+| AI agent consensus (D10) | a written and reviewed threat model; not before |
 
-## Current validation surface
+## Validation surface
 
-The frontend commands listed in [README.md](../README.md#run-the-app) and defined
-by [`app/package.json`](../app/package.json) cover TypeScript, lint, fixture
-structure, unit/runtime-contract tests, coverage, a test-origin production
-build, bundle budgets, dependency audit, and fixture/local-mock browser E2E.
-
-The guarded local bootstrap in
-[`scripts/bootstrap-local.sh`](../scripts/bootstrap-local.sh), documented by the
-[deployment runbook](deployment/deploy-runbook.md#rebuild-the-local-stack-from-scratch),
-rebuilds a disposable Supabase stack, runs the SQL authorization/hardening
-matrices, and smokes Auth, REST, and deterministic Edge analysis. CI owns
-separate frontend, browser, Edge, and disposable-Supabase jobs.
-
-These checks still do **not** prove a hosted deployment, real Cloudflare preview
-routing, backup/restore, observability, a live model, semantic citation
-correctness, or the complete multi-role browser journey through publication.
-
-## Milestone 0 — Project setup **Current**
-
-- Browser application under `app/` using Vite, React, and TypeScript.
-- Reproducible dependency installation through `npm ci`.
-- Frontend unit, coverage, fixture, browser, build, bundle, and dependency
-  checks, plus Edge and disposable-Supabase CI jobs.
-- Tracked contribution, security, and hosted-deployment guidance.
-
-## Milestone 1 — Fixture-backed debates **Current**
-
-- Three English/French demonstration debates render positions, arguments,
-  claims, evidence labels, sources, values, trade-offs, and audit events.
-- Readers can inspect the debates without authentication or infrastructure.
-- Truth-apt fixture claims may have scoped evidence labels; normative claims
-  are not forced into factual evidence labels.
-- Labels and browser-derived summaries are demonstration state. They are not
-  reviewed factual conclusions.
-
-Completion still missing at this layer:
-
-- exact excerpts and locators for every truth-apt claim, rather than partial
-  coverage in selected fixture links;
-- versioned source-artifact identity and freshness handling;
-- semantic citation checks, not only structural fixture checks.
-
-## Milestone 2 — Contribution draft flow **Mock / experimental**
-
-**Mock:** the default browser accepts contribution drafts and stores them in
-`localStorage`. Drafts do not mutate tracked fixtures.
-
-**Experimental:** the Supabase client and migrations include authenticated,
-persistent contribution paths. Disposable RLS and backend smokes now exercise
-the contract, but the complete hosted user journey and failure surface remain
-unproven.
-
-## Milestone 3 — Review and revision flow **Mock / experimental**
-
-**Mock:** a local reviewer can approve or reject a draft, record a rationale,
-and create a visible revision overlay and audit event.
-
-**Experimental:** Supabase contracts exist for reviewer decisions, canonical
-contribution merge, immutable published revisions, and audit records.
-
-Still required before this is current full-stack behavior:
-
-- inspection of current and previous revisions in the user interface;
-- a browser E2E receipt covering authenticated contributor → reviewer → admin
-  merge → publish → audit against the disposable backend;
-- the same receipt on an isolated HTTPS shared-test deployment.
-
-## Milestone 4 — Seed analysis **Mock / experimental**
-
-- **Experimental:** a signed-in user can submit a seed packet through the
-  Supabase RPC path.
-- **Mock:** the Edge Function checks source accessibility and produces a
-  deterministic reviewable draft.
-- **Unavailable:** a live-provider request fails explicitly; no live model call
-  or provider-connectivity claim is implemented.
-
-Target work:
-
-- implement the six reviewable stages in
-  [02-product.md](02-product.md#ai-pipeline-contract);
-- validate every output against an executable schema;
-- retain prompts, model/version, source inputs, output identity, and failure
-  evidence in an auditable job record;
-- fail closed and present invalid output as a review problem;
-- keep every generated object explicitly unreviewed until a human decision.
-
-## Milestone 5 — Versioned sources and evidence excerpts **Experimental / target**
-
-**Experimental:** the database schema can store source excerpts and connect an
-evidence row to an excerpt. The mock analysis path records source access status
-and can create provisional rows.
-
-Target completion requires:
-
-- an exact source-artifact version or immutable snapshot identity;
-- canonical URL, publication/version date, retrieval date, content digest, and
-  access outcome;
-- exact excerpt plus page, paragraph, timestamp, or equivalent locator;
-- explicit separation of citation fidelity, inferential warrant, and corpus
-  weight;
-- refresh/change handling that never silently carries a label to a new source
-  version;
-- human review evidence for any public procedural status.
-
-## Milestone 6 — General topic creation **Experimental / target**
-
-**Experimental:** a proposal form, seed-packet RPC, deterministic analysis, and
-review queue exist behind Supabase configuration.
-
-Target completion requires general-purpose source handling, duplicate/scope
-resolution, safe error recovery, reviewer publication of the first revision,
-and an E2E journey proven outside the curated fixtures.
-
-## Milestone 7 — Global claim graph and source governance **Target**
-
-**Experimental:** the database contains a simple two-camp count gate for claim
-evaluations. It is not matrix factorization, does not prove anti-coordination,
-and does not establish production thresholds or representative coverage.
-
-The following remain architecture targets, not current capabilities:
-
-- global claim identity and scoped local uses;
-- graph lifecycle, deduplication, dependency alerts, and version propagation;
-- adversarial evidence dossiers and coverage ledger;
-- cross-group procedural review with privacy and anti-coordination safeguards;
-- rotating review functions, appeals, and auditable governance;
-- reusable, versioned source artifacts and scoped sourcing claims.
-
-## Global readiness gate
-
-Parallax is ready for global prototype testing only when a new maintainer can,
-from a clean clone and documented prerequisites:
-
-1. run the fixture app and every repository check;
-2. provision a disposable backend without guessing ports, roles, or secrets;
-3. submit a sourced argument as a contributor;
-4. inspect exact source versions and excerpts;
-5. review, challenge, publish, and inspect the resulting audit trail;
-6. verify authorization boundaries with automated RLS tests;
-7. exercise failure states for unavailable sources and invalid analysis;
-8. distinguish every mock, unreviewed, contested, and reviewed state in the UI;
-9. repeat the flow through an automated browser test.
-
-Until those receipts exist, the project is a useful browser prototype plus an
-experimental backend—not a complete verification service.
-
-## Explicitly later
-
-Do not start before the core loop is reproducible: public reputation, agent
-consensus marketplaces, forkable debates, broad discovery, large-scale
-governance automation, mobile applications, real-time rooms, and large-scale
-moderation queues.
+The frontend commands in [README.md](../README.md#run-the-app), defined by
+[`app/package.json`](../app/package.json), cover types, lint, fixture
+structure, unit and contract tests (including the copy-truth and
+displayed-numbers contracts), the prerendered build, bundle budgets, the
+dependency audit, the launch check, and browser journeys in both languages.

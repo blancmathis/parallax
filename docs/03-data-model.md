@@ -10,9 +10,8 @@ database schema and must not override the executable contracts below.
 | --- | --- | --- |
 | Fixture-backed browser model | **Current** | [`app/src/types.ts`](../app/src/types.ts) and [`app/src/data/`](../app/src/data/); the contract supports optional excerpts and content hashes, but coverage is incomplete. |
 | Fixture integrity checks | **Current, structural** | [`app/scripts/check-fixtures.mjs`](../app/scripts/check-fixtures.mjs) validates IDs, references, and English/French structural parity; it does not validate label semantics, confidence, citation fidelity, or factual truth. |
-| Browser contribution/review persistence | **Mock** | [`app/src/lib/store.ts`](../app/src/lib/store.ts) stores a local overlay in `localStorage`; it does not mutate the published fixtures. |
-| Supabase schema, RLS, and stored source excerpts | **Experimental** | [`supabase/migrations/`](../supabase/migrations/) owns the exact relational schema and policies, including `source_excerpts` and excerpt-linked evidence rows. |
-| Disposable backend validation | **Current test infrastructure** | [`scripts/bootstrap-local.sh`](../scripts/bootstrap-local.sh) and [`supabase/tests/`](../supabase/tests/) rebuild and probe a local stack; passing them is local contract evidence, not hosted or production proof. |
+| Supabase schema, RLS, and stored source excerpts | **Archived, frozen** | [`supabase/migrations/`](../supabase/migrations/) on `main` and the tag `archive/workspace-20260913`; the site does not use them. The phase-2 backend starts from a new six-table schema (D20 in [02-product.md](02-product.md)). |
+| Disposable backend validation | **Archived** | The bootstrap script and SQL test matrices live under the tag `archive/workspace-20260913`. |
 | Global claim graph, propagation, and full evaluation lifecycle | **Target** | The conceptual sections below; no end-to-end implementation claim. |
 
 Important current differences from the target object tables below:
@@ -484,6 +483,9 @@ situation. Modeled by conditioning claims, not forking debates:
   age × condition × goal combinatorial explosion).
 
 ### Position signal (aggregate, vote-then-reveal)
+
+**Cut 2026-10-03 (D21).** No ballot or camp is stored per account. Kept for
+the record only.
 
 Readers can register their own position; the product surfaces only the
 **aggregate distribution** (product rules in [02-product.md](02-product.md), D15).

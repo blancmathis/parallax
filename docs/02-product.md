@@ -12,7 +12,7 @@ around this yet).
 
 Implementation labels used in this document:
 
-- **Current** — works in the default fixture-backed browser app.
+- **Current** — works in the published static site.
 - **Mock** — demonstrates a flow using local or deterministic data.
 - **Experimental** — optional Supabase code/contracts exist, without a
   repository-wide end-to-end proof.
@@ -43,8 +43,9 @@ of scattered.*
 | User | Core need |
 | --- | --- |
 | **Reader** | "Show me the strongest serious positions and why people hold them — faster and more fairly than articles or comment threads." |
-| **Reviewer** | "Show me what the AI did, the evidence trail, and what changed — and let me correct it." |
-| **Contributor** | "Let me improve the debate without starting a fight." (deliberately limited at first: draft → review → canonical) |
+| **Editor** | "Show me what the AI proposed, the evidence trail, and what changed — and let me decide." |
+| **Reviewer (partisan)** | "Let me check that my side is stated fairly before it is published under my signature." (D18) |
+| **Challenger** | "Let me flag one precise error and see the answer in public." No account (D19). |
 
 ## Decisions
 
@@ -106,7 +107,7 @@ deterministic mock artifacts. The live-provider request currently fails closed;
 there is no provider connectivity or implementation of the target analysis
 stages.
 
-### D7 — Fairness model: the steelman check `tentative`
+### D7 — Fairness model: the steelman check `revised by D18`
 
 A position is treated fairly when a reasonable supporter would recognize it as
 a strong version of their view. Each position carries a steelman-check field;
@@ -122,7 +123,11 @@ Public debate products fail fast when moderation is deferred. Allowed
 contribution types: new claim, new source, challenge to an evidence label,
 challenge to a steelman, proposed new position, value/trade-off correction.
 
-### D9 — Audit log from day one `accepted`
+### D9 — Audit log from day one `accepted`, revised by D17
+
+Since 2026-10-03 the audit log of published content is the Git history of the
+debate files. Fixture audit events are no longer displayed: their timestamps
+and actors were illustrative.
 
 Every meaningful transformation is inspectable. Events record actor type
 (user, admin, AI, system), timestamp, input/output references, and a short
@@ -140,7 +145,7 @@ errors ("all agents agree for the wrong reason"), and primary-source access.
 Possible later shape: agents submit analyses, disagreement creates review
 tasks, reputation is earned through audited accuracy.
 
-### D11 — Technical direction `tentative`
+### D11 — Technical direction `revised by D17 and D20`
 
 Reasonable defaults: TypeScript web app, Postgres-style relational model,
 server-side AI pipeline, JSON outputs validated against schemas, persistent
@@ -200,7 +205,11 @@ This is **target** behavior. The current proposal form can create a seed packet
 in the experimental backend, but it does not implement the complete semantic
 deduplication and graph-resolution contract.
 
-### D15 — Aggregate position signal: where people stand, never a winner `accepted`
+### D15 — Aggregate position signal: where people stand, never a winner `superseded by D21`
+
+*Superseded 2026-10-03.* A ballot per account ties a political opinion to a
+person (GDPR art. 9), the sample is self-selected, and the demonstration
+aggregate showed invented numbers. The text below is kept for the record.
 
 Readers may register their own position on a debate; Parallax shows **only the
 aggregate distribution**, never an individual's choice. This is explicitly **not**
@@ -232,18 +241,98 @@ layer contains a gated aggregate path. The privacy and abuse properties above
 remain target requirements until validated across storage, RLS, API output,
 and rendered behavior.
 
+### D16 — First year: an edited publication with open challenges `accepted`
+
+*2026-10-03.* Parallax ships an edited publication of 20 to 30 debates in
+French, not an open platform. Anyone may challenge a precise object; nothing
+is published without the editor and one declared supporter of the affected
+position. The triggers that reopen open contribution are listed in
+[04-roadmap.md](04-roadmap.md) (Deferred).
+
+### D17 — Content lives in Git `accepted`
+
+*2026-10-03.* A debate is a set of files in this repository. French is the
+source; English is a translation of reviewed pages. Every change is a reviewed
+commit, so history, diff, author, rollback, and licence come for free, and the
+Git history is the public audit log (revises D9). The Supabase backend and the
+verification-engine research are frozen under the tag
+`archive/workspace-20260913`.
+
+### D18 — Steelmen are signed by declared supporters `accepted`
+
+*2026-10-03, revises D7.* Before a debate leaves draft, at least one declared
+supporter per position signs three attestations: the steelman of their
+position is faithful, incomplete, or unfaithful; the excerpts of the claims
+that hurt their side are exact; the common ground is acceptable. Signatures
+are public: name or function (the reviewer's choice), declared position,
+conflicts of interest, date, reviewed commit. A position without a signature
+shows "relecture incomplète". A reader-written steelman is an exercise, never
+a moderation gate or a badge. Process: [relecture/README.md](relecture/README.md).
+
+### D19 — Challenges without accounts `accepted` (target, phase 2)
+
+*2026-10-03.* A challenge targets one object, has a type, a URL, and the exact
+quote. A verified email and an anti-bot check are enough. It gets a public
+identifier in the debate's public register and a reasoned answer within 14
+days; an accepted challenge is credited in the revision. Readers have no
+account in year one.
+
+### D20 — Minimal backend, offline AI `accepted`
+
+*2026-10-03, revises D11.* The site is static and fully prerendered; it stays
+readable if any backend fails. When challenges open: a new Supabase project in
+the Paris region, six tables (challenges, anonymous measures, subscribers,
+reviewers, signatures, moderation log), and one server function (the anti-bot
+check). No reader triggers a model. AI runs in an offline command-line
+pipeline launched by the editor, which opens a pull request; every quote it
+proposes must be an exact substring of the archived source copy, and a human
+decides every label.
+
+### D21 — No opinion tied to an account; anonymous measurement `accepted`
+
+*2026-10-03, supersedes D15.* No ballot, camp, or position is stored per
+account. The position signal and the values quiz are cut. The North Star
+leaves the browser only as anonymous records under the
+[pre-registered protocol](protocol/2026-10-03-measurement-preregistration.md),
+after a legal review. A reviewer's position is a voluntary public declaration.
+
+### D22 — Voices are real `accepted`
+
+*2026-10-03.* A voice is a consented testimony of a real person or a published,
+sourced quote. Never a composite portrait. No named third party in year one.
+
+### D23 — Editorial responsibility `accepted`
+
+*2026-10-03.* The founder is the responsible editor and the *directeur de la
+publication* named in the legal notice. Editorial decisions are signed. Every
+page states that AI tools helped prepare it and who reviewed it.
+
+### D24 — Vocabulary `accepted`
+
+*2026-10-03.* "Library of truths" / « bibliothèque de vérités » and "clear
+answers" / « réponses claires » are dropped: they promise a verdict. Headline:
+« Le dossier de chaque grand débat, relu par ceux qui ne sont pas d'accord. »
+See [06-vision.md](06-vision.md).
+
+### D25 — French first `accepted`
+
+*2026-10-03.* French at `/`, English under `/en/`. Topics are French public
+policy questions with public sources, no named person, usable in class.
+
 ## MVP Scope
 
 ### Current prototype
 
-**Current:** browse three structured fixtures; inspect positions, arguments,
-claims, evidence labels, sources, values, trade-offs, and audit events; submit
-and review local mock contributions; use the English and French interfaces.
+**Current:** a read-only static site in French and English. Three debates are
+unreviewed drafts, marked as such, with a coverage line computed from their
+files. Readers inspect positions, steelmen, claims, evidence labels, sources
+with exact excerpts where they exist, values, and trade-offs, and can read the
+Git history of each debate. Errors are reported through a GitHub issue
+template. Legal notice and privacy pages exist.
 
-**Experimental:** configure Supabase for authentication, seed packets,
-persistent contributions and review, revision publication, position signals,
-claim evaluations, and source assessments. These paths are not covered by the
-default browser validation and must not be presented as production-ready.
+**Archived:** accounts, contributions and review, revision publication,
+position signals, claim evaluations, and source assessments on Supabase
+(tag `archive/workspace-20260913`).
 
 ### Target MVP
 
