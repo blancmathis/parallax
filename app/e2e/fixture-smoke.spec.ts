@@ -84,6 +84,23 @@ for (const locale of locales) {
       await assertPageHealth(page);
     });
 
+    test("legal footer links open localized reading pages", async ({ page }) => {
+      const runtime = monitorRuntimeErrors(page);
+      await page.goto(locale.homePath);
+      const pages = locale.lang === "fr"
+        ? [["Mentions légales", "/mentions-legales"], ["Confidentialité", "/confidentialite"], ["Contact", "/contact"]]
+        : [["Legal notice", "/en/legal"], ["Privacy", "/en/privacy"], ["Contact", "/en/contact"]];
+      for (const [title, path] of pages) {
+        await page.locator("footer").getByRole("link", { name: title, exact: true }).click();
+        await expectPathAndLanguage(page, path, locale.lang);
+        await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
+        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${path}$`));
+        await assertPageHealth(page);
+      }
+      await expect(page.locator("footer a[href*='template=source-alignment.yml']")).toHaveCount(1);
+      runtime.assertNoErrors();
+    });
+
     test("debate index exposes every seeded fixture and its route", async ({
       page,
     }) => {

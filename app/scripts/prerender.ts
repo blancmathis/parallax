@@ -70,6 +70,9 @@ const staticRoutes: RouteKey[] = [
   { kind: "debates" },
   { kind: "method" },
   { kind: "project" },
+  { kind: "legal" },
+  { kind: "privacy" },
+  { kind: "contact" },
 ];
 
 function strip(html: string): string {

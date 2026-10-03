@@ -16,6 +16,9 @@ export function routeFromPath(pathname: string): RouteKey {
     return { kind: "debate", slug: p.slice("/debates/".length).replace(/\/$/, "") };
   if (p === "/method") return { kind: "method" };
   if (p === "/projet") return { kind: "project" };
+  if (p === "/mentions-legales") return { kind: "legal" };
+  if (p === "/confidentialite") return { kind: "privacy" };
+  if (p === "/contact") return { kind: "contact" };
   return { kind: "notfound" };
 }
 

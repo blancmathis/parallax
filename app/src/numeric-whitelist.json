@@ -23,5 +23,15 @@
     "selector": ".notfound > .stamp",
     "numbers": ["404"],
     "reason": "HTTP not-found status code, not a corpus or user count."
+  },
+  {
+    "selector": ".legal-host__address",
+    "numbers": ["101", "94107"],
+    "reason": "Cloudflare hosting address published in https://www.cloudflare.com/privacypolicy/; a legal identity detail, not a measured result."
+  },
+  {
+    "selector": ".legal-host__phone",
+    "numbers": ["1", "650", "319", "8930"],
+    "reason": "Cloudflare contact phone published in https://www.cloudflare.com/privacypolicy/; a legal contact detail, not a measured result."
   }
 ]

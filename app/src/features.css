@@ -2551,3 +2551,14 @@
 .hero .stamp {
   opacity: 1;
 }
+
+/* Legal navigation uses the colophon's existing ink and type. */
+.colophon__legal a {
+  color: inherit;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 3px;
+}
+
+.colophon__legal a:hover {
+  color: var(--oxide);
+}

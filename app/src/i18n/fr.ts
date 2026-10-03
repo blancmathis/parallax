@@ -124,6 +124,59 @@ export const fr = {
     menuOpen: "Ouvrir le menu",
     menuClose: "Fermer le menu",
   },
+  legal: {
+    legal: {
+      title: "Mentions légales",
+      lede: "Identité de l’éditeur et informations relatives à la publication de Parallax.",
+    },
+    privacy: {
+      title: "Confidentialité",
+      lede: "Vous pouvez lire les dossiers sans compte, sans cookie et sans traceur dans l’application.",
+    },
+    contact: {
+      title: "Contact",
+      lede: "Une erreur dans une affirmation, un extrait ou un libellé ? Indiquez le passage concerné pour permettre sa relecture.",
+    },
+    editorTitle: "Éditeur et publication",
+    editor: "Éditeur",
+    director: "Directeur de la publication",
+    address: "Adresse postale",
+    email: "Courriel de contact",
+    addressPending: "Adresse postale à renseigner avant publication.",
+    emailPending: "Courriel de contact à renseigner avant publication.",
+    hostTitle: "Hébergeur",
+    hostPolicy: "Politique de confidentialité de Cloudflare",
+    sourceTitle: "À propos des dossiers",
+    sourceBody: "Les dossiers actuels ont été préparés avec des outils d’IA. Ils ne sont pas encore relus ni signés par des personnes nommées. Les sources, extraits et libellés restent ouverts à la correction.",
+    reportError: "Signaler une erreur",
+    reportBody: "Le formulaire GitHub est public : n’y publiez pas de données personnelles ou confidentielles. Identifiez l’affirmation, la source et l’extrait concerné.",
+    privateTitle: "Contact privé",
+    privateBody: "Pour une demande privée ou relative à vos données, utilisez le courriel de l’éditeur. Une vulnérabilité peut être signalée par le formulaire privé de sécurité de GitHub.",
+    securityLink: "Signaler une vulnérabilité en privé",
+    privacySections: [
+      {
+        title: "Lecture sans profil",
+        body: "L’application n’a ni compte, ni formulaire de collecte, ni profil d’opinion. Elle ne dépose aucun cookie et n’intègre aucun traceur ou outil de mesure d’audience. Les polices sont hébergées avec le site.",
+      },
+      {
+        title: "Stockage dans votre navigateur",
+        body: "localStorage contient uniquement parallax.locale, avec la valeur fr ou en : la dernière langue consultée. Cette préférence reste dans ce navigateur, sans être envoyée à une base de données. Aucun vote, quiz, profil, brouillon de contribution ou historique de lecture n’est enregistré. Vous pouvez l’effacer dans les réglages du navigateur ; la langue de lecture est déterminée par l’adresse de la page.",
+      },
+      {
+        title: "Journaux d’hébergement",
+        body: "Cloudflare peut traiter l’adresse IP et des informations techniques sur les requêtes pour acheminer les pages et assurer leur sécurité. Ces traitements et leur conservation dépendent des services d’hébergement et de leur configuration ; nous ne promettons pas une absence de journaux. Consultez la politique de Cloudflare pour ses traitements et transferts internationaux.",
+      },
+      {
+        title: "Liens externes et messages",
+        body: "Les sources et les liens GitHub vous conduisent sur des sites tiers soumis à leurs propres règles. Les signalements GitHub sont publics. Si vous contactez l’éditeur par courriel, les informations de votre message servent à traiter votre demande, sans enrichir un profil d’opinion.",
+      },
+      {
+        title: "Vos droits",
+        body: "Pour une demande d’accès, de rectification ou d’effacement relative à vos données, contactez l’éditeur. Vous pouvez aussi saisir la CNIL. N’envoyez pas de données sensibles dans une issue publique.",
+      },
+    ],
+    rightsLink: "Contacter la CNIL",
+  },
   landing: {
     draftNote: "Méthode visée : ces brouillons préparés avec des outils d’IA attendent une relecture humaine et une signature.",
     projectMission: "Un socle de réflexion sourcée et auditable : une boussole pour les humains, un corpus pour aligner les IA.",

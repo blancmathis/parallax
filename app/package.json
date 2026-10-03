@@ -25,6 +25,7 @@
     "prerender": "NODE_ENV=production tsx scripts/prerender.ts",
     "gen:seo": "node scripts/gen-seo.mjs",
     "check:seo": "node scripts/check-seo.mjs",
+    "check:launch": "node scripts/check-launch.mjs",
     "check:bundle": "node scripts/check-bundle-budget.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -39,7 +40,7 @@
     "test:e2e:report": "playwright show-report",
     "audit:prod": "npm audit --omit=dev --audit-level=high",
     "qa": "npm run check && npm run lint && npm run check:fixtures && npm run check:metadata && npm run test:coverage && npm run build:test && npm run check:bundle && npm run audit:prod",
-    "qa:release": "npm run qa && playwright test"
+    "qa:release": "npm run qa && playwright test && npm run check:launch"
   },
   "dependencies": {
     "@fontsource-variable/newsreader": "5.3.0",

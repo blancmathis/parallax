@@ -33,8 +33,9 @@ const slugs = readdirSync(DATA)
   .filter(Boolean)
   .sort();
 
-const frPaths = ["/", "/debates", ...slugs.map((s) => `/debates/${s}`), "/method", "/projet"];
-const enPath = (fr) => fr === "/" ? "/en/" : fr === "/projet" ? "/en/project" : `/en${fr}`;
+const frPaths = ["/", "/debates", ...slugs.map((s) => `/debates/${s}`), "/method", "/projet", "/mentions-legales", "/confidentialite", "/contact"];
+const translations = { "/projet": "/project", "/mentions-legales": "/legal", "/confidentialite": "/privacy" };
+const enPath = (fr) => fr === "/" ? "/en/" : `/en${translations[fr] ?? fr}`;
 const abs = (p) => `${ORIGIN}${p}`;
 
 function urlEntry(loc, fr) {

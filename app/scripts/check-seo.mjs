@@ -39,6 +39,8 @@ const files = [
   "debates/congestion-pricing.html", "debates/smartphones-schools.html", "debates/nuclear-power.html",
   "en/index.html", "en/debates.html", "en/method.html",
   "projet.html", "en/project.html",
+  "mentions-legales.html", "confidentialite.html", "contact.html",
+  "en/legal.html", "en/privacy.html", "en/contact.html",
   "en/debates/congestion-pricing.html", "en/debates/smartphones-schools.html", "en/debates/nuclear-power.html",
   "404.html", "sitemap.xml", "robots.txt",
 ];
@@ -80,7 +82,7 @@ const fr = read("debates/smartphones-schools.html");
 // 8. sitemap
 const sm = read("sitemap.xml");
 const locs = (sm.match(/<loc>/g) || []).length;
-locs === 14 ? ok("sitemap 14 <loc>") : bad(`sitemap ${locs} <loc> (want 14)`);
+locs === 20 ? ok("sitemap 20 <loc>") : bad(`sitemap ${locs} <loc> (want 20)`);
 sm.includes('hreflang="x-default"') ? ok("sitemap x-default") : bad("sitemap missing x-default");
 !/<loc>[^<]*\/(review|you)\b/.test(sm) ? ok("sitemap excludes review/you") : bad("sitemap lists review/you");
 

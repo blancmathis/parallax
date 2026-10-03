@@ -177,6 +177,59 @@ export const en = {
     menuOpen: "Open menu",
     menuClose: "Close menu",
   },
+  legal: {
+    legal: {
+      title: "Legal notice",
+      lede: "Publisher identity and information about publishing Parallax.",
+    },
+    privacy: {
+      title: "Privacy",
+      lede: "You can read the dossiers without an account, cookies or trackers in the application.",
+    },
+    contact: {
+      title: "Contact",
+      lede: "An error in a claim, excerpt or label? Identify the passage so it can be reviewed.",
+    },
+    editorTitle: "Publisher and publication",
+    editor: "Publisher",
+    director: "Publication director",
+    address: "Postal address",
+    email: "Contact email",
+    addressPending: "Postal address to be supplied before publication.",
+    emailPending: "Contact email to be supplied before publication.",
+    hostTitle: "Hosting provider",
+    hostPolicy: "Cloudflare privacy policy",
+    sourceTitle: "About the dossiers",
+    sourceBody: "The current dossiers were prepared with AI tools. They have not yet been reviewed or signed by named people. Sources, excerpts and labels remain open to correction.",
+    reportError: "Report an error",
+    reportBody: "The GitHub form is public: do not publish personal or confidential information there. Identify the claim, source and relevant excerpt.",
+    privateTitle: "Private contact",
+    privateBody: "For a private enquiry or a request about your data, use the publisher’s email. Vulnerabilities can be reported through GitHub’s private security form.",
+    securityLink: "Report a vulnerability privately",
+    privacySections: [
+      {
+        title: "Reading without a profile",
+        body: "The application has no account, collection form or opinion profile. It sets no cookies and includes no trackers or audience analytics. Fonts are hosted with the site.",
+      },
+      {
+        title: "Storage in your browser",
+        body: "localStorage holds only parallax.locale, with the value fr or en: the last language viewed. This preference stays in this browser and is not sent to a database. No vote, quiz, profile, contribution draft or reading history is stored. You can clear it in your browser settings; the page address determines the reading language.",
+      },
+      {
+        title: "Hosting logs",
+        body: "Cloudflare may process IP addresses and technical request information to route pages and keep them secure. Processing and retention depend on the hosting services and their configuration; we do not promise an absence of logs. See Cloudflare’s policy for its processing and international transfers.",
+      },
+      {
+        title: "External links and messages",
+        body: "Sources and GitHub links lead to third-party sites with their own rules. GitHub reports are public. If you email the publisher, the information in your message is used to handle your request, without enriching an opinion profile.",
+      },
+      {
+        title: "Your rights",
+        body: "Contact the publisher for access, correction or erasure requests concerning your data. You can also contact the CNIL, the French data protection authority. Do not send sensitive information in a public issue.",
+      },
+    ],
+    rightsLink: "Contact the CNIL",
+  },
   landing: {
     draftNote: "Intended method: these drafts prepared with AI tools still await human review and signatures.",
     projectMission: "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to align AI.",

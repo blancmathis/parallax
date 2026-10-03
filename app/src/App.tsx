@@ -14,6 +14,7 @@ import "./features.css";
 // surfaces in one chunk.
 const DebatesIndex = lazy(() => import("./pages/DebatesIndex"));
 const DebatePage = lazy(() => import("./pages/DebatePage"));
+const LegalPage = lazy(() => import("./pages/LegalPage"));
 const Project = lazy(() => import("./pages/Project"));
 const Method = lazy(() => import("./pages/Method"));
 
@@ -104,6 +105,15 @@ function AppRoutes() {
         path={locale === "fr" ? "/projet" : "/project"}
         element={<Project />}
       />
+      <Route
+        path={locale === "fr" ? "/mentions-legales" : "/legal"}
+        element={<LegalPage kind="legal" />}
+      />
+      <Route
+        path={locale === "fr" ? "/confidentialite" : "/privacy"}
+        element={<LegalPage kind="privacy" />}
+      />
+      <Route path="/contact" element={<LegalPage kind="contact" />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

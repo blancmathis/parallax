@@ -34,6 +34,7 @@ export type RouteKey =
   | { kind: "debates" }
   | { kind: "method" }
   | { kind: "project" }
+  | { kind: "legal" | "privacy" | "contact" }
   | { kind: "debate"; slug: string }
   | { kind: "notfound" };
 
@@ -49,6 +50,12 @@ export function pathForRoute(r: RouteKey): string {
       return "/projet";
     case "debate":
       return `/debates/${r.slug}`;
+    case "legal":
+      return "/mentions-legales";
+    case "privacy":
+      return "/confidentialite";
+    case "contact":
+      return "/contact";
     case "notfound":
       return "/404";
   }
@@ -118,6 +125,14 @@ export function buildHead(
     case "project":
       title = `${t.chrome.project} — Parallax`;
       description = t.landing.projectMission;
+      ogTitle = title;
+      ogDescription = description;
+      break;
+    case "legal":
+    case "privacy":
+    case "contact":
+      title = `${t.legal[route.kind].title} — Parallax`;
+      description = t.legal[route.kind].lede;
       ogTitle = title;
       ogDescription = description;
       break;

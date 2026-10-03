@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LocaleLink as Link, LocaleNavLink as NavLink } from "../i18n/links";
 import { localeFromPath, localizedPath } from "../i18n/paths";
+import { SOURCE_ERROR_URL } from "../config/identity";
 import { useI18n, type Locale } from "../i18n";
 
 // Keep the masthead CTA on the featured reading route.
@@ -189,6 +190,10 @@ export function Footer() {
         <div className="colophon__legal">
           <span>{t.chrome.legal.instrument}</span>
           <span>{t.chrome.legal.seed}</span>
+          <Link to="/mentions-legales">{t.legal.legal.title}</Link>
+          <Link to="/confidentialite">{t.legal.privacy.title}</Link>
+          <Link to="/contact">{t.legal.contact.title}</Link>
+          <a href={SOURCE_ERROR_URL}>{t.legal.reportError}</a>
           <LocaleSwitch className="locale-switch--footer" />
         </div>
       </div>

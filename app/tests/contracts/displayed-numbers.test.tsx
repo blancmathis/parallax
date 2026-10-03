@@ -385,6 +385,9 @@ describe("displayed number provenance", () => {
       "/debates",
       "/method",
       "/projet",
+      "/mentions-legales",
+      "/confidentialite",
+      "/contact",
       "/missing",
       ...getDebates(locale).map((d) => `/debates/${slugOf(d)}`),
     ];

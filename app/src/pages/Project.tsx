@@ -4,11 +4,7 @@ import { getDebates, slugOf } from "../data";
 import { useI18n } from "../i18n";
 import { useCountUp, usePageTitle } from "../lib/ui";
 
-// Optional controlled contact channel. Omitting it removes contact CTAs instead
-// of publishing a placeholder or an inbox the project does not control.
-const CONTACT_EMAIL =
-  (import.meta.env?.VITE_CONTACT_EMAIL as string | undefined)?.trim() || null;
-const CONTACT_MAILTO = CONTACT_EMAIL ? `mailto:${CONTACT_EMAIL}` : null;
+import { CONTACT_MAILTO } from "../config/identity";
 
 /**
  * The Convergence. Reduced-motion-safe arming for the hero schematic.

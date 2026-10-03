@@ -1,0 +1,12 @@
+{
+  "editor": "Mathis Blanc",
+  "publicationDirector": "Mathis Blanc",
+  "postalAddress": "TODO_POSTAL_ADDRESS",
+  "contactEmail": "TODO_CONTACT_EMAIL",
+  "host": {
+    "name": "Cloudflare, Inc.",
+    "address": "101 Townsend St, San Francisco, CA 94107, USA",
+    "phone": "+1 (650) 319-8930",
+    "privacyUrl": "https://www.cloudflare.com/privacypolicy/"
+  }
+}
