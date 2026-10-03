@@ -1,0 +1,27 @@
+[
+  {
+    "selector": ".pillar__no, .whynow__no, .method__num, .srcflow__n",
+    "numbers": ["01", "02", "03", "1", "2", "3"],
+    "reason": "Retained editorial section ordinals, not measured product results."
+  },
+  {
+    "selector": ".topicflow__n",
+    "numbers": ["1", "2", "3", "4", "5", "6"],
+    "reason": "Six numbered steps in the explicitly described target lifecycle."
+  },
+  {
+    "selector": ".chooser > .section__eyebrow, .disagree > .section__eyebrow",
+    "numbers": ["1", "2"],
+    "reason": "The two retained reading steps: positions, then values and trade-offs."
+  },
+  {
+    "selector": ".founder__line",
+    "numbers": ["42", "2023"],
+    "reason": "Founder biography supplied in the existing project copy: Ecole 42 and AI work since 2023; not an outcome statistic."
+  },
+  {
+    "selector": ".notfound > .stamp",
+    "numbers": ["404"],
+    "reason": "HTTP not-found status code, not a corpus or user count."
+  }
+]

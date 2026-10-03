@@ -21,6 +21,8 @@ import {
 } from "../lib/ui";
 import { useI18n } from "../i18n";
 import { DebateCard } from "../components/DebateCard";
+import { CoverageRegister } from "../components/CoverageRegister";
+import { excerptFor, fixtureHistoryUrl } from "../data/coverage";
 import { safeHttpUrl } from "../lib/url";
 
 const EVIDENCE_LEGEND: EvidenceLabel[] = [
@@ -62,7 +64,7 @@ function SourceTrace({
   source: Source;
   excerpt?: SourceExcerpt;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const hash = source.content_hash;
   const provisional =
     locale === "fr"
@@ -70,7 +72,11 @@ function SourceTrace({
       : "Provisional provenance: no hashed, inspectable artefact is recorded.";
 
   if (!excerpt) {
-    return <p className="evcard__foot">{provisional}</p>;
+    return (
+      <p className="evcard__foot">
+        <b>{t.draft.unverifiedExcerpt}</b> · {provisional}
+      </p>
+    );
   }
 
   return (
@@ -144,6 +150,11 @@ function ClaimRow({
                   {t.debatePage.sharedClaim(sharedWith.join(" · "))}
                 </span>
               )}
+              {!links.some((link) => excerptFor(debate, link)) && (
+                <span className="claimtype claimtype--shared">
+                  {t.draft.unverifiedExcerpt}
+                </span>
+              )}
               {state === "provisional" && (
                 <span className="claimtype claimtype--shared">
                   {locale === "fr" ? "provisoire · non établi" : "provisional · not established"}
@@ -191,9 +202,7 @@ function ClaimRow({
           ) : (
             links.map((link) => {
               const source = debate.sources.find((s) => s.id === link.source_id);
-              const excerpt = debate.source_excerpts?.find(
-                (item) => item.id === link.source_excerpt_id,
-              );
+              const excerpt = excerptFor(debate, link);
               return (
                 <article key={link.id} className="evcard">
                   <header className="evcard__head">
@@ -724,6 +733,7 @@ export default function DebatePage() {
       </div>
       {/* — hero — */}
       <section className="hero hero--debate">
+        <CoverageRegister debate={debate} />
         <p className="hero__kicker">
           <Link to="/debates" className="hero__back">
             {t.debatePage.back}
@@ -909,6 +919,21 @@ export default function DebatePage() {
                 </span>
               </div>
             ))}
+          </div>
+        </details>
+
+        <details className="fold">
+          <summary>{t.debatePage.fileHistory}</summary>
+          <div className="fold__body fold__body--prose">
+            <p>{t.debatePage.fileHistoryNote}</p>
+            <a
+              className="link"
+              href={fixtureHistoryUrl(debate, locale)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t.debatePage.fileHistoryLink} ↗
+            </a>
           </div>
         </details>
 

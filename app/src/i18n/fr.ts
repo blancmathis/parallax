@@ -111,7 +111,7 @@ export const fr = {
     projectItems: [
       "Open source",
       "Vocation d'intérêt public",
-      "Prototype jalons 1-3",
+      "Brouillons en lecture seule",
     ],
     legal: {
       instrument: "parallax — un instrument de raisonnement public",
@@ -392,6 +392,15 @@ export const fr = {
         "Ce sont des états de relecture, pas des scores de vérité : « établie » exige une évaluation approuvée ; « provisoire » signifie que la relecture indépendante reste à faire.",
     },
   },
+  draft: {
+    title: "Brouillon non relu",
+    provenance: "Préparé avec des outils d’IA ; aucune relecture humaine nommée à ce jour.",
+    coverage: (positions: string, excerpts: number, links: number, percent: number | null) =>
+      `Sources par position — ${positions} · liens avec un extrait exact enregistré : ${excerpts}/${links}${percent === null ? "" : ` (${percent} %)`}.`,
+    reviewers: "Relecteurs : aucun pour l’instant.",
+    excerptNote: "La présence d’un extrait ne certifie pas sa fidélité à la source : la relecture reste à faire.",
+    unverifiedExcerpt: "extrait non vérifié",
+  },
   debatePage: {
     notFound: "Dossier introuvable.",
     sharedClaim: (positions: string) => `partagée avec ${positions}`,
@@ -432,6 +441,9 @@ export const fr = {
     workTitle: "Montrer le travail.",
     workEm: "Chaque source, chaque changement, au registre.",
     allSources: "Toutes les sources",
+    fileHistory: "Historique du fichier",
+    fileHistoryNote: "Les changements réels de ce dossier sont consignés dans Git. Les dates du contenu décrivent la version de travail, pas une relecture humaine.",
+    fileHistoryLink: "Voir les changements sur GitHub",
     howToRead: "Comment lire cette page",
     howToReadP1:
       "Chaque position est écrite comme un steelman : la version la plus solide de cette position, telle qu'un soutien réfléchi la formulerait.",

@@ -164,7 +164,7 @@ export const en = {
     projectItems: [
       "Open source",
       "Public-interest purpose",
-      "Milestone 1-3 prototype",
+      "Read-only drafts",
     ],
     legal: {
       instrument: "parallax — an instrument for public reasoning",
@@ -444,6 +444,15 @@ export const en = {
         "These are review states, not truth scores: established requires an approved claim evaluation; provisional means independent review is still pending.",
     },
   },
+  draft: {
+    title: "Unreviewed draft",
+    provenance: "Prepared with AI tools; no named human review yet.",
+    coverage: (positions: string, excerpts: number, links: number, percent: number | null) =>
+      `Sources per position — ${positions} · links with a stored exact excerpt: ${excerpts}/${links}${percent === null ? "" : ` (${percent}%)`}.`,
+    reviewers: "Reviewers: none yet.",
+    excerptNote: "An excerpt’s presence does not certify its fidelity to the source: human review is still needed.",
+    unverifiedExcerpt: "unverified excerpt",
+  },
   debatePage: {
     notFound: "No such dossier.",
     sharedClaim: (positions: string) => `shared with ${positions}`,
@@ -484,6 +493,9 @@ export const en = {
     workTitle: "Show the work.",
     workEm: "Every source, every change, on the record.",
     allSources: "All sources",
+    fileHistory: "File history",
+    fileHistoryNote: "Actual changes to this dossier are recorded in Git. Content dates describe the working version, not a human review.",
+    fileHistoryLink: "See changes on GitHub",
     howToRead: "How to read this page",
     howToReadP1:
       "Every position is written as a steelman — the strongest version of that view, as a thoughtful supporter would state it.",

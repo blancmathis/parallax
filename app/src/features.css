@@ -2465,3 +2465,43 @@
   color: var(--ink);
   max-width: 64ch;
 }
+
+/* ————— draft provenance and coverage ————— */
+
+.draftnotice {
+  border: 1px solid var(--rule-strong);
+  border-radius: 8px;
+  background: var(--paper-raised);
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.draftnotice__title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--oxide-deep);
+  margin-bottom: 8px;
+}
+
+.draftnotice__provenance,
+.draftnotice__coverage {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.draftnotice__coverage {
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.draftnotice__note {
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
