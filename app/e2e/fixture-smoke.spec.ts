@@ -10,7 +10,6 @@ type LocaleFixture = {
   homePath: string;
   debatesPath: string;
   debatePath: string;
-  youPath: string;
   debateQuestions: readonly string[];
 };
 
@@ -21,7 +20,6 @@ const locales: readonly LocaleFixture[] = [
     homePath: "/",
     debatesPath: "/debates",
     debatePath: "/debates/smartphones-schools",
-    youPath: "/you",
     debateQuestions: [
       "Should cities implement congestion pricing for cars?",
       "Should schools ban smartphones during class?",
@@ -34,7 +32,6 @@ const locales: readonly LocaleFixture[] = [
     homePath: "/fr",
     debatesPath: "/fr/debates",
     debatePath: "/fr/debates/smartphones-schools",
-    youPath: "/fr/you",
     debateQuestions: [
       "Les villes devraient-elles instaurer un péage de congestion pour les voitures ?",
       "Les écoles devraient-elles interdire les smartphones pendant les cours ?",
@@ -108,21 +105,5 @@ for (const locale of locales) {
       await assertPageHealth(page);
     });
 
-    test("public account route exposes no local seed credential", async ({ page }) => {
-      const runtime = monitorRuntimeErrors(page);
-
-      await page.goto(locale.youPath);
-      await expectPathAndLanguage(page, locale.youPath, locale.lang);
-      for (const credential of [
-        "user@example.test",
-        "reviewer@example.test",
-        "admin@example.test",
-        "Parallax123!",
-      ]) {
-        await expect(page.locator("body")).not.toContainText(credential);
-      }
-      runtime.assertNoErrors();
-      await assertPageHealth(page);
-    });
   });
 }

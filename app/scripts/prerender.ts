@@ -58,8 +58,6 @@ const staticRoutes: RouteKey[] = [
   { kind: "home" },
   { kind: "debates" },
   { kind: "method" },
-  { kind: "review" },
-  { kind: "you" },
 ];
 
 function strip(html: string): string {

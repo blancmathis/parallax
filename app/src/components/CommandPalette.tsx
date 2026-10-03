@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocaleNavigate } from "../i18n/links";
-import { slugOf } from "../data";
+import { getDebates, slugOf } from "../data";
 import { useI18n } from "../i18n";
-import { useDebates } from "../lib/backend";
 
 interface Item {
   id: string;
@@ -28,7 +27,7 @@ export function CommandPalette() {
   const restoreRef = useRef<HTMLElement | null>(null);
   const navigate = useLocaleNavigate();
   const { locale, t } = useI18n();
-  const { debates } = useDebates(locale);
+  const debates = getDebates(locale);
 
   const items: Item[] = useMemo(() => {
     const p = t.interactive.palette;
@@ -43,8 +42,6 @@ export function CommandPalette() {
       page("home", p.home, "/"),
       page("debates", p.allDebates, "/debates"),
       page("method", p.method, "/method"),
-      page("review", p.review, "/review"),
-      page("you", p.you, "/you"),
       ...debates.map((d) => ({
         id: d.topic.id,
         label: d.topic.question,

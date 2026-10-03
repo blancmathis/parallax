@@ -12,9 +12,7 @@ export default defineConfig({
       reporter: ["text", "json-summary", "html"],
       include: [
         "src/data/state.ts",
-        "src/features/workflow/model.ts",
         "src/lib/sourceKey.ts",
-        "src/lib/store.ts",
       ],
       thresholds: {
         branches: 75,

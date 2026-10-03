@@ -6,18 +6,14 @@ import nuclearPower from "../../src/data/nuclear-power.json";
 import { I18nProvider } from "../../src/i18n";
 import type { DebateFixture } from "../../src/types";
 
-const backend = vi.hoisted(() => ({
-  useDebates: vi.fn(),
+const fixtures = vi.hoisted(() => ({
+  getDebates: vi.fn(),
 }));
 
-vi.mock("../../src/lib/backend", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../../src/lib/backend")>();
-  return { ...actual, useDebates: backend.useDebates };
+vi.mock("../../src/data", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../src/data")>();
+  return { ...actual, getDebates: fixtures.getDebates };
 });
-
-vi.mock("../../src/lib/auth", () => ({
-  useAuth: () => ({ user: null }),
-}));
 
 import DebatesIndex from "../../src/pages/DebatesIndex";
 
@@ -57,13 +53,7 @@ describe("debate library epistemic shape", () => {
   );
 
   beforeEach(() => {
-    backend.useDebates.mockReturnValue({
-      debates: [provisional, contested],
-      source: "fixtures",
-      originByTopicId: {},
-      loading: false,
-      error: null,
-    });
+    fixtures.getDebates.mockReturnValue([provisional, contested]);
   });
 
   it("renders exclusive corpus/card counts and sorts the two states separately", async () => {

@@ -567,57 +567,5 @@
       "risk": "L'usage entre les cours peut déborder sur le temps de classe, sans offrir ni la concentration d'une interdiction ni l'autonomie d'un usage maîtrisé.",
       "review_status": "unreviewed"
     }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Sujet créé à partir du dossier de départ sur les smartphones à l'école.",
-      "created_at": "2026-04-30T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "retriever_v0",
-      "event_type": "source_added",
-      "summary": "6 sources ajoutées et récupérées avec succès (statut : found) : UNESCO GEM Report, CEP (LSE), UK DfE, The Lancet Regional Health - Europe, Common Sense Media, Gouvernement des Pays-Bas.",
-      "created_at": "2026-04-30T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "6 affirmations atomiques (C1-C6) extraites manuellement du dossier de départ.",
-      "created_at": "2026-04-30T09:20:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "evidence_labeled",
-      "summary": "10 liens de preuve libellés (alignement affirmation-source), dont 1 lien contradictoire et 1 lien à clarifier sur l'affirmation de bien-être. Tous marqués non relus.",
-      "created_at": "2026-04-30T09:40:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "3 positions structurées avec steelmans, valeurs et compromis ; révision 1 publiée. Tâches ouvertes : preuves longitudinales sur le bien-être et évaluation indépendante de l'interdiction néerlandaise.",
-      "created_at": "2026-04-30T10:15:00Z"
-    }
   ]
 }

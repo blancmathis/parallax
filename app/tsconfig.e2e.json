@@ -7,7 +7,6 @@
   },
   "include": [
     "e2e",
-    "playwright.config.ts",
-    "playwright.backend.config.ts"
+    "playwright.config.ts"
   ]
 }

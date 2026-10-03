@@ -32,8 +32,6 @@ export type RouteKey =
   | { kind: "home" }
   | { kind: "debates" }
   | { kind: "method" }
-  | { kind: "review" }
-  | { kind: "you" }
   | { kind: "debate"; slug: string }
   | { kind: "notfound" };
 
@@ -45,10 +43,6 @@ export function pathForRoute(r: RouteKey): string {
       return "/debates";
     case "method":
       return "/method";
-    case "review":
-      return "/review";
-    case "you":
-      return "/you";
     case "debate":
       return `/debates/${r.slug}`;
     case "notfound":
@@ -118,20 +112,6 @@ export function buildHead(
       description = t.meta.descriptionMethod;
       ogTitle = title;
       ogDescription = description;
-      break;
-    case "review":
-      title = t.meta.titleReview;
-      description = t.meta.descriptionShort;
-      ogTitle = title;
-      ogDescription = description;
-      robots = "noindex,follow";
-      break;
-    case "you":
-      title = t.meta.titleYou;
-      description = t.meta.descriptionShort;
-      ogTitle = title;
-      ogDescription = description;
-      robots = "noindex,follow";
       break;
     case "notfound":
       title = t.meta.titleNotFound;

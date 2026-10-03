@@ -3,9 +3,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { buildHead, type RouteKey, type DebateMeta } from "./head";
-import { slugOf } from "../data";
+import { getDebates, slugOf } from "../data";
 import { useI18n } from "../i18n";
-import { useDebates } from "../lib/backend";
 
 /** Map a (locale-stripped) pathname to the SEO route key. */
 export function routeFromPath(pathname: string): RouteKey {
@@ -15,8 +14,6 @@ export function routeFromPath(pathname: string): RouteKey {
   if (p.startsWith("/debates/"))
     return { kind: "debate", slug: p.slice("/debates/".length).replace(/\/$/, "") };
   if (p === "/method") return { kind: "method" };
-  if (p === "/review") return { kind: "review" };
-  if (p === "/you") return { kind: "you" };
   return { kind: "notfound" };
 }
 
@@ -81,7 +78,7 @@ function apply(
 export function RouteHead() {
   const { pathname } = useLocation();
   const { locale } = useI18n();
-  const { debates, loading, error } = useDebates(locale);
+  const debates = getDebates(locale);
   const route = routeFromPath(pathname);
   let debate: DebateMeta | undefined;
   if (route.kind === "debate") {
@@ -89,8 +86,7 @@ export function RouteHead() {
     if (d)
       debate = { slug: route.slug, question: d.topic.question, summary: d.topic.summary };
   }
-  const debateLookupUnavailable =
-    route.kind === "debate" && !debate && (loading || Boolean(error));
+  const debateLookupUnavailable = false;
   const key = [
     route.kind,
     route.kind === "debate" ? route.slug : "",

@@ -538,57 +538,5 @@
       "risk": "Case-by-case ambivalence can become a de facto phase-out if no new project ever clears the bar.",
       "review_status": "unreviewed"
     }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Topic created from the nuclear power seed packet.",
-      "created_at": "2026-05-21T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "source_added",
-      "summary": "6 sources added and retrieved (status: found): IPCC AR6 WG3, IEA Net Zero by 2050, Lazard LCOE+, WNISR, MIT Energy Initiative, Our World in Data.",
-      "created_at": "2026-05-21T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "8 atomic claims (C1–C8) extracted manually from the seed packet.",
-      "created_at": "2026-05-21T09:20:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "labeler_v0",
-      "event_type": "evidence_labeled",
-      "summary": "16 evidence links labeled across 8 claims and 6 sources, including 2 contradicting and 1 unclear link. All marked unreviewed.",
-      "created_at": "2026-05-21T09:40:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "Revision 1 published with 3 positions, 11 arguments, 4 values, and 3 trade-offs. Open tasks: add waste-disposal and SMR cost evidence, seek independent review of the contested scaling and overrun-generality claims.",
-      "created_at": "2026-05-21T10:15:00Z"
-    }
   ]
 }

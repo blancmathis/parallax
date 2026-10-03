@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { themeOf } from "../data";
+import { getDebates, themeOf } from "../data";
 import { debateShape } from "../data/state";
 import { DebateCard } from "../components/DebateCard";
-import { ProposeTopic } from "../components/ProposeTopic";
 import { useI18n } from "../i18n";
-import { useDebates } from "../lib/backend";
 import { useCountUp, usePageTitle } from "../lib/ui";
 
 type View = "all" | "contested" | "provisional" | "values" | "recent";
@@ -18,11 +16,10 @@ function normalizeSearch(value: string, locale: string): string {
 
 export default function DebatesIndex() {
   const { locale, t } = useI18n();
-  const { debates, source, loading, error } = useDebates(locale);
+  const debates = getDebates(locale);
   const [query, setQuery] = useState("");
   const [theme, setTheme] = useState<string | null>(null);
   const [view, setView] = useState<View>("all");
-  const [proposeOpen, setProposeOpen] = useState(false);
   usePageTitle(t.meta.titleDebates);
 
   // ---- Corpus ledger: the larger, real totals (claims/sources/evidence) and
@@ -186,15 +183,7 @@ export default function DebatesIndex() {
         </h1>
         <p className="section__lede atlas__lede">{t.debatesIndex.lede}</p>
         <p className="backend-note" role="status" aria-live="polite">
-          {loading
-            ? t.debatesIndex.dataLoading
-            : source === "supabase"
-              ? t.debatesIndex.dataLive
-              : error
-                ? locale === "fr"
-                  ? t.debatesIndex.dataLanguageDemo
-                  : t.debatesIndex.dataFallback
-                : t.debatesIndex.dataDemo}
+          {t.debatesIndex.dataDemo}
         </p>
       </header>
 
@@ -351,22 +340,6 @@ export default function DebatesIndex() {
             <DebateCard key={d.topic.id} debate={d} index={i} />
           ))}
 
-          <button
-            type="button"
-            className="dcard dcard--ghost dcard--soon"
-            onClick={() => setProposeOpen(true)}
-          >
-            <div className="dcard__head">
-              <span className="dcard__no">№ {t.debatesIndex.next}</span>
-              <span className="dcard__soon">{t.debatesIndex.notOpen}</span>
-            </div>
-            <h3 className="dcard__question">{t.debatesIndex.proposeTitle}</h3>
-            <p className="dcard__summary">{t.debatesIndex.proposeSummary}</p>
-            <div className="dcard__foot">
-              <span>{t.debatesIndex.proposeHint}</span>
-              <span className="dcard__go">{t.debatesIndex.proposeAction}</span>
-            </div>
-          </button>
         </div>
       )}
 
@@ -375,7 +348,6 @@ export default function DebatesIndex() {
         {t.debatesIndex.noteEnd}
       </p>
 
-      <ProposeTopic open={proposeOpen} onClose={() => setProposeOpen(false)} />
     </main>
   );
 }

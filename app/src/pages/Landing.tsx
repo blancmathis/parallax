@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { LocaleLink as Link } from "../i18n/links";
-import { slugOf } from "../data";
+import { getDebates, slugOf } from "../data";
 import { DebateCard } from "../components/DebateCard";
 import { useI18n } from "../i18n";
-import { useDebates } from "../lib/backend";
 import { useCountUp, usePageTitle } from "../lib/ui";
 
 // Optional controlled contact channel. Omitting it removes contact CTAs instead
@@ -97,7 +96,7 @@ function Reveal({
 
 export default function Landing() {
   const { locale, t } = useI18n();
-  const { debates } = useDebates(locale);
+  const debates = getDebates(locale);
   const schematicRef = useConvergence<HTMLDivElement>();
   usePageTitle(t.meta.titleHome);
   const totalClaims = debates.reduce((n, d) => n + d.claims.length, 0);
@@ -144,10 +143,6 @@ export default function Landing() {
               </Link>
               <Link to="/method" className="btn btn--ghost">
                 {t.landing.hero.secondaryCta}
-              </Link>
-              <Link to="/you" className="link lhero__testlink">
-                {t.landing.hero.tertiaryCta}
-                <span className="lhero__testtime">{t.landing.hero.tertiaryCtaTime}</span>
               </Link>
             </div>
           </Reveal>
@@ -346,45 +341,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ——— interactive loop teaser ——— */}
-      <section className="loopteaser">
-        <div className="page">
-          <p className="section__eyebrow">{t.landing.interactive.eyebrow}</p>
-          <h2 className="section__title">
-            {t.landing.interactive.titleLine}
-            <br />
-            <em>{t.landing.interactive.titleEm}</em>
-          </h2>
-          <p className="section__lede">{t.landing.interactive.lede}</p>
-          <div className="loopteaser__grid">
-            <article className="loopteaser__card">
-              <span className="loopteaser__step">{t.landing.interactive.quizStep}</span>
-              <h3>{t.landing.interactive.quizTitle}</h3>
-              <p>{t.landing.interactive.quizBody}</p>
-            </article>
-            <article className="loopteaser__card">
-              <span className="loopteaser__step">{t.landing.interactive.steelStep}</span>
-              <h3>{t.landing.interactive.steelTitle}</h3>
-              <p>{t.landing.interactive.steelBody}</p>
-            </article>
-            <article className="loopteaser__card loopteaser__card--metric">
-              <span className="loopteaser__step">{t.landing.interactive.deltaStep}</span>
-              <span className="loopteaser__metric">{t.landing.interactive.deltaMetric}</span>
-              <p>{t.landing.interactive.deltaBody}</p>
-            </article>
-          </div>
-          <p className="loopteaser__refrain">{t.landing.interactive.refrain}</p>
-          <div className="loopteaser__actions">
-            <Link to={featuredHref} className="btn btn--primary">
-              {t.landing.interactive.cta}
-            </Link>
-            <Link to="/you" className="link">
-              {t.landing.interactive.profileLink}
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ——— why now ——— */}
       <section className="whynow">
         <div className="page">
@@ -480,34 +436,6 @@ export default function Landing() {
               {t.landing.preview.allDebates}
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ——— loop ——— */}
-      <section className="loop">
-        <div className="page">
-          <p className="section__eyebrow">{t.landing.loop.eyebrow}</p>
-          <h2 className="section__title">
-            {t.landing.loop.titleLine}
-            <br />
-            <em>{t.landing.loop.titleEm}</em>
-          </h2>
-          <ol className="loop__steps">
-            {t.landing.loop.steps.map((step) => (
-              <li key={step.verb}>
-                <b>{step.verb}</b> {step.text}
-              </li>
-            ))}
-          </ol>
-          <p className="loop__note">
-            {t.landing.loop.noteStart}{" "}
-            <span className="kbd">{t.landing.loop.noteButton}</span>,{" "}
-            {t.landing.loop.noteMiddle}{" "}
-            <Link to="/review" className="link">
-              {t.landing.loop.noteLink}
-            </Link>
-            .
-          </p>
         </div>
       </section>
 

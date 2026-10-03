@@ -15,8 +15,6 @@ import "./features.css";
 const DebatesIndex = lazy(() => import("./pages/DebatesIndex"));
 const DebatePage = lazy(() => import("./pages/DebatePage"));
 const Method = lazy(() => import("./pages/Method"));
-const ReviewPage = lazy(() => import("./pages/ReviewPage"));
-const You = lazy(() => import("./pages/You"));
 
 function NotFound() {
   const { t } = useI18n();
@@ -102,8 +100,6 @@ function AppRoutes() {
       <Route path="/debates" element={<DebatesIndex />} />
       <Route path="/debates/:slug" element={<DebatePage />} />
       <Route path="/method" element={<Method />} />
-      <Route path="/review" element={<ReviewPage />} />
-      <Route path="/you" element={<You />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

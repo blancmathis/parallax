@@ -4,7 +4,6 @@ import type { DebateFixture } from "../types";
 import { POSITION_LETTERS, slugOf } from "../data";
 import { debateShape, type ClaimState } from "../data/state";
 import { useI18n } from "../i18n";
-import { pendingFor, useStore } from "../lib/store";
 
 const CARD_TINTS = ["card-tint-a", "card-tint-b", "card-tint-c"];
 
@@ -44,13 +43,9 @@ export function DebateCard({
   /** Landing preview opts out of the heavier ledger chrome (stamp + date). */
   compact?: boolean;
 }) {
-  const store = useStore();
   const { t, locale } = useI18n();
   const armed = useMotionArmed();
-  const pending = pendingFor(store, debate.topic.id).length;
-  const revision =
-    debate.revision.revision_number +
-    (store.revision_bumps[debate.topic.id] ?? 0);
+  const revision = debate.revision.revision_number;
 
   const { established, contested, provisional, values, total, temperament } =
     debateShape(debate);
@@ -173,7 +168,6 @@ export function DebateCard({
           )}
         </span>
         <span className="dcard__go">
-          {t.common.counts.pendingPrefix(pending)}
           {t.debateCard.read}
         </span>
       </div>

@@ -167,17 +167,6 @@ const tradeoffSchema = z.strictObject({
   review_status: reviewStatus,
 });
 
-const auditEventSchema = z.strictObject({
-  id,
-  topic_id: id,
-  revision_id: id,
-  actor_type: z.enum(["user", "admin", "ai", "system"]),
-  actor_id: id,
-  event_type: nonEmptyString,
-  summary: nonEmptyString,
-  created_at: isoDateTime,
-});
-
 const fixtureShapeSchema = z.strictObject({
   topic: topicSchema,
   revision: revisionSchema,
@@ -189,7 +178,6 @@ const fixtureShapeSchema = z.strictObject({
   evidence_links: z.array(evidenceLinkSchema).min(1),
   values: z.array(valueSchema),
   tradeoffs: z.array(tradeoffSchema),
-  audit_events: z.array(auditEventSchema).min(1),
 });
 
 type Identified = { id: string };
@@ -248,7 +236,6 @@ export const debateFixtureSchema = fixtureShapeSchema.superRefine(
     );
     const valueIds = idsFor(fixture.values, "values", context);
     const tradeoffIds = idsFor(fixture.tradeoffs, "tradeoffs", context);
-    idsFor(fixture.audit_events, "audit_events", context);
 
     if (fixture.topic.current_revision_id !== fixture.revision.id) {
       context.addIssue({
@@ -474,22 +461,6 @@ export const debateFixtureSchema = fixtureShapeSchema.superRefine(
       }
     });
 
-    fixture.audit_events.forEach((event, eventIndex) => {
-      if (event.topic_id !== fixture.topic.id) {
-        context.addIssue({
-          code: "custom",
-          path: ["audit_events", eventIndex, "topic_id"],
-          message: "Audit event must belong to the fixture topic.",
-        });
-      }
-      if (event.revision_id !== fixture.revision.id) {
-        context.addIssue({
-          code: "custom",
-          path: ["audit_events", eventIndex, "revision_id"],
-          message: "Audit event must point to the fixture revision.",
-        });
-      }
-    });
   },
 );
 

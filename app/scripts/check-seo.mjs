@@ -35,9 +35,9 @@ if (EXPECTED_ORIGIN) {
 
 // 1. prerendered files exist
 const files = [
-  "index.html", "debates.html", "method.html", "review.html", "you.html",
+  "index.html", "debates.html", "method.html",
   "debates/congestion-pricing.html", "debates/smartphones-schools.html", "debates/nuclear-power.html",
-  "fr.html", "fr/debates.html", "fr/method.html", "fr/review.html", "fr/you.html",
+  "fr.html", "fr/debates.html", "fr/method.html",
   "fr/debates/congestion-pricing.html", "fr/debates/smartphones-schools.html", "fr/debates/nuclear-power.html",
   "404.html", "sitemap.xml", "robots.txt",
 ];
@@ -72,9 +72,7 @@ const fr = read("fr/debates/smartphones-schools.html");
 // 6. debate is og:type article
 /og:type" content="article"/.test(read("debates/nuclear-power.html")) ? ok("debate og:type article") : bad("debate og:type not article");
 
-// 7. review/you noindex; indexable pages not noindex
-for (const f of ["review.html", "you.html", "fr/review.html", "fr/you.html"])
-  /robots" content="noindex/.test(read(f)) ? ok(`noindex ${f}`) : bad(`missing noindex ${f}`);
+// 7. Reading pages remain indexable.
 /robots" content="noindex/.test(read("index.html")) ? bad("home is noindex!") : ok("home indexable");
 /robots" content="noindex/.test(read("debates/nuclear-power.html")) ? bad("debate is noindex!") : ok("debate indexable");
 

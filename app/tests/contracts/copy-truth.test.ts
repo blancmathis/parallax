@@ -37,20 +37,4 @@ describe("product copy truth contract", () => {
     expect(fr.landing.trust.cols[1].body).toMatch(/pas une association reconnue/i);
   });
 
-  it("describes local and signed-in position ballots without false anonymity promises", () => {
-    expect(en.positionSignal.privacyLocal).toMatch(/stays in this browser/i);
-    expect(fr.positionSignal.privacyLocal).toMatch(/reste dans ce navigateur/i);
-    expect(en.positionSignal.privacy).toMatch(/linked to your account/i);
-    expect(fr.positionSignal.privacy).toMatch(/lié à votre compte/i);
-    expect(en.positionSignal.privacy).toMatch(/k-anonymized aggregate bands/i);
-    expect(fr.positionSignal.privacy).toMatch(/k-anonymisées/i);
-
-    const copy = [...stringCorpus(en), ...stringCorpus(fr)].join("\n");
-    expect(copy).not.toMatch(/Only the anonymous total is ever stored/i);
-    expect(copy).not.toMatch(/Seul le total anonyme est conservé/i);
-    expect(copy).not.toMatch(/never tied to you/i);
-    expect(copy).not.toMatch(/jamais lié à vous/i);
-    expect(copy).not.toMatch(/never sold/i);
-    expect(copy).not.toMatch(/jamais vendues?/i);
-  });
 });

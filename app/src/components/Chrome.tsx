@@ -3,58 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LocaleLink as Link, LocaleNavLink as NavLink } from "../i18n/links";
 import { localeFromPath } from "../i18n/provider";
 import { useI18n, type Locale } from "../i18n";
-import { pendingFor, useStore } from "../lib/store";
 
-// Deep-link the single masthead CTA at a genuinely divisive seeded debate
-// rather than duplicating the "debates" nav item. Kept as a static path so
-// the chrome stays decoupled from the (lazily loaded) debate data.
-const QUIZ_HASH = "#values-quiz";
-const QUIZ_TARGET_SELECTOR = ".quizwrap";
-const FEATURED_DEBATE = `/debates/smartphones-schools${QUIZ_HASH}`;
+// Keep the masthead CTA on the featured reading route.
+const FEATURED_DEBATE = "/debates/smartphones-schools";
 
 export function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname } = useLocation();
   useEffect(() => {
-    if (hash === QUIZ_HASH) {
-      let timeoutId = 0;
-      let observer: MutationObserver | null = null;
-
-      const revealQuiz = () => {
-        const quiz = document.querySelector<HTMLElement>(QUIZ_TARGET_SELECTOR);
-        if (!quiz) return false;
-        quiz.scrollIntoView({
-          behavior: "instant" as ScrollBehavior,
-          block: "start",
-        });
-        quiz
-          .querySelector<HTMLElement>("button:not([disabled]), a[href]")
-          ?.focus({ preventScroll: true });
-        return true;
-      };
-
-      // Debate routes are lazy-loaded. Wait for the existing quiz to mount so
-      // the masthead deep-link works on both a cold navigation and the same page.
-      if (!revealQuiz()) {
-        observer = new MutationObserver(() => {
-          if (!revealQuiz()) return;
-          observer?.disconnect();
-          window.clearTimeout(timeoutId);
-        });
-        observer.observe(document.getElementById("app-content") ?? document.body, {
-          childList: true,
-          subtree: true,
-        });
-        timeoutId = window.setTimeout(() => observer?.disconnect(), 5000);
-      }
-
-      return () => {
-        observer?.disconnect();
-        window.clearTimeout(timeoutId);
-      };
-    }
-
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [pathname, hash]);
+  }, [pathname]);
   return null;
 }
 
@@ -96,8 +53,6 @@ function LocaleSwitch({ className = "" }: { className?: string }) {
 }
 
 export function Masthead() {
-  const store = useStore();
-  const pending = pendingFor(store).length;
   const { t } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
@@ -151,18 +106,6 @@ export function Masthead() {
         <nav className="masthead__nav" aria-label={t.chrome.primaryNavLabel}>
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
-          <NavLink to="/review" className="masthead__review">
-            {t.common.nav.review}
-            {pending > 0 && (
-              <span className="masthead__badge" aria-hidden="true">
-                {pending}
-              </span>
-            )}
-            {pending > 0 && (
-              <span className="sr-only">{t.chrome.pendingCount(pending)}</span>
-            )}
-          </NavLink>
-          <NavLink to="/you">{t.common.nav.you}</NavLink>
         </nav>
         <div className="masthead__right">
           <button
@@ -177,7 +120,7 @@ export function Masthead() {
           </button>
           <LocaleSwitch />
           <Link to={FEATURED_DEBATE} className="masthead__cta">
-            {t.chrome.ctaTakeQuiz}
+            {t.chrome.ctaReadDebate}
           </Link>
           <button
             ref={burgerRef}
@@ -201,18 +144,6 @@ export function Masthead() {
         >
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
-          <NavLink to="/review">
-            {t.common.nav.review}
-            {pending > 0 && (
-              <span className="masthead__badge" aria-hidden="true">
-                {pending}
-              </span>
-            )}
-            {pending > 0 && (
-              <span className="sr-only">{t.chrome.pendingCount(pending)}</span>
-            )}
-          </NavLink>
-          <NavLink to="/you">{t.common.nav.you}</NavLink>
           <div className="masthead__sheetfoot">
             <LocaleSwitch />
           </div>
@@ -240,7 +171,6 @@ export function Footer() {
               <h4>{t.chrome.explore}</h4>
               <Link to="/debates">{t.chrome.allDebates}</Link>
               <Link to="/method">{t.chrome.howItWorks}</Link>
-              <Link to="/review">{t.chrome.reviewQueue}</Link>
             </div>
             <div>
               <h4>{t.chrome.principles}</h4>

@@ -664,57 +664,5 @@
       "risk": "L'ambivalence au cas par cas peut devenir une sortie de fait si aucun nouveau projet ne franchit jamais la barre.",
       "review_status": "unreviewed"
     }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Sujet créé à partir du dossier de départ sur l'énergie nucléaire.",
-      "created_at": "2026-05-21T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "source_added",
-      "summary": "6 sources ajoutées et récupérées (statut : found) : IPCC AR6 WG3, IEA Net Zero by 2050, Lazard LCOE+, WNISR, MIT Energy Initiative, Our World in Data.",
-      "created_at": "2026-05-21T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "8 affirmations atomiques (C1-C8) extraites manuellement du dossier de départ.",
-      "created_at": "2026-05-21T09:20:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "labeler_v0",
-      "event_type": "evidence_labeled",
-      "summary": "16 liens de preuve libellés sur 8 affirmations et 6 sources, dont 2 liens contradictoires et 1 lien indéterminé. Tous marqués non relus.",
-      "created_at": "2026-05-21T09:40:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_nuclear_power",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "Révision 1 publiée avec 3 positions, 11 arguments, 4 valeurs et 3 compromis. Tâches ouvertes : ajouter des preuves sur le stockage des déchets et les coûts des SMR, demander une revue indépendante des affirmations contestées sur le passage à l'échelle et la généralité des dépassements.",
-      "created_at": "2026-05-21T10:15:00Z"
-    }
   ]
 }

@@ -466,57 +466,5 @@
       "risk": "Between-lesson use can spill into class time, delivering neither the focus of a ban nor the autonomy of managed use.",
       "review_status": "unreviewed"
     }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Topic created from the smartphones-in-schools seed packet.",
-      "created_at": "2026-04-30T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "retriever_v0",
-      "event_type": "source_added",
-      "summary": "6 sources added and retrieved successfully (status: found): UNESCO GEM Report, CEP (LSE), UK DfE, The Lancet Regional Health - Europe, Common Sense Media, Government of the Netherlands.",
-      "created_at": "2026-04-30T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "6 atomic claims (C1–C6) extracted manually from the seed packet.",
-      "created_at": "2026-04-30T09:20:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "evidence_labeled",
-      "summary": "10 evidence links labeled (claim–source alignment), including 1 contradicting and 1 unclear link on the wellbeing claim. All marked unreviewed.",
-      "created_at": "2026-04-30T09:40:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "3 positions structured with steelmans, values, and trade-offs; revision 1 published. Open tasks: longitudinal wellbeing evidence and an independent evaluation of the Dutch ban.",
-      "created_at": "2026-04-30T10:15:00Z"
-    }
   ]
 }
