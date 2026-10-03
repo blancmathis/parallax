@@ -343,7 +343,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Évaluation de consensus de l'organe scientifique climat de l'ONU ; source la plus solide disponible sur ce que supposent les trajectoires d'atténuation modélisées. Les fourchettes de scénarios sont larges et agrègent de nombreux modèles ; les citations à chiffre unique demandent donc de la prudence."
+      "quality_notes": "Évaluation de consensus de l'organe scientifique climat de l'ONU ; source la plus solide disponible sur ce que supposent les trajectoires d'atténuation modélisées. Les fourchettes de scénarios sont larges et agrègent de nombreux modèles ; les citations à chiffre unique demandent donc de la prudence.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -353,37 +354,41 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Exercice de modélisation intergouvernemental influent. Ses chiffres nucléaires sont des sorties de scénario conditionnelles aux politiques, pas des prévisions ; l'AIE a historiquement sous-estimé la croissance des renouvelables."
+      "quality_notes": "Exercice de modélisation intergouvernemental influent. Ses chiffres nucléaires sont des sorties de scénario conditionnelles aux politiques, pas des prévisions ; l'AIE a historiquement sous-estimé la croissance des renouvelables.",
+      "content_hash": null
     },
     {
       "id": "s3",
-      "url": "https://www.lazard.com/research-insights/levelized-cost-of-energyplus/",
-      "title": "Levelized Cost of Energy+ (LCOE+)",
+      "url": "https://www.lazard.com/media/kcfconhf/lazards-lcoeplus_vf.pdf",
+      "title": "Levelized Cost of Energy+ — July 2026 (LCOE v19.0 / LCOS v11.0)",
       "publisher": "Lazard",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Référence de banque d'investissement très citée pour les coûts de production américains. Le LCOE exclut les coûts d'intégration système et de fermeté, ce qui sous-estime la valeur des centrales pilotables ; ses estimations de nouveau nucléaire reposent sur très peu de données américaines récentes."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Rapport LCOE+ exact de juillet 2026 (LCOE v19.0 / LCOS v11.0), référence de banque d'investissement très citée pour les coûts de production américains. Le LCOE exclut les coûts d'intégration système et de fermeté, ce qui sous-estime la valeur des centrales pilotables ; ses estimations de nouveau nucléaire reposent sur très peu de données américaines récentes.",
+      "content_hash": null
     },
     {
       "id": "s4",
-      "url": "https://www.worldnuclearreport.org/",
-      "title": "World Nuclear Industry Status Report",
+      "url": "https://www.worldnuclearreport.org/IMG/pdf/wnisr2025-v2.pdf",
+      "title": "World Nuclear Industry Status Report 2025 (v2)",
       "publisher": "Mycle Schneider Consulting",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Jeu de données annuel détaillé sur les démarrages de construction de réacteurs, retards et coûts. Ligne éditoriale sceptique sur le nucléaire : ses données de tendance sont largement utilisées, mais son cadrage argumente systématiquement contre le nouveau nucléaire."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Rapport versionné 2025 v2 avec des données annuelles détaillées sur les démarrages de construction de réacteurs, retards et coûts. Ligne éditoriale sceptique sur le nucléaire : ses données de tendance sont largement utilisées, mais son cadrage argumente systématiquement contre le nouveau nucléaire.",
+      "content_hash": "sha256:c07bb64e0877b640ac81e3b3c6faf18e7715b90595b95e4ee08ebbd85bae8688"
     },
     {
       "id": "s5",
-      "url": "https://energy.mit.edu/research/future-nuclear-energy-carbon-constrained-world/",
+      "url": "https://energy.mit.edu/wp-content/uploads/2018/09/The-Future-of-Nuclear-Energy-in-a-Carbon-Constrained-World.pdf",
       "title": "The Future of Nuclear Energy in a Carbon-Constrained World",
       "publisher": "MIT Energy Initiative",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-05-19",
-      "quality_notes": "Grande étude universitaire avec modélisation des coûts système. Penche vers des recommandations pro-nucléaires, tout en étant franche sur les échecs de coûts de l'industrie ; publiée en 2018, donc ses données de coûts précèdent les projets les plus récents."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Rapport MIT exact de 2018 avec modélisation des coûts système. Penche vers des recommandations pro-nucléaires, tout en étant franc sur les échecs de coûts de l'industrie ; ses données de coûts précèdent les projets les plus récents.",
+      "content_hash": "sha256:1ee81638b8d14c6c574056ac4ad0361b85c41ee35068f3748c98a29bf28455b3"
     },
     {
       "id": "s6",
@@ -393,7 +398,34 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-05-19",
-      "quality_notes": "Synthèse accessible d'estimations évaluées par les pairs sur la mortalité par unité d'énergie. Bonne pour les ordres de grandeur ; les estimations sous-jacentes de mortalité portent une vraie incertitude, surtout pour les impacts chroniques de pollution de l'air."
+      "quality_notes": "Synthèse accessible d'estimations évaluées par les pairs sur la mortalité par unité d'énergie. Bonne pour les ordres de grandeur ; les estimations sous-jacentes de mortalité portent une vraie incertitude, surtout pour les impacts chroniques de pollution de l'air.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c3_s5",
+      "source_id": "s5",
+      "text": "Without that contribution, the cost of achieving deep decarbonization targets increases significantly.",
+      "locator": "MIT report, Executive Summary, p. xiii",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s3",
+      "source_id": "s3",
+      "text": "Unsubsidized renewable energy remains the most cost-competitive form of new-build generation on an LCOE basis.",
+      "locator": "Lazard LCOE v19.0, Executive Summary, p. 3",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s4",
+      "source_id": "s4",
+      "text": "All reactors under construction in at least six of the 11 countries hosting building sites have experienced, often year-long, delays.",
+      "locator": "WNISR 2025 v2, Construction Times, p. 24",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -428,6 +460,7 @@
       "id": "ev_c3_s5",
       "claim_id": "c3",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c3_s5",
       "label": "supports_claim",
       "rationale": "La modélisation système de l'étude du MIT estime qu'exclure les options pilotables bas-carbone comme le nucléaire augmente nettement le coût moyen d'une décarbonation profonde.",
       "confidence": 0.8,
@@ -446,6 +479,7 @@
       "id": "ev_c4_s3",
       "claim_id": "c4",
       "source_id": "s3",
+      "source_excerpt_id": "ex_ev_c4_s3",
       "label": "supports_claim",
       "rationale": "L'analyse de coût actualisé de Lazard place le nouveau nucléaire bien au-dessus du solaire à grande échelle et de l'éolien terrestre par mégawattheure, même dans ses larges fourchettes d'estimation.",
       "confidence": 0.85,
@@ -482,6 +516,7 @@
       "id": "ev_c6_s4",
       "claim_id": "c6",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c6_s4",
       "label": "contradicts_claim",
       "rationale": "WNISR documente la baisse de la part du nucléaire dans la production mondiale et des délais moyens de projet proches d'une décennie, concluant que la technologie se déploie trop lentement pour compter dans les objectifs 2050.",
       "confidence": 0.75,

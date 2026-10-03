@@ -7,18 +7,38 @@ other legal entity currently exists. It extends
 *project* aims to become. The operational system that delivers this vision is
 specified in [07-engine.md](07-engine.md).
 
+## Status and boundary
+
+| Layer | Status |
+| --- | --- |
+| Name, mission language, fixture-backed reading experience, local values quiz, steelman exercise, and personal perception delta | **Current / local prototype** |
+| Demonstration aggregates and browser-derived claim summaries | **Mock** |
+| Supabase aggregates, evaluations, source assessments, and review paths | **Experimental** |
+| Living claim library, cross-group establishment, global graph, open corpus institution, and funding model | **Target** |
+
+The target is an exact, structured, source-grounded **provisional dossier**,
+not an oracle of truth. It should make the best current case for each position,
+show what the cited artifacts establish under a stated scope, preserve
+uncertainty and objections, and remain dated and revisable. No disagreement
+procedure, human vote, or AI output can manufacture factual truth.
+
+External precedents and empirical claims in this vision are hypotheses unless
+they are backed by a tracked research record containing the primary URL,
+retrieval date, applicable version or publication, and the exact conclusion the
+source supports. Naming a framework or organization is not acceptance evidence.
+
 ## Name: Parallax *(decided 2026-06-12)*
 
 **Parallax** — the chosen name, replacing "OpenViews" (and the earlier
 candidate "Sonder").
 
 > A parallax is how astronomers measure the distance to stars: the same
-> object, sighted from two different points, reveals a truth that no single
-> viewpoint can reach.
+> object, sighted from two different points, reveals depth that no single
+> viewpoint provides alone.
 
 Why it is right:
 
-- It names the **method itself**: truth computed *from* the gap between
+- It names the **method itself**: claims inspected *through* the gap between
   viewpoints — disagreement as an instrument, not an obstacle.
 - It carries both poles of the mission: rigor (a measurement technique) and
   humanity (you need the other's viewpoint to see depth).
@@ -54,9 +74,9 @@ The site delivers it as a **three-layer hero**, not one dense sentence:
 > answers. Every viewpoint, at its strongest."
 
 **Lower on the landing — the deeper, dual mission (explicit only here):**
-> FR : « Un socle de réflexion vérifiée : une boussole pour les humains, un
+> FR : « Un socle de réflexion sourcée et auditable : une boussole pour les humains, un
 > corpus pour aligner les IA. »
-> EN : "A foundation of verified reflection: a compass for humans, a corpus to
+> EN : "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to
 > align AI."
 
 Why these exact words:
@@ -70,8 +90,8 @@ Why these exact words:
   what leaves room for the dual mission without saying "AI" in the headline (it
   would confuse a first-time visitor — so it lives lower on the page).
 - **"qu'on fait avancer ensemble / we advance together"** — it is collective
-  *progress*, not a static map of opinions. Disagreement as the manufacturing
-  process, per the Library of Truths below.
+  *progress*, not a static map of opinions. Disagreement is the testing process,
+  per the target Library of Truths below.
 - **"réponses claires, structurées, sourcées"** — the useful output, not a
   verdict (we never declare a winner; the structured answer includes what is
   established vs. what is a values choice).
@@ -100,13 +120,13 @@ library, the debates, contribution, and the audited trust band.
 
 ## The objectives — one engine, two populations
 
-Parallax is, at bottom, **shared cognitive infrastructure**: a single substrate
-of *verified, objective reflection* where **humans and AIs learn to think better
+Parallax aims to become **shared cognitive infrastructure**: a common substrate
+of *auditable, source-grounded reflection* where **humans and AIs learn to think better
 — together**. The six standing objectives are not a list; they are one system —
 one engine serving two populations, in a flywheel.
 
-**The engine** — *a hub of verified, objective reflection* (objective 3): the
-living library of truths — claims with provenance and evidence, an honest map of
+**The target engine** — *a hub of auditable reflection* (objective 3): a living
+library of provisional dossiers — claims with provenance and evidence, an honest map of
 what is established / contested / values-dependent, and the values behind each
 position.
 
@@ -126,24 +146,28 @@ position.
   knowledge *with explicit uncertainty* to learn from and be evaluated against —
   a living base, not a frozen snapshot.
 
-**The flywheel.** Humans debate → the engine turns it into vetted reflection →
+**The target flywheel.** Humans debate → the engine turns it into reviewed reflection →
 which serves humans *and* feeds AIs → AIs help produce and organize more
-reflection (they propose, never decide — the membrane,
+reflection (they propose, never decide — the target membrane,
 [07-engine.md](07-engine.md) §5) → a richer library → better for both. Human and
-AI cognition co-improve on the same substrate of vetted truth and mapped values.
+AI cognition may improve on the same substrate of reviewed claims and mapped values.
 
 This is the dual mission of the funding model — *"a compass for humans, a corpus
 for AIs"* — made concrete as six objectives that reinforce one another.
 
 ## The Library of Truths
 
+**Status: Target.** The name is an institutional aspiration. The product output
+is a provisional dossier with traceable evidence and explicit uncertainty, not
+a machine-issued truth verdict.
+
 The long-term object Parallax builds is **a living library of the great
 questions**, produced *by* debate rather than despite it. The core insight:
 
 > A claim that has survived the strongest objections its opponents could
 > bring is worth more than a claim stamped by a neutral checker.
-> Disagreement is not the obstacle to truth — it is its manufacturing
-> process.
+> Disagreement is a way to test and improve a dossier; it is not proof by
+> itself.
 
 Every claim therefore has a **lifecycle**:
 
@@ -151,16 +175,18 @@ Every claim therefore has a **lifecycle**:
 | --- | --- |
 | `proposed` | submitted, not yet through review |
 | `contested` | under adversarial scrutiny; the map shows exactly where it blocks |
-| `established` | survived cross-camp review against the best available counter-evidence — dated, revisable, never "final" |
+| `established` | procedural status only: the scoped claim survived the recorded review against the versioned evidence and counter-evidence available at that date; revisable, never a guarantee of truth |
 | `refuted` | failed scrutiny; kept on the record with its refutation |
 | `values-dependent` | facts shared, positions understood; what remains is a legitimate priority choice |
 
-The "library of truths" is the set of `established` claims plus the honest
-map of everything else. Truths in the strong sense of **trial**, not the
-weak sense of a stamp. Values do not decide which truths are true — they
-decide which choices remain once the truths are established (the three
-filters of the previous revision of this document, matured into a product
-mechanism).
+The current browser UI additionally uses `provisional` when no auditable
+evaluation justifies `established` or `contested`. It is a protective display
+state, not evidence that the full lifecycle above is implemented.
+
+"Library of truths" is shorthand for reviewed scoped claims plus the honest map
+of contested, refuted, values-dependent, stale, and unknown material. Values do
+not decide factual support; they help explain which choices remain after the
+evidentiary record is made explicit.
 
 ## Vision text (canonical copy, FR)
 
@@ -170,13 +196,13 @@ mechanism).
 > débat sont conçus pour la colère.
 >
 > Nous croyons que le désaccord est une ressource. Bien traité — faits
-> vérifiés, chaque camp formulé à son meilleur niveau, valeurs rendues
+> sourcés et révisables, chaque camp formulé à son meilleur niveau, valeurs rendues
 > explicites — il produit la chose la plus rare qui soit : de la
 > compréhension qui tient.
 >
 > Alors nous construisons la bibliothèque des grandes questions. Chaque
 > débat y est démonté, sourcé, mis à l'épreuve par ceux-là mêmes qui ne sont
-> pas d'accord. Ce qui survit est conservé : les faits devenus solides, la
+> pas d'accord. Ce qui survit est conservé : les conclusions mieux étayées, la
 > meilleure version de chaque position, et la carte des valeurs qui explique
 > — enfin — pourquoi des gens raisonnables continuent de diverger.
 >
@@ -189,8 +215,15 @@ mechanism).
 
 ## Funding model — the commons and its services
 
+**Status: Target.** No corpus feed, benchmark service, customer offer, or
+institutional funding structure described below currently exists.
+
 Decision: **the debate corpus is an open commons; revenue comes from
-services around it.** Precedent: Wikimedia Enterprise.
+services around it.** One operating precedent worth studying is
+[Wikimedia Enterprise](https://enterprise.wikimedia.com/docs/), which packages
+high-volume access and service guarantees around Wikimedia project data. The
+reference was consulted on 2026-08-30; it supports the shape of the analogy,
+not a claim that Parallax has validated this business model.
 
 What is sold (to AI labs and institutions):
 
@@ -198,26 +231,33 @@ What is sold (to AI labs and institutions):
    (the convenience, not the data: the data itself is openly licensed).
 2. **Alignment benchmarks** — test suites measuring whether a model can
    steelman every side fairly and represent value pluralism without
-   flattening it. Parallax is uniquely positioned to author these.
+   flattening it. Parallax would aim to author and validate these.
 3. **Model evaluation** against those benchmarks.
 
-Why AI labs need this: a corpus of steelmanned positions, mapped values, and
-human trade-offs is exactly the pluralistic-values data that alignment work
-requires (cf. collective constitutional AI, democratic-inputs programs). The
-second mission pillar: *"A compass for humans. A corpus for AIs to learn
-what humanity values — in all its plurality."*
+Possible demand hypothesis: a corpus of steelmanned positions, mapped values,
+and human trade-offs could support pluralistic-value research and evaluation.
+Anthropic's
+[Collective Constitutional AI paper](https://www-cdn.anthropic.com/files/4zrzovbb/website/b43359be43cabdbe3a8ffd60ea8a68acf25cb22e.pdf),
+consulted on 2026-08-30, is one primary research example of incorporating public
+input; it does not establish customer demand or product fit for Parallax. The
+second mission pillar remains: *"A compass for humans. A corpus for AIs to
+learn what humanity values — in all its plurality."*
 
 Red lines:
 
 - Individual data (perception deltas, profiles, quiz results) is **never**
-  sold — today it never even leaves the reader's browser.
+  sold. The current personal profile remains browser-local; the separate
+  experimental position signal sends a bucket and phase to an aggregate-only
+  backend RPC when Supabase is configured.
 - No revenue stream may depend on engagement volume.
-- Open license on the corpus is irrevocable; paying customers get
-  convenience, never exclusivity or influence over content.
+- The target Peerlab-authored corpus is openly licensed under the repository's
+  published terms; third-party sources and quotations retain their own rights.
+  Paying customers would get convenience, never exclusivity or influence over
+  content.
 
 ## Why people actually disagree — the three filters
 
-*(unchanged in substance; now implemented by the claim lifecycle)*
+*(Target interpretation; the global claim lifecycle is not implemented.)*
 
 "We disagree because we have different values" is not the whole story.
 People arrive at positions through their history, their emotions, their
@@ -237,12 +277,14 @@ emotions that values alone cannot.
 
 ## Theory of change
 
+**Status: Target.** This is the intended causal path, not a measured outcome.
+
 1. **The individual** — live the Sonder moment: quiz, bridges, steelman
    test, perception delta.
-2. **The conversation** — the debate map becomes the neutral object you
-   send into a heated thread.
+2. **The conversation** — the debate map becomes a shared, inspectable object
+   you send into a heated thread.
 3. **The institution** — schools teach with it; journalists link it; the
-   canonical neutral page for each public question.
+   canonical auditable reference page for each public question.
 4. **The culture** — "pass the steelman test before you get angry" enters
    everyday language.
 
@@ -252,15 +294,21 @@ The before/after delta on one question, measured on the reader themself:
 
 > "People who disagree with you on this — how reasonable are they?" (1–7)
 
-Implemented: asked at quiz start, asked again at the exit card, delta shown
-to the reader and on their local profile. Pageviews are not a goal.
+**Current:** asked at quiz start, asked again at the exit card, and shown to the
+reader on the local profile. It remains browser-local and is not yet a validated
+population-level outcome metric. Pageviews are not a goal.
 
 ## The position signal (where people stand)
 
+**Status: Current demo / Experimental aggregate.**
+
 Readers can register **their own** position on a debate — and Parallax shows
-only the **aggregate distribution**, never any individual's vote. (Individual
-signals never leave the reader's browser; the red lines below hold.) Four rules
-keep it a map of understanding, not a popularity contest:
+only an **aggregate distribution**, never an individual's vote. The default
+demo remembers the choice locally. When Supabase is configured, the client
+sends the selected bucket and phase to an RPC that stores aggregate counters,
+not per-user vote rows. This privacy property is experimental until verified
+across deployment, logging, backups, and abuse controls. Four target rules keep
+it a map of understanding, not a popularity contest:
 
 1. **Vote, then see** — you commit before the aggregate is revealed. The
    antidote to the bandwagon effect and the spiral of silence.
@@ -274,11 +322,10 @@ keep it a map of understanding, not a popularity contest:
    the whole debate, how many moved or softened. This is the North Star (the
    perception delta) at **population scale**, and it measures the engine working.
 
-Strategically, in aggregate and anonymously this produces the
-**pluralistic-values distribution per question** — exactly the data the funding
-model offers AI labs (*"a corpus for AIs to learn what humanity values, in all
-its plurality"*). Aggregate-only; individual data is never sold and never stored
-server-side. Full mechanics: [02-product.md](02-product.md) D15 and
+The target funding hypothesis is that sufficiently governed aggregate data
+could produce a **pluralistic-values distribution per question**. It is not a
+current dataset or product offering. Individual data must never be sold; the
+current experimental signal schema stores aggregate buckets only. Full mechanics: [02-product.md](02-product.md) D15 and
 [03-data-model.md](03-data-model.md#position-signal-aggregate-vote-then-reveal).
 
 ## Red lines (institutional)

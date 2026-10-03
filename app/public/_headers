@@ -1,15 +1,12 @@
-# Cloudflare Pages headers. Security headers apply to every response; cache
-# rules follow. CSP is strict by design — the prod build emits a single external
-# module script (no inline <script>), so script-src 'self' does NOT break the app
-# and genuinely neutralises injected-script XSS. If you ever add an inline script,
-# add its sha256 hash here rather than 'unsafe-inline'.
+# Cloudflare Pages static-asset headers. Pages Functions must set their own
+# response headers. CSP is strict by design: the production build emits external
+# module scripts, so any future inline script must use a reviewed hash or nonce.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Strict-Transport-Security: max-age=31536000
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
-  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

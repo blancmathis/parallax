@@ -1,12 +1,38 @@
 # Data Model
 
-These contracts define the minimum shared language between UI, storage, review
-workflow, and AI pipeline. They are not final database schemas.
+This document owns the conceptual vocabulary and target contracts shared by
+the UI, storage, review workflow, and analysis pipeline. It is not a final
+database schema and must not override the executable contracts below.
 
-The seed fixture at `app/src/data/congestion-pricing.json` conforms to this
-model and is the reference example.
+## Current contracts and boundaries
 
-## Global Rules
+| Layer | Status | Mechanical owner |
+| --- | --- | --- |
+| Fixture-backed browser model | **Current** | [`app/src/types.ts`](../app/src/types.ts) and [`app/src/data/`](../app/src/data/); the contract supports optional excerpts and content hashes, but coverage is incomplete. |
+| Fixture integrity checks | **Current, structural** | [`app/scripts/check-fixtures.mjs`](../app/scripts/check-fixtures.mjs) validates IDs, references, and English/French structural parity; it does not validate label semantics, confidence, citation fidelity, or factual truth. |
+| Browser contribution/review persistence | **Mock** | [`app/src/lib/store.ts`](../app/src/lib/store.ts) stores a local overlay in `localStorage`; it does not mutate the published fixtures. |
+| Supabase schema, RLS, and stored source excerpts | **Experimental** | [`supabase/migrations/`](../supabase/migrations/) owns the exact relational schema and policies, including `source_excerpts` and excerpt-linked evidence rows. |
+| Disposable backend validation | **Current test infrastructure** | [`scripts/bootstrap-local.sh`](../scripts/bootstrap-local.sh) and [`supabase/tests/`](../supabase/tests/) rebuild and probe a local stack; passing them is local contract evidence, not hosted or production proof. |
+| Global claim graph, propagation, and full evaluation lifecycle | **Target** | The conceptual sections below; no end-to-end implementation claim. |
+
+Important current differences from the target object tables below:
+
+- `Position` uses one `argument_ids` array rather than separate supporting and
+  opposing arrays;
+- `Claim.claim_type` is an array and has no `source_input_id` in the browser
+  fixture type;
+- source excerpts, `source_excerpt_id`, and `content_hash` are optional in the
+  browser contract. The current fixtures do not provide complete exact-excerpt
+  or immutable-artifact coverage for every truth-apt claim;
+- a fixture label is scoped demonstration data. `review_status: unreviewed`
+  must not become a reviewed claim state merely because the label says
+  `supports_claim`.
+
+The target is an exact, structured, versioned **provisional dossier**, not an
+oracle of truth. A public procedural status must point to review evidence and
+remain scoped, dated, and revisable.
+
+## Target rules
 
 - Every object has a stable `id`.
 - Every generated or reviewed object links back to its source input.
@@ -16,7 +42,11 @@ model and is the reference example.
 - Published debate state is versioned; prefer superseding revisions over
   destructive edits.
 
-## Objects
+## Target MVP objects
+
+These tables define the intended normalized contract. They are not a claim
+that the current fixtures or every experimental database path already expose
+all fields.
 
 ### Topic
 
@@ -84,8 +114,9 @@ A cited or uploaded reference.
 | Field | Notes |
 | --- | --- |
 | `id`, `url`, `title`, `publisher`, `author` | |
-| `published_at`, `retrieved_at` | |
-| `retrieval_status` | `found` · `missing` · `blocked` · `partial` |
+| `published_at`, `retrieved_at`, `artifact_version` | exact edition, revision, release, or capture identity |
+| `content_hash` | qualified digest of the exact retrieved artifact, for example `sha256:<hex>` |
+| `retrieval_status` | `found` · `missing` · `blocked` · `failed` · `partial` |
 | `source_type` | `article` · `paper` · `report` · `law` · `dataset` · `video` · `other` |
 | `quality_notes` | e.g. "official operator source, not neutral for evaluation" |
 
@@ -171,15 +202,20 @@ Minimum event types: `topic_created`, `source_added`, `source_retrieved`,
 
 ## The Global Claim Graph (cross-debate model)
 
-The objects above are the **v1, per-topic surface**: enough to render one
-debate page. But an argument inside one debate is very often *the subject of
-another debate* and *a premise of dozens more* ("car traffic causes
-significant health harm" is a whole debate of its own and a premise in
-congestion pricing, fuel tax, urban planning, climate…). This section defines
-the graph that lets a claim be **verified once and reused everywhere**, with
-disagreement as a first-class, contestable object at every level. It is the
-storage model the [objectivity engine](07-engine.md#4-big-topics-fractalize)
-and the [source layer](08-sources.md) ultimately require.
+**Status: Target.** This graph is not the current storage model.
+
+The target objects above describe a normalized **v1, per-topic surface**. The
+current browser fixtures implement a smaller shape documented in
+[Current contracts and boundaries](#current-contracts-and-boundaries). The
+graph in this section is a later architecture: it is not the current storage
+model.
+
+The graph is intended to let an argument inside one debate become *the subject
+of another debate* and *a premise of dozens more*. A scoped claim can be
+evaluated under recorded evidence and reused without losing that scope, while
+disagreement remains a first-class, contestable object. This is the storage
+model the [objectivity engine](07-engine.md#4-big-topics-fractalize) and the
+[source layer](08-sources.md) ultimately require.
 
 **Core principle** (where this differs from a naïve "everything is a node"):
 
@@ -364,10 +400,10 @@ Cycles NEVER counted as independent support.
 
 ### Readability vs. integrity
 
-The UI shows only the **local neighborhood** (anchor → positions → direct
+The target UI shows only the **local neighborhood** (anchor → positions → direct
 arguments/premises/objections/sources; referenced claims appear as folded
 chips with global state + local role + last evaluation + alerts). Integrity
-comes from **backend invariants**, not exhaustive display:
+must come from **validated backend invariants**, not exhaustive display:
 
 1. Every `Claim` has an explicit canonical `scope`.
 2. Every `ClaimUse` points to a `Claim` (no floating premises).
@@ -390,18 +426,18 @@ comes from **backend invariants**, not exhaustive display:
 
 ### Debate de-duplication
 
-A `DebateView` is de-duplicated by the *same* gate as a `Claim`, one altitude
-up. On creating a debate, resolve its anchor `Claim` through the embedding
-dedup; if that `Claim` already has an inbound `:ABOUT` edge from a `DebateView`,
-the debate exists. Also match the proposed `question_text` against existing
-`DebateView.question_text` by embedding similarity, and compare **scope**
-(geography/period/population), not just text — this maps to `semantic_fit`.
-Four outcomes: `exact_equivalent` → redirect to the existing debate;
-`narrower_than_claim` → create a sub-debate linked under the parent
-(`(sub)-[:SPECIALIZES_OF]->(parent)`); `broader_than_claim` → create a
-parent/atlas node, with the existing debates pointing up to it
-(`(existing)-[:SPECIALIZES_OF]->(new parent)`); no compatible match (genuinely
-new) → create with provenance. A related-but-distinct debate (`analogous`) is
+A target `DebateView` is de-duplicated by the *same* gate as a `Claim`, one
+altitude up. Creation resolves its anchor `Claim`, compares question-text
+similarity, and compares geography, period, and population scope.
+
+The target outcomes are:
+
+- `exact_equivalent` → redirect to the existing debate;
+- `narrower_than_claim` → create a sub-debate linked under the parent;
+- `broader_than_claim` → create a parent/atlas node;
+- no compatible match → create with provenance.
+
+A related-but-distinct debate (`analogous`) is
 created new and cross-linked, not merged. Nothing is deleted — an exact
 duplicate is merged via `(DebateView)-[:DUPLICATES]->(DebateView)`, never
 erased; AI proposes and humans confirm. Prose home:
@@ -497,9 +533,10 @@ The deliberate divergences: not "nodes = claims" (we need `ClaimUse`,
 = debate" (folded vs unfolded); **no uncontrolled state propagation**; Dung is
 a diagnostic, not the truth engine; not a Wikidata clone; no forced DAG.
 
-### Minimal first schema + first flow
+### Target implementation sequence
 
-Start with a **property graph + append-only event log**, RDF/JSON-LD export
+If this architecture is accepted for implementation, start with a **property
+graph + append-only event log**, with RDF/JSON-LD export
 later. Minimal nodes: `Claim`, `DebateView`, `ClaimUse`, `ArgumentStep`,
 `Source`, `EvidenceUse`, `Evaluation`, `StateEvent`, `Alert`. Minimal edges:
 the `ABOUT` / `HAS_USE` / `OF_CLAIM` / `PREMISE_OF` / `CONCLUDES` / `CITES` /
@@ -523,13 +560,15 @@ First product flow:
 
 ## Seed Debate Packet
 
-The minimum input needed to generate a first debate structure:
+The current browser input contract is validated by `seedPacketSchema` in
+[`app/src/lib/backend.ts`](../app/src/lib/backend.ts). It is an input to a
+provisional analysis job, not proof that the source contents were verified.
 
 ```json
 {
-  "topic_question": "Should cities implement congestion pricing for cars?",
-  "initial_position": "Yes, cities should implement congestion pricing.",
-  "initial_arguments": [
+  "question": "Should cities implement congestion pricing for cars?",
+  "initialPosition": "Yes, cities should implement congestion pricing.",
+  "initialArguments": [
     "Congestion pricing can reduce traffic in dense urban areas.",
     "Revenue can fund public transit.",
     "The policy may be unfair to lower-income drivers unless exemptions exist."

@@ -1,11 +1,27 @@
 # Product: MVP Scope and Decisions
 
-This document merges the MVP specification and the product decision log. It is
-the single reference for *what* we are building first and *why*.
+This document owns the product decisions and the bounded MVP: *what* Parallax
+is intended to do and *why*. It does not by itself prove that a decision is
+implemented. [README.md](../README.md#current-status) owns the short runtime
+orientation, [04-roadmap.md](04-roadmap.md) owns implementation status, and
+[03-data-model.md](03-data-model.md) links the current mechanical contracts.
 
 Decision status labels: `accepted` (use unless deliberately changed),
 `tentative` (reasonable default, still discussable), `open` (do not implement
 around this yet).
+
+Implementation labels used in this document:
+
+- **Current** — works in the default fixture-backed browser app.
+- **Mock** — demonstrates a flow using local or deterministic data.
+- **Experimental** — optional Supabase code/contracts exist, without a
+  repository-wide end-to-end proof.
+- **Target** — accepted or tentative product behavior that remains to be
+  implemented and validated.
+
+The target output is a structured, source-grounded **provisional dossier**. It
+must state scope, provenance, review state, uncertainty, and version; it is not
+an oracle of truth.
 
 ## Product Thesis
 
@@ -58,11 +74,19 @@ inspectable. Reverting or challenging a revision is a reviewer action. Forks
 are useful for pluralism but create discovery and trust problems the prototype
 doesn't need.
 
+**Implementation boundary:** the default browser flow is a mock overlay stored
+in `localStorage`. A persistent revision/merge path exists in the experimental
+Supabase layer, but the complete lifecycle is not part of the default test.
+
 ### D5 — Verification = claim–source alignment, never truth `accepted`
 
-Accepted labels: `source_found`, `source_missing`, `source_relevant`,
-`supports_claim`, `partially_supports_claim`, `contradicts_claim`,
-`does_not_support_claim`, `unclear`.
+Keep two namespaces separate:
+
+- retrieval state records whether an artifact was accessible (`found`,
+  `missing`, `blocked`, `failed`, or `partial`);
+- evidence labels describe one source use against one claim:
+  `supports_claim`, `partially_supports_claim`, `contradicts_claim`,
+  `does_not_support_claim`, or `unclear`.
 
 Rejected for MVP: `verified_true`. Truth requires synthesis across sources and
 domain expertise; claim–source alignment is narrow, auditable, and useful.
@@ -77,12 +101,20 @@ AI must **never silently**: delete a serious position, declare a debate
 solved, decide a value is invalid, hide uncertainty, or publish contentious
 updates without review.
 
+**Implementation boundary:** the current executable analysis produces
+deterministic mock artifacts. The live-provider request currently fails closed;
+there is no provider connectivity or implementation of the target analysis
+stages.
+
 ### D7 — Fairness model: the steelman check `tentative`
 
 A position is treated fairly when a reasonable supporter would recognize it as
 a strong version of their view. Each position carries a steelman-check field;
 reviewers mark it fair, unfair, incomplete, or contested. A contested steelman
 stays visible but flagged.
+
+This is a **target** review contract. Current fixture types store a steelman and
+general `review_status`; they do not implement a dedicated steelman-check field.
 
 ### D8 — Moderation: admin-reviewed contributions `accepted`
 
@@ -96,6 +128,9 @@ Every meaningful transformation is inspectable. Events record actor type
 (user, admin, AI, system), timestamp, input/output references, and a short
 rationale. Minimum event types are listed in
 [03-data-model.md](03-data-model.md#audit-event).
+
+The fixtures and local mock flow expose audit events. Complete, durable audit
+coverage across every experimental backend action remains a completion gate.
 
 ### D10 — Agent consensus: do not build yet `open`
 
@@ -112,26 +147,35 @@ server-side AI pipeline, JSON outputs validated against schemas, persistent
 audit log. Do **not** start with: graph databases, blockchain provenance,
 decentralized moderation, multi-agent marketplaces, or a mobile app.
 
-*Milestone 1 implementation note:* the static prototype uses Vite + React +
-TypeScript rendering a JSON fixture — no server, no database. The server-side
-pipeline arrives with Milestone 4.
+*Current implementation note:* the default prototype uses Vite + React +
+TypeScript with JSON fixtures and a `localStorage` contribution/review mock.
+The repository also contains an experimental Postgres/Supabase schema and Edge
+Function. That function currently creates deterministic mock analysis output;
+the unavailable live-provider request is rejected, and the function is not the
+six-stage live pipeline below.
 
 *Scope of this default:* "do not start with graph databases" is an
 MVP-prototype constraint, not the target architecture. The long-term data model
 adopts a property graph with RDF export — see the Global Claim Graph in
 [03-data-model.md](03-data-model.md#the-global-claim-graph-cross-debate-model).
 
-### D12 — First demo: one curated seeded debate `accepted`
+### D12 — Curated seeded demonstrations `accepted`
 
-Demo success: the page is readable; every claim traces to a source label;
-values and trade-offs are explicit; a reviewer can challenge one AI label and
-publish a revised version.
+The current fixture-backed app contains three demonstrations: congestion
+pricing, smartphones in schools, and nuclear power. Their evidence labels are
+demonstration data and are not equivalent to reviewed factual conclusions.
+
+Target demo success: the page is readable; every truth-apt claim traces to a
+versioned source artifact and exact excerpt; values and trade-offs are
+explicit; and a reviewer can challenge one provisional label and publish an
+auditable revision.
 
 ### D13 — Positions are not capped `accepted`
 
 A debate has no fixed limit on positions. Forcing a binary is the anti-mission:
-Parallax exists to dissolve false "two camps" framing. The number of positions
-is **emergent**, kept readable by three existing mechanisms: dedup/merge
+Parallax exists to dissolve false "two camps" framing. In the **target**
+system, the number of positions is emergent and kept readable by three
+mechanisms: dedup/merge
 collapses raw opinions into genuinely distinct positions; fractalization splits
 sprawling topics into sub-debates, each with fewer positions; UI
 folding/clustering shows the main positions along the axes of disagreement,
@@ -151,6 +195,10 @@ linking existing debates; genuinely new → create with provenance. AI proposes,
 humans confirm; nothing is deleted (duplicates are linked, never erased). See
 [07-engine.md](07-engine.md) section 1 and the Global Claim Graph in
 [03-data-model.md](03-data-model.md#the-global-claim-graph-cross-debate-model).
+
+This is **target** behavior. The current proposal form can create a seed packet
+in the experimental backend, but it does not implement the complete semantic
+deduplication and graph-resolution contract.
 
 ### D15 — Aggregate position signal: where people stand, never a winner `accepted`
 
@@ -179,11 +227,29 @@ account, rate-limit, allow one revisable signal per reader per debate, and
 display ranges / confidence rather than precise live counts. Data model in
 [03-data-model.md](03-data-model.md#position-signal-aggregate-vote-then-reveal).
 
+The browser exposes a demonstration aggregate and the experimental Supabase
+layer contains a gated aggregate path. The privacy and abuse properties above
+remain target requirements until validated across storage, RLS, API output,
+and rendered behavior.
+
 ## MVP Scope
 
-**In scope:** create a topic; add an initial position, arguments, and sources;
-run AI analysis; display positions, arguments, claims, sources, values,
-trade-offs; link every claim to evidence labels; draft contributions; audit
+### Current prototype
+
+**Current:** browse three structured fixtures; inspect positions, arguments,
+claims, evidence labels, sources, values, trade-offs, and audit events; submit
+and review local mock contributions; use the English and French interfaces.
+
+**Experimental:** configure Supabase for authentication, seed packets,
+persistent contributions and review, revision publication, position signals,
+claim evaluations, and source assessments. These paths are not covered by the
+default browser validation and must not be presented as production-ready.
+
+### Target MVP
+
+**In scope:** create a topic; add an initial position, arguments, and versioned
+sources; run reviewable analysis; display positions, arguments, claims, sources,
+values, and trade-offs; link every truth-apt claim to evidence labels; draft contributions; audit
 trail; reviewer accept/reject workflow.
 
 **Out of scope:** public social feed; likes/karma/followers/winner mechanics
@@ -195,6 +261,9 @@ governance tooling; mobile app.
 
 ## First End-to-End Flow
 
+**Status: Target.** This is the acceptance flow, not a description of the
+current default app.
+
 Topic: *"Should cities implement congestion pricing for cars?"*
 
 1. User creates the topic. Creation first runs a debate-dedup check (anchor
@@ -202,8 +271,9 @@ Topic: *"Should cities implement congestion pricing for cars?"*
    sub-debate, or a parent node before creating a duplicate (D14).
 2. User submits one position, a few arguments, and sources.
 3. AI extracts claims from the submission.
-4. AI checks whether each source is retrievable and relevant.
-5. AI labels each evidence link (supports / partially supports / contradicts /
+4. The system records the exact source version, retrieval result, content
+   identity, and excerpt locator before proposing an assessment.
+5. AI proposes a label for each evidence link (supports / partially supports / contradicts /
    does not support / unclear).
 6. AI proposes other plausible positions.
 7. AI writes a steelman for each position.
@@ -214,7 +284,9 @@ Topic: *"Should cities implement congestion pricing for cars?"*
 
 ## AI Pipeline Contract
 
-The AI produces structured artifacts, not only prose. Six stages:
+**Status: Target.** The target AI path produces structured, provisional artifacts, not only prose.
+Every artifact remains unreviewed until a human decision. The current Edge
+Function does not implement these six stages.
 
 | Stage | Input | Output |
 | --- | --- | --- |
@@ -237,8 +309,9 @@ Answered by the decisions above where noted; the rest stay open:
    never a ranking or a winner.
 4. Who decides whether a steelman is fair? → reviewers, via the steelman check
    (D7).
-5. How are bad-faith sources handled? → **resolved**; integrity/relevance
-   split, bridging gate, and governance in [08-sources.md](08-sources.md).
+5. How are bad-faith sources handled? → **policy target defined, implementation
+   open**; integrity/relevance split, bridging gate, and governance are
+   specified in [08-sources.md](08-sources.md), not implemented end to end.
 6. How are emotionally loaded topics moderated? → **open**; out of MVP via D3.
 7. What is the minimum trustworthy audit log? → D9 + data model.
 8. General public debates, policy questions, or internal research workflows

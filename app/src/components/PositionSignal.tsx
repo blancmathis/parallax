@@ -1,15 +1,16 @@
 import { useState, type CSSProperties } from "react";
 import type { DebateFixture, PositionShare, SignalPhase } from "../types";
 import { useI18n } from "../i18n";
-import { useProfile } from "../lib/profile";
+import { castSignal, useProfile } from "../lib/profile";
 import { castPositionSignal, usePositionAggregate } from "../lib/backend";
 import { letterOf } from "../data";
 
 /**
  * The aggregate position signal (D15) — vote-then-reveal, a landscape not a
- * leaderboard, a priority not a fact, before→after. The reader's own pick stays
- * in localStorage (profile.signal); only an anonymous increment reaches the
- * server. Distribution is rendered in fixed A,B,C order — never ranked.
+ * leaderboard, a priority not a fact, before→after. Demo picks stay in
+ * localStorage. In signed-in backend mode the private actor-bound ballot is
+ * stored so it can be revised, while only k-anonymized aggregate bands are
+ * public. Distribution is rendered in fixed A,B,C order — never ranked.
  */
 
 const UNDECIDED = "__undecided__";
@@ -52,6 +53,7 @@ function Ballot({
   busy,
   ctaLabel,
   busyLabel,
+  privacyLabel,
   onCommit,
 }: {
   title: string;
@@ -60,6 +62,7 @@ function Ballot({
   busy: boolean;
   ctaLabel: string;
   busyLabel: string;
+  privacyLabel: string;
   onCommit: (id: string | null) => void;
 }) {
   const { t } = useI18n();
@@ -100,7 +103,7 @@ function Ballot({
       >
         {busy ? busyLabel : ctaLabel}
       </button>
-      <p className="possig__privacy">{t.positionSignal.privacy}</p>
+      <p className="possig__privacy">{privacyLabel}</p>
     </div>
   );
 }
@@ -260,20 +263,35 @@ export function PositionSignalBefore({
         busy={busy}
         ctaLabel={ts.cast}
         busyLabel={ts.casting}
+        privacyLabel={
+          source === "supabase" ? ts.privacy : ts.privacyLocal
+        }
         onCommit={async (id) => {
           setBusy(true);
-          const res = await castPositionSignal({
-            topic_id: debate.topic.id,
-            phase: "before",
-            position_id: id,
-          });
-          setBusy(false);
-          // Signed-out against the real backend: the pick isn't recorded, so the
-          // ballot stays up — say why instead of failing silently.
-          if (source === "supabase" && !res.synced) setGate(true);
+          setGate(false);
+          try {
+            if (source !== "supabase") {
+              castSignal(debate.topic.id, "before", id);
+              return;
+            }
+            const res = await castPositionSignal({
+              topic_id: debate.topic.id,
+              phase: "before",
+              position_id: id,
+            });
+            if (!res.synced) setGate(true);
+          } catch {
+            setGate(true);
+          } finally {
+            setBusy(false);
+          }
         }}
       />
-      {gate && <p className="possig__gate">{ts.signedOutNote}</p>}
+      {gate && (
+        <p className="possig__gate" role="alert" aria-live="assertive">
+          {ts.syncFailure}
+        </p>
+      )}
     </div>
   );
 }
@@ -305,16 +323,29 @@ export function PositionSignal({
           busy={busy}
           ctaLabel={ts.cast}
           busyLabel={ts.casting}
+          privacyLabel={
+            source === "supabase" ? ts.privacy : ts.privacyLocal
+          }
           onCommit={async (id) => {
             setBusy(true);
-            const res = await castPositionSignal({
-              topic_id: debate.topic.id,
-              phase: "after",
-              position_id: id,
-              from_position: mine.after ?? null,
-            });
-            setBusy(false);
-            if (source === "supabase" && !res.synced) setGate(true);
+            setGate(false);
+            try {
+              if (source !== "supabase") {
+                castSignal(debate.topic.id, "after", id);
+                return;
+              }
+              const res = await castPositionSignal({
+                topic_id: debate.topic.id,
+                phase: "after",
+                position_id: id,
+                from_position: mine.after ?? null,
+              });
+              if (!res.synced) setGate(true);
+            } catch {
+              setGate(true);
+            } finally {
+              setBusy(false);
+            }
           }}
         />
       ) : (
@@ -323,7 +354,11 @@ export function PositionSignal({
       {/* A signed-out cast against the real backend never sets mine.after, so the
           ballot stays up — the gate note must render alongside it, not only after
           a (never-reached) reveal. */}
-      {gate && <p className="possig__gate">{ts.signedOutNote}</p>}
+      {gate && (
+        <p className="possig__gate" role="alert" aria-live="assertive">
+          {ts.syncFailure}
+        </p>
+      )}
     </div>
   );
 }

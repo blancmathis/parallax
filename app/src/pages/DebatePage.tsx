@@ -20,6 +20,7 @@ import type {
   Position,
   Source,
   SourceAssessment,
+  SourceExcerpt,
 } from "../types";
 import { POSITION_LETTERS, letterOf } from "../data";
 import { claimState, claimSharedBy, type ClaimState } from "../data/state";
@@ -62,6 +63,7 @@ import { sourceKey } from "../lib/sourceKey";
 import { safeHttpUrl } from "../lib/url";
 import { useAuth } from "../lib/auth";
 import { isSupabaseConfigured } from "../lib/supabase";
+import { PublicClaimDossiers } from "../features/dossier/DossierViews";
 
 const EVIDENCE_LEGEND: EvidenceLabel[] = [
   "supports_claim",
@@ -102,6 +104,43 @@ function ConfidenceMeter({ value }: { value: number }) {
         {t.common.confidenceBuckets[bucket]}
       </span>
     </span>
+  );
+}
+
+function SourceTrace({
+  source,
+  excerpt,
+}: {
+  source: Source;
+  excerpt?: SourceExcerpt;
+}) {
+  const { locale } = useI18n();
+  const hash = source.content_hash;
+  const provisional =
+    locale === "fr"
+      ? "Provenance provisoire : aucun artefact haché et inspectable n'est enregistré."
+      : "Provisional provenance: no hashed, inspectable artefact is recorded.";
+
+  if (!excerpt) {
+    return <p className="evcard__foot">{provisional}</p>;
+  }
+
+  return (
+    <details className="evcard__trace" open>
+      <summary>
+        {locale === "fr" ? "Passage source exact" : "Exact source passage"}
+      </summary>
+      <blockquote>{excerpt.text}</blockquote>
+      <p className="evcard__foot">
+        {excerpt.locator} · {locale === "fr" ? "extrait par" : "extracted by"}{" "}
+        {excerpt.extracted_by}
+      </p>
+      <p className="evcard__foot">
+        {hash
+          ? `${locale === "fr" ? "Artefact" : "Artefact"}: ${hash}`
+          : provisional}
+      </p>
+    </details>
   );
 }
 
@@ -412,12 +451,17 @@ function ClaimProvenance({ claim }: { claim: Claim }) {
   const { t, locale } = useI18n();
   const ctx = useContext(ClaimEvalContext);
   const [busy, setBusy] = useState(false);
+  const [rationale, setRationale] = useState("");
   if (!ctx) return null;
   const ev = ctx.evaluations.get(claim.id);
   const tp = t.claimEval;
   const tb = tp.bridge;
   const state = ev?.state ?? null;
   const status = ev?.bridge_status;
+  const rationaleId = `claim-evaluation-rationale-${claim.id}`;
+  const rationaleHintId = `${rationaleId}-hint`;
+  const establishedPolicyId = `${rationaleId}-established-policy`;
+  const rationaleIsValid = rationale.trim().length >= 8;
   // "insufficient" is a truthy status but means "no cross-camp verdict yet" —
   // don't render that caption beside an Established/Contested badge from a direct
   // (un-bridged) evaluation.
@@ -426,20 +470,27 @@ function ClaimProvenance({ claim }: { claim: Claim }) {
       ? renderBridge(tb, status, ev?.camp_count ?? 0)
       : null;
 
-  async function setState(s: "established" | "contested" | "values") {
-    if (!ctx) return;
+  async function setState(s: "contested" | "values") {
+    if (!ctx || !rationaleIsValid || busy) return;
     setBusy(true);
-    const res = await evaluateClaim({
-      topic_id: ctx.topicId,
-      claim_id: claim.id,
-      state: s,
-    });
-    setBusy(false);
-    if (res.ok) {
+    try {
+      const res = await evaluateClaim({
+        topic_id: ctx.topicId,
+        claim_id: claim.id,
+        state: s,
+        rationale: rationale.trim(),
+      });
+      if (!res.ok) {
+        toast(tp.failedToast);
+        return;
+      }
+      setRationale("");
       ctx.reload();
       toast(tp.savedToast);
-    } else {
+    } catch {
       toast(tp.failedToast);
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -483,20 +534,46 @@ function ClaimProvenance({ claim }: { claim: Claim }) {
         ))}
 
       {ctx.canEvaluate && ctx.isAdmin && (
-        <div className="claimeval__set">
+        <div
+          className="claimeval__set"
+          role="group"
+          aria-describedby={establishedPolicyId}
+        >
           <span className="claimeval__setlabel">{tp.setState}</span>
-          {(["established", "contested", "values"] as const).map((s) => (
-            <button
-              key={s}
-              type="button"
-              className="claimeval__btn"
-              disabled={busy}
-              onClick={() => setState(s)}
-              lang={locale}
-            >
-              {tp.stateLabel[s]}
-            </button>
-          ))}
+          <p id={establishedPolicyId} className="claimeval__policy" role="note">
+            {tp.establishedBridgeOnly}
+          </p>
+          <label className="field__label" htmlFor={rationaleId}>
+            {tp.rationaleLabel}
+          </label>
+          <textarea
+            id={rationaleId}
+            className="field__input field__input--area"
+            value={rationale}
+            onChange={(event) => setRationale(event.target.value)}
+            aria-describedby={`${establishedPolicyId} ${rationaleHintId}`}
+            minLength={8}
+            rows={3}
+            required
+            disabled={busy}
+          />
+          <p id={rationaleHintId} className="field__hint">
+            {tp.rationaleHint}
+          </p>
+          <div className="claimeval__actions">
+            {(["contested", "values"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                className="claimeval__btn"
+                disabled={busy || !rationaleIsValid}
+                onClick={() => setState(s)}
+                lang={locale}
+              >
+                {tp.stateLabel[s]}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -520,7 +597,7 @@ function ClaimRow({
     () => window.location.hash.slice(1) === anchorId,
   );
   const [linked] = useState(open);
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const evalCtx = useContext(ClaimEvalContext);
   const links = debate.evidence_links.filter((l) => l.claim_id === claim.id);
   const hasContest = links.some((l) => contestedLinks.has(l.id));
@@ -531,11 +608,12 @@ function ClaimRow({
   }, [linked, anchorId]);
 
   const state = claimState(debate, claim, evalCtx?.stateMap);
+  const stateClass = state === "provisional" ? "contested" : state;
 
   return (
     <div
       id={anchorId}
-      className={`claim claim--st-${state}${open ? " claim--open" : ""}${linked ? " claim--flash" : ""}`}
+      className={`claim claim--st-${stateClass}${open ? " claim--open" : ""}${linked ? " claim--flash" : ""}`}
     >
       <div className="claim__rowwrap">
         <button
@@ -554,6 +632,11 @@ function ClaimRow({
               {sharedWith && sharedWith.length > 0 && (
                 <span className="claimtype claimtype--shared">
                   {t.debatePage.sharedClaim(sharedWith.join(" · "))}
+                </span>
+              )}
+              {state === "provisional" && (
+                <span className="claimtype claimtype--shared">
+                  {locale === "fr" ? "provisoire · non établi" : "provisional · not established"}
                 </span>
               )}
             </span>
@@ -602,6 +685,9 @@ function ClaimRow({
           ) : (
             links.map((link) => {
               const source = debate.sources.find((s) => s.id === link.source_id);
+              const excerpt = debate.source_excerpts?.find(
+                (item) => item.id === link.source_excerpt_id,
+              );
               const contest = contestedLinks.get(link.id);
               return (
                 <article key={link.id} className="evcard">
@@ -622,6 +708,7 @@ function ClaimRow({
                     {source && <SourceIntegrityChip source={source} />}
                   </header>
                   <p className="evcard__rationale">{link.rationale}</p>
+                  {source && <SourceTrace source={source} excerpt={excerpt} />}
                   <footer className="evcard__foot">
                     {t.common.labels.confidence}{" "}
                     <ConfidenceMeter value={link.confidence} /> ·{" "}
@@ -972,7 +1059,12 @@ type MappedClaim = {
   labels: EvidenceLabel[];
 };
 
-const LANE_ORDER: ClaimState[] = ["established", "contested", "values"];
+const LANE_ORDER: ClaimState[] = [
+  "established",
+  "contested",
+  "provisional",
+  "values",
+];
 
 function FaultLineMap({
   debate,
@@ -981,7 +1073,7 @@ function FaultLineMap({
   debate: DebateFixture;
   onJumpToClaim: (claimId: string) => void;
 }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const evalCtx = useContext(ClaimEvalContext);
   const reveal = useReveal<HTMLDivElement>();
   const shared = claimSharedBy(debate);
@@ -1001,6 +1093,7 @@ function FaultLineMap({
   const lanes: Record<ClaimState, MappedClaim[]> = {
     established: mapped.filter((m) => m.state === "established"),
     contested: mapped.filter((m) => m.state === "contested"),
+    provisional: mapped.filter((m) => m.state === "provisional"),
     values: mapped.filter((m) => m.state === "values"),
   };
 
@@ -1029,6 +1122,14 @@ function FaultLineMap({
       caption: t.debatePage.faultLaneContestedCaption,
       count: lanes.contested.length,
     },
+    provisional: {
+      label: locale === "fr" ? "Provisoire / inconnu" : "Provisional / unknown",
+      caption:
+        locale === "fr"
+          ? "Non relu indépendamment ou preuve indisponible — aucun verdict de vérité."
+          : "Not independently reviewed or evidence unavailable — no truth verdict.",
+      count: lanes.provisional.length,
+    },
     values: {
       label: t.debatePage.faultLaneValues,
       caption: t.debatePage.faultLaneValuesCaption,
@@ -1049,7 +1150,7 @@ function FaultLineMap({
         return (
           <section
             key={state}
-            className={`faultline__lane faultline__lane--${state}`}
+            className={`faultline__lane faultline__lane--${state === "provisional" ? "contested" : state}`}
           >
             <header className="faultline__lanehead">
               <span className="faultline__lanelabel">
@@ -1063,6 +1164,10 @@ function FaultLineMap({
               <p className="faultline__empty">
                 {state === "contested"
                   ? t.debatePage.faultEmptyContested
+                  : state === "provisional"
+                    ? locale === "fr"
+                      ? "Aucune affirmation provisoire."
+                      : "No provisional claims."
                   : state === "values"
                     ? t.debatePage.faultEmptyValues
                     : t.debatePage.faultEmptySettled}
@@ -1215,20 +1320,28 @@ function EvidenceLegend() {
 export default function DebatePage() {
   const { slug } = useParams();
   const { locale, t } = useI18n();
-  const { debate, debates, source, loading } = useDebateBySlug(slug, locale);
+  const {
+    debate,
+    debates,
+    provenance,
+    loading,
+    error: debateLoadError,
+  } = useDebateBySlug(slug, locale);
   const store = useStore();
   const profile = useProfile();
   const progress = useReadingProgress();
   const auth = useAuth();
-  const { evaluations, reload: reloadEvaluations } = useClaimEvaluations(
-    debate?.topic.id,
-    locale,
-  );
+  const {
+    evaluations,
+    error: evaluationsError,
+    reload: reloadEvaluations,
+  } = useClaimEvaluations(debate?.topic.id, locale);
   const reviewerSelf = useReviewerSelf(debate?.topic.id, locale, auth.isReviewer);
-  const { assessments, reload: reloadAssessments } = useSourceAssessments(
-    debate?.topic.id,
-    locale,
-  );
+  const {
+    assessments,
+    error: assessmentsError,
+    reload: reloadAssessments,
+  } = useSourceAssessments(debate?.topic.id, locale);
   const evalStateMap = useMemo(() => {
     const m = new Map<string, ClaimState>();
     // a PRESENT state is always confirmed (a human eval or a bridged result);
@@ -1237,6 +1350,8 @@ export default function DebatePage() {
     return m;
   }, [evaluations]);
   const [contribOpen, setContribOpen] = useState(false);
+  const [dossierChallengeEvidenceLinkId, setDossierChallengeEvidenceLinkId] =
+    useState<string | null>(null);
   const [testOpen, setTestOpen] = useState(false);
   usePageTitle(
     debate ? `${debate.topic.question} — Parallax` : "Parallax",
@@ -1246,6 +1361,9 @@ export default function DebatePage() {
   // RLS scopes the Supabase read to the caller's own/staff-visible rows; the
   // store path remains the fallback (and the only path when Supabase is off).
   const [backendAccepted, setBackendAccepted] = useState<Contribution[]>([]);
+  const [backendAcceptedError, setBackendAcceptedError] = useState<
+    string | null
+  >(null);
   const topicId = debate?.topic.id;
   useEffect(() => {
     let cancelled = false;
@@ -1255,10 +1373,20 @@ export default function DebatePage() {
         : Promise.resolve<Contribution[]>([]);
     resolve
       .then((rows) => {
-        if (!cancelled) setBackendAccepted(rows);
+        if (!cancelled) {
+          setBackendAccepted(rows);
+          setBackendAcceptedError(null);
+        }
       })
-      .catch(() => {
-        if (!cancelled) setBackendAccepted([]);
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setBackendAccepted([]);
+          setBackendAcceptedError(
+            error instanceof Error
+              ? error.message
+              : "Accepted contributions could not be loaded.",
+          );
+        }
       });
     return () => {
       cancelled = true;
@@ -1426,7 +1554,7 @@ export default function DebatePage() {
       value={{
         stateMap: evalStateMap,
         evaluations,
-        canEvaluate: auth.isReviewer && source === "supabase",
+        canEvaluate: auth.isReviewer && provenance === "supabase",
         isAdmin: auth.isAdmin,
         topicId: debate.topic.id,
         reload: reloadEvaluations,
@@ -1442,7 +1570,7 @@ export default function DebatePage() {
           reviewerSelf.reload();
         },
         assessments,
-        canAssess: auth.isReviewer && source === "supabase",
+        canAssess: auth.isReviewer && provenance === "supabase",
         reloadAssessments,
       }}
     >
@@ -1463,9 +1591,9 @@ export default function DebatePage() {
         <div className="hero__statusrow">
           <div className="hero__status">
             <span>{t.debatePage.heroStatus(revision, debate.sources.length)}</span>
-            {source === "supabase" && (
-              <span className="backend-pill">Supabase</span>
-            )}
+            <span className="backend-pill">
+              {provenance === "supabase" ? "Supabase" : "Fixtures"}
+            </span>
             <details className="revhistory">
               <summary>{t.features.revHistory}</summary>
               <div className="revhistory__list">
@@ -1501,6 +1629,24 @@ export default function DebatePage() {
             {t.common.counts.draftContributions(pending.length)}
           </Link>
         )}
+        {(debateLoadError ||
+          backendAcceptedError ||
+          evaluationsError ||
+          reviewerSelf.error ||
+          assessmentsError) && (
+          <div className="form-error" role="alert">
+            <p>
+              {locale === "fr"
+                ? "Certaines données en direct sont indisponibles. Les données locales restent affichées comme provisoires."
+                : "Some live data is unavailable. Local data remains visible as provisional."}
+            </p>
+            {debateLoadError && <p>{debateLoadError}</p>}
+            {backendAcceptedError && <p>{backendAcceptedError}</p>}
+            {evaluationsError && <p>{evaluationsError}</p>}
+            {reviewerSelf.error && <p>{reviewerSelf.error}</p>}
+            {assessmentsError && <p>{assessmentsError}</p>}
+          </div>
+        )}
         <span className="stamp">{t.common.labels.unreviewedStamp}</span>
       </section>
 
@@ -1519,6 +1665,12 @@ export default function DebatePage() {
             {t.features.stateContested(
               debate.claims.filter((c) => claimState(debate, c, evalStateMap) === "contested").length,
             )}
+          </span>
+          <span className="statestrip__chip statestrip__chip--con">
+            <i />
+            {locale === "fr"
+              ? `${debate.claims.filter((c) => claimState(debate, c, evalStateMap) === "provisional").length} provisoire(s) / inconnue(s)`
+              : `${debate.claims.filter((c) => claimState(debate, c, evalStateMap) === "provisional").length} provisional / unknown`}
           </span>
           <span className="statestrip__chip statestrip__chip--val">
             <i />
@@ -1547,7 +1699,10 @@ export default function DebatePage() {
       {/* — values quiz — */}
       <section className="quizwrap">
         <ValuesQuiz debate={debate} onPickPosition={choose} />
-        <PositionSignalBefore debate={debate} source={source} />
+        <PositionSignalBefore
+          debate={debate}
+          source={provenance ?? "fixtures"}
+        />
       </section>
 
       {/* — chooser — */}
@@ -1656,8 +1811,19 @@ export default function DebatePage() {
         <ValuesMatrix debate={debate} communityPositions={communityPositions} />
         <PrioritiesWeighting debate={debate} />
         <PerceptionExit debate={debate} />
-        <PositionSignal debate={debate} source={source} />
+        <PositionSignal debate={debate} source={provenance ?? "fixtures"} />
       </section>
+
+      {/* — reviewed evidence dossiers — */}
+      {isSupabaseConfigured && (
+        <PublicClaimDossiers
+          topicId={debate.topic.id}
+          onChallenge={(evidenceLinkId) => {
+            setDossierChallengeEvidenceLinkId(evidenceLinkId);
+            setContribOpen(true);
+          }}
+        />
+      )}
 
       {/* — show the work — */}
       <section className="work" id="work">
@@ -1695,6 +1861,13 @@ export default function DebatePage() {
                   </b>
                 </span>
                 <span className="source__notes">{s.quality_notes}</span>
+                <span className="source__notes">
+                  {s.content_hash
+                    ? `${locale === "fr" ? "Artefact vérifiable" : "Verifiable artefact"}: ${s.content_hash}`
+                    : locale === "fr"
+                      ? "Artefact non haché : provenance provisoire."
+                      : "Unhashed artefact: provisional provenance."}
+                </span>
                 <SourceIntegrityChip source={s} />
                 <SourceAssessControl source={s} />
               </div>
@@ -1794,7 +1967,11 @@ export default function DebatePage() {
       <ContributePanel
         debate={debate}
         open={contribOpen}
-        onClose={() => setContribOpen(false)}
+        dossierChallengeEvidenceLinkId={dossierChallengeEvidenceLinkId}
+        onClose={() => {
+          setContribOpen(false);
+          setDossierChallengeEvidenceLinkId(null);
+        }}
       />
       <SteelmanTest
         debate={debate}

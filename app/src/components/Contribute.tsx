@@ -10,7 +10,18 @@ import { useI18n } from "../i18n";
 import { submitSupabaseContribution } from "../lib/backend";
 import { useAuth } from "../lib/auth";
 import { isSupabaseConfigured } from "../lib/supabase";
+import { safeHttpUrl } from "../lib/url";
 import { submitContribution } from "../lib/store";
+import {
+  withWorkflowContribution,
+  workflowCopy,
+  workflowErrorMessage,
+  workflowProvenanceLabel,
+  workflowStatusLabel,
+  type WorkflowContribution,
+} from "../features/workflow/model";
+import { ClaimDossierForm } from "../features/dossier/ClaimDossierForm";
+import { DOSSIER_PILOT_TOPIC_ID } from "../features/dossier/model";
 
 const PROPOSABLE_LABELS: EvidenceLabel[] = [
   "supports_claim",
@@ -24,10 +35,12 @@ export function ContributePanel({
   debate,
   open,
   onClose,
+  dossierChallengeEvidenceLinkId = null,
 }: {
   debate: DebateFixture;
   open: boolean;
   onClose: () => void;
+  dossierChallengeEvidenceLinkId?: string | null;
 }) {
   const [type, setType] = useState<ContributionType>("new_claim");
   const [body, setBody] = useState("");
@@ -37,10 +50,15 @@ export function ContributePanel({
   const [evidenceTarget, setEvidenceTarget] = useState("");
   const [proposedLabel, setProposedLabel] =
     useState<EvidenceLabel>("partially_supports_claim");
-  const [done, setDone] = useState(false);
+  const [submitted, setSubmitted] = useState<WorkflowContribution | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const { t } = useI18n();
+  const [dossierMode, setDossierMode] = useState(
+    Boolean(dossierChallengeEvidenceLinkId),
+  );
+  const { locale, t } = useI18n();
+  const copy = workflowCopy(locale);
+  const isFr = locale === "fr";
   const auth = useAuth();
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
@@ -51,10 +69,40 @@ export function ContributePanel({
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
-      setDone(false);
+      setSubmitted(null);
       restoreRef.current?.focus?.();
     };
   }, [open]);
+
+  useEffect(() => {
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setType("new_claim");
+      setBody("");
+      setTitle("");
+      setUrl("");
+      setTarget("");
+      setEvidenceTarget("");
+      setSubmitted(null);
+      setError("");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [debate.topic.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled && open && dossierChallengeEvidenceLinkId) {
+        setDossierMode(true);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [dossierChallengeEvidenceLinkId, open]);
 
   // Focus management: focus into the panel on open, trap Tab, Escape closes.
   useEffect(() => {
@@ -89,7 +137,7 @@ export function ContributePanel({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose, done, type]);
+  }, [dossierMode, open, onClose, submitted, type]);
 
   if (!open) return null;
 
@@ -100,6 +148,10 @@ export function ContributePanel({
   const claimLinks = debate.evidence_links.filter(
     (l) => l.claim_id === target,
   );
+  const normalizedUrl = url.trim();
+  const validatedUrl = safeHttpUrl(normalizedUrl);
+  const hasUrl = normalizedUrl.length > 0;
+  const urlIsValid = !hasUrl || Boolean(validatedUrl);
 
   const similar =
     type === "new_claim" && body.trim().length > 15
@@ -130,7 +182,8 @@ export function ContributePanel({
     (!needsClaimTarget || target) &&
     (type !== "challenge_evidence_label" || evidenceTarget) &&
     (type !== "new_position" || title.trim().length >= 4) &&
-    (type !== "new_source" || url.trim().startsWith("http"));
+    (type !== "new_source" || Boolean(validatedUrl)) &&
+    urlIsValid;
 
   const submit = async () => {
     if (!valid) return;
@@ -142,7 +195,7 @@ export function ContributePanel({
         type,
         body: body.trim(),
         title: title.trim() || undefined,
-        url: url.trim() || undefined,
+        url: validatedUrl,
         proposed_label:
           type === "challenge_evidence_label" ? proposedLabel : undefined,
         target_object_id:
@@ -150,24 +203,42 @@ export function ContributePanel({
             ? evidenceTarget
             : target || undefined,
       };
+      let created: WorkflowContribution;
       if (isSupabaseConfigured) {
         if (!auth.user) {
-          setError("Sign in on the You page before submitting a backend draft.");
+          setError(
+            isFr
+              ? "Connectez-vous sur la page Vous avant d’envoyer un brouillon backend."
+              : "Sign in on the You page before submitting a backend draft.",
+          );
           return;
         }
-        await submitSupabaseContribution({
+        created = await submitSupabaseContribution({
           ...payload,
           created_by: auth.user.id,
         });
       } else {
-        submitContribution(payload);
+        created = withWorkflowContribution(
+          submitContribution(payload),
+          "local",
+        );
       }
-      setDone(true);
+      setSubmitted(created);
       setBody("");
       setTitle("");
       setUrl("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not submit contribution.");
+      setError(
+        workflowErrorMessage(
+          err,
+          isFr ? "Impossible d’envoyer la contribution." : "Could not submit contribution.",
+          {
+            locale,
+            context: "submit",
+            reference: `contribution-submit:${debate.topic.id}`,
+          },
+        ),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -198,44 +269,117 @@ export function ContributePanel({
           </button>
         </header>
 
-        {done ? (
+        {submitted ? (
           <div className="slideover__done">
             <span className="stamp stamp--inline">{t.contribute.submitted}</span>
             <h3>{t.contribute.pendingTitle}</h3>
             <p>{t.contribute.pendingBody}</p>
+            <article className="rcard">
+              <header className="rcard__head">
+                <span className="rcard__type">
+                  {t.common.contributionLabels[submitted.type]}
+                </span>
+                <span className={`rcard__verdict rcard__verdict--${submitted.status}`}>
+                  {workflowStatusLabel(locale, submitted.status)}
+                </span>
+                <span className="rcard__sampletag">
+                  {workflowProvenanceLabel(locale, submitted.provenance)}
+                </span>
+              </header>
+              {submitted.title && <h4>{submitted.title}</h4>}
+              {submitted.target_object_id && (
+                <p className="rcard__target">
+                  {t.common.labels.on}: {submitted.target_object_id}
+                </p>
+              )}
+              <p className="rcard__body">{submitted.body}</p>
+              {safeHttpUrl(submitted.url) && (
+                <a
+                  className="rcard__url"
+                  href={safeHttpUrl(submitted.url)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {submitted.url} ↗
+                </a>
+              )}
+              {submitted.proposed_label && (
+                <p className="rcard__target">
+                  {t.common.labels.proposedLabel}: {t.common.evidenceLabels[submitted.proposed_label]}
+                </p>
+              )}
+              <p className="rcard__target">
+                {copy.objectId}: {submitted.id} · {copy.origin}: {workflowProvenanceLabel(locale, submitted.provenance)}
+              </p>
+            </article>
             <div className="slideover__doneactions">
-              <Link to="/review" className="btn btn--primary" onClick={onClose}>
-                {t.contribute.openReview}
+              <Link
+                to={submitted.provenance === "supabase" ? "/you" : "/review"}
+                className="btn btn--primary"
+                onClick={onClose}
+              >
+                {submitted.provenance === "supabase"
+                  ? copy.backendSubmissions
+                  : t.contribute.openReview}
               </Link>
-              <button className="btn btn--ghost" onClick={() => setDone(false)}>
+              <button className="btn btn--ghost" onClick={() => setSubmitted(null)}>
                 {t.contribute.draftAnother}
               </button>
             </div>
           </div>
+        ) : dossierMode ? (
+          <div className="slideover__body">
+            <ClaimDossierForm
+              debate={debate}
+              challengeEvidenceLinkId={dossierChallengeEvidenceLinkId}
+              onCancel={() => setDossierMode(false)}
+            />
+          </div>
         ) : (
           <div className="slideover__body">
-            <div className="field" role="radiogroup" aria-label={t.contribute.whatAdding}>
-              <label className="field__label">{t.contribute.whatAdding}</label>
+            {debate.topic.id === DOSSIER_PILOT_TOPIC_ID && (
+              <div className="dossier-boundary">
+                <b>Need a reviewable claim with exact source passages?</b>
+                <p>
+                  The bounded evidence-dossier pilot captures two distinct sources,
+                  hashes the artefacts, records exact UTF-8 excerpt offsets, and keeps
+                  publication as a separate reviewed step.
+                </p>
+                <button
+                  type="button"
+                  className="btn btn--primary btn--small"
+                  onClick={() => setDossierMode(true)}
+                >
+                  Open reviewed evidence dossier
+                </button>
+              </div>
+            )}
+            <fieldset className="field field--choice">
+              <legend className="field__label">{t.contribute.whatAdding}</legend>
               <div className="typegrid">
                 {t.contribute.types.map((choice) => (
-                  <button
+                  <label
                     key={choice.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={type === choice.id}
                     className={`typecard${type === choice.id ? " typecard--active" : ""}`}
-                    onClick={() => {
-                      setType(choice.id);
-                      setTarget("");
-                      setEvidenceTarget("");
-                    }}
                   >
+                    <input
+                      className="choice-radio"
+                      type="radio"
+                      name="contribution-type"
+                      value={choice.id}
+                      checked={type === choice.id}
+                      onChange={() => {
+                        setType(choice.id);
+                        setTarget("");
+                        setEvidenceTarget("");
+                      }}
+                    />
                     <b>{choice.label}</b>
                     <span>{choice.hint}</span>
-                  </button>
+                  </label>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             {needsPositionTarget && (
               <div className="field">
@@ -308,31 +452,31 @@ export function ContributePanel({
                     })}
                   </select>
                 </div>
-                <div className="field">
-                  <label className="field__label" id="contribute-label-legend">
+                <fieldset className="field field--choice">
+                  <legend className="field__label">
                     {t.contribute.shouldBeLabeled}
-                  </label>
-                  <div
-                    className="labelpick"
-                    role="radiogroup"
-                    aria-labelledby="contribute-label-legend"
-                  >
+                  </legend>
+                  <div className="labelpick">
                     {PROPOSABLE_LABELS.map((l) => (
-                      <button
+                      <label
                         key={l}
-                        type="button"
-                        role="radio"
-                        aria-checked={proposedLabel === l}
                         className={`evlabel evlabel--${l} labelpick__item${
                           proposedLabel === l ? " labelpick__item--active" : ""
                         }`}
-                        onClick={() => setProposedLabel(l)}
                       >
-                        {t.common.evidenceLabels[l]}
-                      </button>
+                        <input
+                          className="choice-radio"
+                          type="radio"
+                          name="proposed-evidence-label"
+                          value={l}
+                          checked={proposedLabel === l}
+                          onChange={() => setProposedLabel(l)}
+                        />
+                        <span>{t.common.evidenceLabels[l]}</span>
+                      </label>
                     ))}
                   </div>
-                </div>
+                </fieldset>
               </>
             )}
 
@@ -365,7 +509,26 @@ export function ContributePanel({
                   placeholder="https://…"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
+                  maxLength={2048}
+                  aria-invalid={(hasUrl && !urlIsValid) || undefined}
+                  aria-describedby={
+                    hasUrl && !urlIsValid
+                      ? "contribute-url-hint contribute-url-error"
+                      : "contribute-url-hint"
+                  }
                 />
+                <p className="field__hint" id="contribute-url-hint">
+                  {t.contribute.sourceUrlHint}
+                </p>
+                {hasUrl && !urlIsValid && (
+                  <p
+                    className="form-error"
+                    id="contribute-url-error"
+                    role="alert"
+                  >
+                    {t.contribute.sourceUrlInvalid}
+                  </p>
+                )}
               </div>
             )}
 
@@ -412,14 +575,20 @@ export function ContributePanel({
                 disabled={!valid || submitting}
                 onClick={submit}
               >
-                {submitting ? "Submitting..." : t.contribute.submit}
+                {submitting
+                  ? isFr ? "Envoi…" : "Submitting…"
+                  : t.contribute.submit}
               </button>
               <span className="slideover__hint">{t.contribute.hint}</span>
             </div>
             {isSupabaseConfigured && !auth.user && (
-              <p className="form-error">Sign in before submitting backend drafts.</p>
+              <p className="form-error" role="alert">
+                {isFr
+                  ? "Connectez-vous avant d’envoyer des brouillons backend."
+                  : "Sign in before submitting backend drafts."}
+              </p>
             )}
-            {error && <p className="form-error">{error}</p>}
+            {error && <p className="form-error" role="alert">{error}</p>}
           </div>
         )}
       </div>

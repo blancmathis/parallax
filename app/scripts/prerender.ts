@@ -16,6 +16,11 @@ import {
 // the body stays the empty #root, exactly as the SPA ships — createRoot()
 // overwrites it on mount, so there is no hydration and no mismatch.
 //
+// Non-root documents are emitted as `route.html`, not `route/index.html`.
+// Cloudflare's default HTML handling serves a flat HTML asset at the slashless
+// route (`route.html` -> `/route`) but makes a directory index canonical at the
+// trailing-slash route. The application canonicals and links are slashless.
+//
 // Fixtures are read via fs (NOT imported from src/data): the fixtures' top-level
 // `arguments` key breaks esbuild/Node JSON named-export codegen under tsx.
 
@@ -71,9 +76,11 @@ function compose(route: RouteKey, locale: "en" | "fr", debate?: DebateMeta): str
 }
 
 function write(urlPath: string, doc: string) {
-  const outDir = join(DIST, urlPath === "/" ? "" : urlPath.replace(/^\//, ""));
-  mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, "index.html"), doc);
+  const outFile = urlPath === "/"
+    ? join(DIST, "index.html")
+    : join(DIST, `${urlPath.replace(/^\//, "")}.html`);
+  mkdirSync(dirname(outFile), { recursive: true });
+  writeFileSync(outFile, doc);
 }
 
 let count = 0;

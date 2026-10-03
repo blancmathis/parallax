@@ -8,13 +8,53 @@ import { pendingFor, useStore } from "../lib/store";
 // Deep-link the single masthead CTA at a genuinely divisive seeded debate
 // rather than duplicating the "debates" nav item. Kept as a static path so
 // the chrome stays decoupled from the (lazily loaded) debate data.
-const FEATURED_DEBATE = "/debates/smartphones-schools";
+const QUIZ_HASH = "#values-quiz";
+const QUIZ_TARGET_SELECTOR = ".quizwrap";
+const FEATURED_DEBATE = `/debates/smartphones-schools${QUIZ_HASH}`;
 
 export function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
+    if (hash === QUIZ_HASH) {
+      let timeoutId = 0;
+      let observer: MutationObserver | null = null;
+
+      const revealQuiz = () => {
+        const quiz = document.querySelector<HTMLElement>(QUIZ_TARGET_SELECTOR);
+        if (!quiz) return false;
+        quiz.scrollIntoView({
+          behavior: "instant" as ScrollBehavior,
+          block: "start",
+        });
+        quiz
+          .querySelector<HTMLElement>("button:not([disabled]), a[href]")
+          ?.focus({ preventScroll: true });
+        return true;
+      };
+
+      // Debate routes are lazy-loaded. Wait for the existing quiz to mount so
+      // the masthead deep-link works on both a cold navigation and the same page.
+      if (!revealQuiz()) {
+        observer = new MutationObserver(() => {
+          if (!revealQuiz()) return;
+          observer?.disconnect();
+          window.clearTimeout(timeoutId);
+        });
+        observer.observe(document.getElementById("app-content") ?? document.body, {
+          childList: true,
+          subtree: true,
+        });
+        timeoutId = window.setTimeout(() => observer?.disconnect(), 5000);
+      }
+
+      return () => {
+        observer?.disconnect();
+        window.clearTimeout(timeoutId);
+      };
+    }
+
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 }
 
@@ -104,9 +144,6 @@ export function Masthead() {
 
   return (
     <header className="masthead" ref={headerRef}>
-      <a className="skip-link" href="#main">
-        {t.chrome.skipToContent}
-      </a>
       <div className="masthead__inner">
         <Link to="/" className="masthead__brand">
           Parallax<em>.</em>

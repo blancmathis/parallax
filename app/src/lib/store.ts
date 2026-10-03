@@ -8,6 +8,7 @@ import type { AuditEvent, Contribution, Review } from "../types";
  */
 
 const KEY = "parallax.store.v1";
+export const REVIEW_RATIONALE_MIN_LENGTH = 8;
 
 export interface StoreState {
   contributions: Contribution[];
@@ -26,11 +27,44 @@ const EMPTY: StoreState = {
 let state: StoreState = load();
 const listeners = new Set<() => void>();
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function normalizeState(value: unknown): StoreState {
+  if (!isRecord(value)) return EMPTY;
+
+  const revisionBumps = isRecord(value.revision_bumps)
+    ? Object.fromEntries(
+        Object.entries(value.revision_bumps).filter(
+          ([topicId, bump]) =>
+            topicId.length > 0 &&
+            typeof bump === "number" &&
+            Number.isInteger(bump) &&
+            bump >= 0,
+        ),
+      )
+    : {};
+
+  return {
+    contributions: Array.isArray(value.contributions)
+      ? (value.contributions.filter(isRecord) as unknown as Contribution[])
+      : [],
+    reviews: Array.isArray(value.reviews)
+      ? (value.reviews.filter(isRecord) as unknown as Review[])
+      : [],
+    extra_audit: Array.isArray(value.extra_audit)
+      ? (value.extra_audit.filter(isRecord) as unknown as AuditEvent[])
+      : [],
+    revision_bumps: revisionBumps as Record<string, number>,
+  };
+}
+
 function load(): StoreState {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return EMPTY;
-    return { ...EMPTY, ...JSON.parse(raw) };
+    return normalizeState(JSON.parse(raw));
   } catch {
     return EMPTY;
   }
@@ -57,6 +91,18 @@ export function subscribe(listener: () => void): () => void {
 
 export function useStore(): StoreState {
   return useSyncExternalStore(subscribe, getState);
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (event) => {
+    if (event.key !== KEY) return;
+    try {
+      state = event.newValue ? normalizeState(JSON.parse(event.newValue)) : EMPTY;
+    } catch {
+      state = EMPTY;
+    }
+    listeners.forEach((listener) => listener());
+  });
 }
 
 function uid(prefix: string): string {
@@ -124,16 +170,23 @@ export function reviewContribution(
   contributionId: string,
   decision: "approve" | "reject",
   rationale: string,
-): void {
+): boolean {
   const contribution = state.contributions.find((c) => c.id === contributionId);
-  if (!contribution || contribution.status !== "submitted") return;
+  const normalizedRationale = rationale.trim();
+  if (
+    !contribution ||
+    contribution.status !== "submitted" ||
+    normalizedRationale.length < REVIEW_RATIONALE_MIN_LENGTH
+  ) {
+    return false;
+  }
 
   const review: Review = {
     id: uid("rev"),
     target_object_id: contributionId,
     target_object_type: "contribution",
     decision,
-    rationale,
+    rationale: normalizedRationale,
     reviewed_by: "reviewer_demo",
     reviewed_at: new Date().toISOString(),
   };
@@ -143,7 +196,7 @@ export function reviewContribution(
       contribution.topic_id,
       "review_completed",
       "admin",
-      `${decision === "approve" ? "Approved" : "Rejected"} ${CONTRIBUTION_LABEL[contribution.type]}: ${rationale || "no rationale given"}`,
+      `${decision === "approve" ? "Approved" : "Rejected"} ${CONTRIBUTION_LABEL[contribution.type]}: ${normalizedRationale}`,
     ),
   ];
 
@@ -171,6 +224,7 @@ export function reviewContribution(
     extra_audit: [...state.extra_audit, ...events],
     revision_bumps: bumps,
   });
+  return true;
 }
 
 export function resetDemoData(): void {

@@ -19,6 +19,27 @@ import type { Locale } from "../i18n";
 import { requireSupabase, supabase, isSupabaseConfigured } from "./supabase";
 import { safeHttpUrl } from "./url";
 import { castSignal } from "./profile";
+import {
+  requireReviewRationale,
+  withWorkflowContribution,
+} from "../features/workflow/model";
+import type {
+  ContributorWorkflowState,
+  DraftArgument,
+  DraftClaim,
+  DraftEvidenceLink,
+  DraftPosition,
+  DraftRevisionSnapshot,
+  DraftSource,
+  DraftSourceExcerpt,
+  DraftTradeoff,
+  DraftValue,
+  WorkflowContribution,
+  WorkflowReview,
+  WorkflowReviewDecision,
+  WorkflowRevision,
+  WorkflowSeedPacket,
+} from "../features/workflow/model";
 
 const seedPacketSchema = z.object({
   question: z.string().trim().min(12).refine((value) => value.endsWith("?"), {
@@ -43,37 +64,18 @@ export type DebateSource = "supabase" | "fixtures";
 export interface DebateLoadState {
   debates: DebateFixture[];
   source: DebateSource;
+  originByTopicId: Record<string, DebateSource>;
   loading: boolean;
   error: string | null;
 }
 
-export interface ReviewRevisionItem {
-  id: string;
-  topic_id: string;
-  topic_title: string;
-  topic_question: string;
-  slug: string;
-  revision_number: number;
-  review_status: string;
-  status: string;
-  created_at: string;
-}
-
-export interface SeedPacketItem {
-  id: string;
-  topic_id: string;
-  topic_question: string;
-  initial_position: string;
-  status: string;
-  generated_revision_id: string | null;
-  created_at: string;
-  source_inputs: { url?: string; note?: string }[];
-}
+export type ReviewRevisionItem = WorkflowRevision;
+export type SeedPacketItem = WorkflowSeedPacket;
 
 export interface SupabaseReviewState {
   revisions: ReviewRevisionItem[];
   seedPackets: SeedPacketItem[];
-  contributions: Contribution[];
+  contributions: WorkflowContribution[];
 }
 
 const isKnownContributionType = (value: string): value is ContributionType =>
@@ -87,9 +89,13 @@ const isKnownContributionType = (value: string): value is ContributionType =>
   ].includes(value);
 
 function fixtureFallback(locale: Locale): DebateLoadState {
+  const debates = getDebates(locale);
   return {
-    debates: getDebates(locale),
+    debates,
     source: "fixtures",
+    originByTopicId: Object.fromEntries(
+      debates.map((debate) => [debate.topic.id, "fixtures" as const]),
+    ),
     loading: false,
     error: isSupabaseConfigured ? "Supabase data unavailable; showing fixture fallback." : null,
   };
@@ -111,6 +117,12 @@ async function loadSupabaseDebates(locale: Locale): Promise<DebateLoadState> {
   return {
     debates: merged,
     source: "supabase",
+    originByTopicId: Object.fromEntries(
+      merged.map((debate) => [
+        debate.topic.id,
+        loadedIds.has(debate.topic.id) ? "supabase" : "fixtures",
+      ]),
+    ),
     loading: false,
     error: null,
   };
@@ -126,10 +138,10 @@ export function useDebates(locale: Locale): DebateLoadState {
     let cancelled = false;
     queueMicrotask(() => {
       if (!cancelled) {
-        setState((current) => ({
-          ...current,
+        setState({
+          ...fixtureFallback(locale),
           loading: isSupabaseConfigured && locale === "en",
-        }));
+        });
       }
     });
     loadSupabaseDebates(locale)
@@ -159,7 +171,11 @@ export function useDebateBySlug(slug: string | undefined, locale: Locale) {
     const loaded = state.debates.find((item) => item.topic.id.replace(/^topic_/, "").replace(/_/g, "-") === slug);
     return loaded ?? debateBySlug(slug, locale);
   }, [locale, slug, state.debates]);
-  return { ...state, debate };
+  return {
+    ...state,
+    debate,
+    provenance: debate ? state.originByTopicId[debate.topic.id] : undefined,
+  };
 }
 
 export async function createSeedPacket(input: SeedPacketInput): Promise<string> {
@@ -193,7 +209,7 @@ export async function submitSupabaseContribution(input: {
   proposed_label?: EvidenceLabel;
   target_object_id?: string;
   created_by: string;
-}): Promise<Contribution> {
+}): Promise<WorkflowContribution> {
   // Reject non-http(s) URLs at submit — defense-in-depth with the DB CHECK and the
   // render-time safeHttpUrl guard (blocks javascript:/data: contribution URLs).
   const url = input.url?.trim();
@@ -207,7 +223,7 @@ export async function submitSupabaseContribution(input: {
     .select("*")
     .single();
   if (error) throw error;
-  return data as Contribution;
+  return withWorkflowContribution(data as Contribution, "supabase");
 }
 
 /**
@@ -227,10 +243,10 @@ export async function loadAcceptedContributions(topicId: string): Promise<Contri
     .eq("topic_id", topicId)
     .eq("status", "accepted")
     // already-merged contributions now appear NATIVELY in the published revision
-    // (via merge_contribution); exclude them so the overlay doesn't double-render.
     .is("merged_revision_id", null)
     .order("created_at", { ascending: false });
-  if (error || !data) return [];
+  if (error) throw error;
+  if (!data) throw new Error("Accepted contributions response was empty.");
   return data
     .filter((item) => isKnownContributionType(item.type))
     .map((item) => item as Contribution);
@@ -250,10 +266,11 @@ export async function mergeContribution(contributionId: string): Promise<string>
 
 /* ————— Position signal (D15) ————— */
 
-/** Cast/revise the reader's anonymous signal. The RAW pick is always saved
- *  client-side; when Supabase is configured AND the reader is signed in, an
- *  anonymous increment is sent. Returns whether the server increment landed, so
- *  the UI can keep demo state honest (never fake a "revealed" real aggregate). */
+/** Cast/revise the reader's position signal. The demo pick is client-only.
+ *  With Supabase and a signed-in reader, the RPC stores a private actor-bound
+ *  ballot so it can be revised; public reads expose only k-anonymized aggregate
+ *  bands. Returns whether the server write landed so the UI never fabricates a
+ *  revealed live aggregate. */
 export async function castPositionSignal(input: {
   topic_id: string;
   phase: SignalPhase;
@@ -326,8 +343,20 @@ export function usePositionAggregate(
     error: null,
   }));
   useEffect(() => {
-    if (!topicId) return; // initial state already resolves the no-topic case
     let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setState({
+        aggregate: topicId ? fixtureAggregate(topicId, locale) : null,
+        loading: Boolean(isSupabaseConfigured && locale === "en" && topicId),
+        error: null,
+      });
+    });
+    if (!topicId) {
+      return () => {
+        cancelled = true;
+      };
+    }
     loadAggregate(topicId, locale)
       .then((next) => {
         if (!cancelled) setState(next);
@@ -352,6 +381,7 @@ export function usePositionAggregate(
 export interface ClaimEvaluationsState {
   evaluations: Map<string, ClaimEvaluation>;
   loading: boolean;
+  error: string | null;
   reload: () => void;
 }
 
@@ -366,31 +396,56 @@ export function useClaimEvaluations(
   const [state, setState] = useState<{
     evaluations: Map<string, ClaimEvaluation>;
     loading: boolean;
+    error: string | null;
   }>(() => ({
     evaluations: new Map(),
     loading: Boolean(isSupabaseConfigured && locale === "en" && topicId),
+    error: null,
   }));
   useEffect(() => {
     let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) {
+        setState({
+          evaluations: new Map(),
+          loading: Boolean(supabase && topicId && locale === "en"),
+          error: null,
+        });
+      }
+    });
     if (!supabase || !topicId || locale !== "en") {
-      // resolve in a microtask so this isn't a synchronous setState-in-effect
-      Promise.resolve().then(() => {
-        if (!cancelled) setState({ evaluations: new Map(), loading: false });
-      });
       return () => {
         cancelled = true;
       };
     }
     supabase
       .rpc("get_claim_evaluations", { p_topic_id: topicId })
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        const map = new Map<string, ClaimEvaluation>();
-        if (!error && Array.isArray(data)) {
-          for (const e of data as ClaimEvaluation[]) map.set(e.claim_id, e);
-        }
-        setState({ evaluations: map, loading: false });
-      });
+      .then(
+        ({ data, error }) => {
+          if (cancelled) return;
+          if (error) {
+            setState({
+              evaluations: new Map(),
+              loading: false,
+              error: error.message || "Claim evaluations could not be loaded.",
+            });
+            return;
+          }
+          const map = new Map<string, ClaimEvaluation>();
+          if (Array.isArray(data)) {
+            for (const e of data as ClaimEvaluation[]) map.set(e.claim_id, e);
+          }
+          setState({ evaluations: map, loading: false, error: null });
+        },
+        (error: unknown) => {
+          if (cancelled) return;
+          setState({
+            evaluations: new Map(),
+            loading: false,
+            error: error instanceof Error ? error.message : "Claim evaluations could not be loaded.",
+          });
+        },
+      );
     return () => {
       cancelled = true;
     };
@@ -398,6 +453,7 @@ export function useClaimEvaluations(
   return {
     evaluations: state.evaluations,
     loading: state.loading,
+    error: state.error,
     reload: () => setVersion((v) => v + 1),
   };
 }
@@ -407,15 +463,15 @@ export function useClaimEvaluations(
 export async function evaluateClaim(input: {
   topic_id: string;
   claim_id: string;
-  state: ClaimEvalState;
-  rationale?: string;
+  state: Exclude<ClaimEvalState, "established">;
+  rationale: string;
 }): Promise<{ ok: boolean; error?: string }> {
   if (!supabase) return { ok: false, error: "no backend" };
   const { error } = await supabase.rpc("evaluate_claim", {
     p_topic_id: input.topic_id,
     p_claim_id: input.claim_id,
     p_state: input.state,
-    p_rationale: input.rationale ?? "",
+    p_rationale: requireReviewRationale(input.rationale),
   });
   return { ok: !error, error: error?.message };
 }
@@ -455,6 +511,7 @@ export async function setReviewerCamp(input: {
 export interface ReviewerSelfState {
   self: ReviewerSelf | null;
   loading: boolean;
+  error: string | null;
   reload: () => void;
 }
 
@@ -470,18 +527,28 @@ export function useReviewerSelf(
   const [state, setState] = useState<{
     self: ReviewerSelf | null;
     loading: boolean;
+    error: string | null;
   }>(() => ({
     self: null,
     loading: Boolean(
       isSupabaseConfigured && locale === "en" && topicId && isReviewer,
     ),
+    error: null,
   }));
   useEffect(() => {
     let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) {
+        setState({
+          self: null,
+          loading: Boolean(
+            supabase && topicId && locale === "en" && isReviewer,
+          ),
+          error: null,
+        });
+      }
+    });
     if (!supabase || !topicId || locale !== "en" || !isReviewer) {
-      Promise.resolve().then(() => {
-        if (!cancelled) setState({ self: null, loading: false });
-      });
       return () => {
         cancelled = true;
       };
@@ -491,18 +558,37 @@ export function useReviewerSelf(
       supabase.rpc("get_my_endorsements", { p_topic_id: topicId }),
     ]).then(([camp, ends]) => {
       if (cancelled) return;
+      if (camp.error || ends.error) {
+        setState({
+          self: null,
+          loading: false,
+          error:
+            camp.error?.message ||
+            ends.error?.message ||
+            "Reviewer state could not be loaded.",
+        });
+        return;
+      }
       const m: EndorsementSelf = new Map();
       const obj =
-        !ends.error && ends.data
+        ends.data
           ? (ends.data as Record<string, "established" | "contested">)
           : {};
       for (const [k, v] of Object.entries(obj)) m.set(k, v);
       setState({
         self: {
-          camp_id: camp.error ? null : (camp.data as string | null),
+          camp_id: camp.data as string | null,
           endorsements: m,
         },
         loading: false,
+        error: null,
+      });
+    }).catch((error: unknown) => {
+      if (cancelled) return;
+      setState({
+        self: null,
+        loading: false,
+        error: error instanceof Error ? error.message : "Reviewer state could not be loaded.",
       });
     });
     return () => {
@@ -512,6 +598,7 @@ export function useReviewerSelf(
   return {
     self: state.self,
     loading: state.loading,
+    error: state.error,
     reload: () => setVersion((v) => v + 1),
   };
 }
@@ -521,6 +608,7 @@ export function useReviewerSelf(
 export interface SourceAssessmentsState {
   assessments: Map<string, SourceAssessment>; // keyed by source_key
   loading: boolean;
+  error: string | null;
   reload: () => void;
 }
 
@@ -535,29 +623,55 @@ export function useSourceAssessments(
   const [state, setState] = useState<{
     assessments: Map<string, SourceAssessment>;
     loading: boolean;
+    error: string | null;
   }>(() => ({
     assessments: new Map(),
     loading: Boolean(isSupabaseConfigured && locale === "en" && topicId),
+    error: null,
   }));
   useEffect(() => {
     let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) {
+        setState({
+          assessments: new Map(),
+          loading: Boolean(supabase && topicId && locale === "en"),
+          error: null,
+        });
+      }
+    });
     if (!supabase || !topicId || locale !== "en") {
-      Promise.resolve().then(() => {
-        if (!cancelled) setState({ assessments: new Map(), loading: false });
-      });
       return () => {
         cancelled = true;
       };
     }
     supabase
       .rpc("get_source_floor", { p_topic_id: topicId })
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        const map = new Map<string, SourceAssessment>();
-        if (!error && Array.isArray(data))
-          for (const a of data as SourceAssessment[]) map.set(a.source_key, a);
-        setState({ assessments: map, loading: false });
-      });
+      .then(
+        ({ data, error }) => {
+          if (cancelled) return;
+          if (error) {
+            setState({
+              assessments: new Map(),
+              loading: false,
+              error: error.message || "Source assessments could not be loaded.",
+            });
+            return;
+          }
+          const map = new Map<string, SourceAssessment>();
+          if (Array.isArray(data))
+            for (const a of data as SourceAssessment[]) map.set(a.source_key, a);
+          setState({ assessments: map, loading: false, error: null });
+        },
+        (error: unknown) => {
+          if (cancelled) return;
+          setState({
+            assessments: new Map(),
+            loading: false,
+            error: error instanceof Error ? error.message : "Source assessments could not be loaded.",
+          });
+        },
+      );
     return () => {
       cancelled = true;
     };
@@ -565,6 +679,7 @@ export function useSourceAssessments(
   return {
     assessments: state.assessments,
     loading: state.loading,
+    error: state.error,
     reload: () => setVersion((v) => v + 1),
   };
 }
@@ -601,28 +716,71 @@ export async function assessSource(input: {
   return { ok: !error, error: error?.message };
 }
 
+function isWorkflowReviewDecision(value: string): value is WorkflowReviewDecision {
+  return ["approve", "reject", "request_changes", "mark_contested"].includes(value);
+}
+
+function reviewMap(
+  rows: {
+    target_object_id: string;
+    target_object_type: string;
+    decision: string;
+    rationale: string;
+    reviewed_at: string;
+  }[],
+): Map<string, WorkflowReview> {
+  const map = new Map<string, WorkflowReview>();
+  for (const row of rows) {
+    if (!isWorkflowReviewDecision(row.decision)) continue;
+    const key = `${row.target_object_type}:${row.target_object_id}`;
+    if (map.has(key)) continue;
+    map.set(key, {
+      decision: row.decision,
+      rationale: row.rationale,
+      reviewed_at: row.reviewed_at,
+      provenance: "supabase",
+    });
+  }
+  return map;
+}
+
 export async function loadSupabaseReviewState(): Promise<SupabaseReviewState> {
   const client = requireSupabase();
-  const [{ data: topics }, { data: revisions, error: revError }, { data: packets, error: packetError }, { data: contributions, error: contributionError }] =
-    await Promise.all([
-      client.from("topics").select("id,title,question,slug"),
-      client
-        .from("debate_revisions")
-        .select("id,topic_id,revision_number,review_status,status,created_at")
-        .eq("status", "draft")
-        .order("created_at", { ascending: false }),
-      client
-        .from("seed_packets")
-        .select("id,topic_id,topic_question,initial_position,status,generated_revision_id,created_at,source_inputs")
-        .order("created_at", { ascending: false }),
-      client
-        .from("contributions")
-        .select("*")
-        .order("created_at", { ascending: false }),
-    ]);
+  const [
+    { data: topics, error: topicError },
+    { data: revisions, error: revError },
+    { data: packets, error: packetError },
+    { data: contributions, error: contributionError },
+    { data: reviews, error: reviewError },
+  ] = await Promise.all([
+    client.from("topics").select("id,title,question,slug"),
+    client
+      .from("debate_revisions")
+      .select("id,topic_id,revision_number,review_status,status,created_at")
+      .eq("status", "draft")
+      .order("created_at", { ascending: false }),
+    client
+      .from("seed_packets")
+      .select(
+        "id,topic_id,topic_question,initial_position,initial_arguments,status,generated_revision_id,error_message,created_at,updated_at,source_inputs",
+      )
+      .order("created_at", { ascending: false }),
+    client
+      .from("contributions")
+      .select("*")
+      .order("created_at", { ascending: false }),
+    client
+      .from("reviews")
+      .select(
+        "target_object_id,target_object_type,decision,rationale,reviewed_at",
+      )
+      .order("reviewed_at", { ascending: false }),
+  ]);
+  if (topicError) throw topicError;
   if (revError) throw revError;
   if (packetError) throw packetError;
   if (contributionError) throw contributionError;
+  if (reviewError) throw reviewError;
 
   const topicMap = new Map(
     (topics ?? []).map((topic) => [
@@ -630,6 +788,7 @@ export async function loadSupabaseReviewState(): Promise<SupabaseReviewState> {
       topic as { id: string; title: string; question: string; slug: string },
     ]),
   );
+  const reviewsByTarget = reviewMap(reviews ?? []);
   return {
     revisions: (revisions ?? []).map((revision) => {
       const topic = topicMap.get(revision.topic_id);
@@ -638,29 +797,209 @@ export async function loadSupabaseReviewState(): Promise<SupabaseReviewState> {
         topic_title: topic?.title ?? revision.topic_id,
         topic_question: topic?.question ?? revision.topic_id,
         slug: topic?.slug ?? "",
+        provenance: "supabase",
+        review: reviewsByTarget.get(`revision:${revision.id}`) ?? null,
       };
     }) as ReviewRevisionItem[],
-    seedPackets: (packets ?? []) as SeedPacketItem[],
+    seedPackets: (packets ?? []).map((packet) => ({
+      ...packet,
+      provenance: "supabase" as const,
+    })) as SeedPacketItem[],
     contributions: (contributions ?? [])
       .filter((item) => isKnownContributionType(item.type))
-      .map((item) => ({
-        ...item,
-        id: item.id,
-        type: item.type,
-      })) as Contribution[],
+      .map((item) => {
+        const contribution = item as Contribution;
+        const review = reviewsByTarget.get(`contribution:${item.id}`) ?? null;
+        const topic = topicMap.get(item.topic_id);
+        return {
+          ...withWorkflowContribution(
+            contribution,
+            "supabase",
+            review,
+            review ? "visible" : "not_reviewed",
+          ),
+          topic_title: topic?.title,
+          topic_question: topic?.question,
+          topic_slug: topic?.slug,
+        };
+      }),
+  };
+}
+
+export async function loadMySupabaseWorkflow(
+  userId: string,
+): Promise<ContributorWorkflowState> {
+  if (!userId.trim()) throw new Error("A signed-in user is required.");
+  const client = requireSupabase();
+  const [
+    { data: topics, error: topicError },
+    { data: contributions, error: contributionError },
+    { data: packets, error: packetError },
+  ] = await Promise.all([
+    client.from("topics").select("id,title,question,slug"),
+    client
+      .from("contributions")
+      .select("*")
+      .eq("created_by", userId)
+      .order("created_at", { ascending: false }),
+    client
+      .from("seed_packets")
+      .select(
+        "id,topic_id,topic_question,initial_position,initial_arguments,status,generated_revision_id,error_message,created_at,updated_at,source_inputs",
+      )
+      .eq("created_by", userId)
+      .order("created_at", { ascending: false }),
+  ]);
+  if (topicError) throw topicError;
+  if (contributionError) throw contributionError;
+  if (packetError) throw packetError;
+
+  const topicMap = new Map(
+    (topics ?? []).map((topic) => [
+      topic.id,
+      topic as { id: string; title: string; question: string; slug: string },
+    ]),
+  );
+  return {
+    contributions: (contributions ?? [])
+      .filter((item) => isKnownContributionType(item.type))
+      .map((item) => {
+        const topic = topicMap.get(item.topic_id);
+        return {
+          ...withWorkflowContribution(
+            item as Contribution,
+            "supabase",
+            null,
+            item.status === "submitted" ? "not_reviewed" : "restricted",
+          ),
+          topic_title: topic?.title,
+          topic_question: topic?.question,
+          topic_slug: topic?.slug,
+        };
+      }),
+    seedPackets: (packets ?? []).map((packet) => ({
+      ...packet,
+      provenance: "supabase" as const,
+    })) as WorkflowSeedPacket[],
+  };
+}
+
+function withSupabaseProvenance<T>(rows: unknown[] | null): T[] {
+  return (rows ?? []).map((row) => ({
+    ...(row as Record<string, unknown>),
+    provenance: "supabase",
+  })) as T[];
+}
+
+export async function loadReviewRevisionDraft(
+  revisionId: string,
+): Promise<DraftRevisionSnapshot> {
+  if (!revisionId.trim()) throw new Error("A revision ID is required.");
+  const client = requireSupabase();
+  const [positionsResult, argumentsResult, claimsResult, sourcesResult, excerptsResult, linksResult, valuesResult, tradeoffsResult] =
+    await Promise.all([
+      client
+        .from("positions")
+        .select("id,title,short_summary,steelman,status,generated_by,review_status")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("debate_arguments")
+        .select("id,position_id,direction,summary,claim_ids,generated_by,review_status")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("claims")
+        .select("id,text,claim_type,generated_by,review_status")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("sources")
+        .select("id,url,title,publisher,source_type,retrieval_status,retrieved_at,quality_notes")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("source_excerpts")
+        .select("id,source_id,text,locator,extracted_by")
+        .eq("revision_id", revisionId)
+        .order("created_at"),
+      client
+        .from("evidence_links")
+        .select("id,claim_id,source_id,source_excerpt_id,label,rationale,confidence,review_status")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("debate_values")
+        .select("id,name,description,tension_with")
+        .eq("revision_id", revisionId)
+        .order("sort_order"),
+      client
+        .from("tradeoffs")
+        .select("id,position_id,gain,cost,risk,review_status")
+        .eq("revision_id", revisionId)
+        .order("id"),
+    ]);
+
+  for (const result of [
+    positionsResult,
+    argumentsResult,
+    claimsResult,
+    sourcesResult,
+    excerptsResult,
+    linksResult,
+    valuesResult,
+    tradeoffsResult,
+  ]) {
+    if (result.error) throw result.error;
+  }
+
+  const rawValues = valuesResult.data ?? [];
+  const valuePositionResult = rawValues.length
+    ? await client
+        .from("value_positions")
+        .select("value_id,position_id")
+        .in(
+          "value_id",
+          rawValues.map((value) => value.id),
+        )
+    : { data: [], error: null };
+  if (valuePositionResult.error) throw valuePositionResult.error;
+  const valuePositions = new Map<string, string[]>();
+  for (const row of valuePositionResult.data ?? []) {
+    const current = valuePositions.get(row.value_id) ?? [];
+    current.push(row.position_id);
+    valuePositions.set(row.value_id, current);
+  }
+
+  return {
+    revision_id: revisionId,
+    positions: withSupabaseProvenance<DraftPosition>(positionsResult.data),
+    arguments: withSupabaseProvenance<DraftArgument>(argumentsResult.data),
+    claims: withSupabaseProvenance<DraftClaim>(claimsResult.data),
+    sources: withSupabaseProvenance<DraftSource>(sourcesResult.data),
+    excerpts: withSupabaseProvenance<DraftSourceExcerpt>(excerptsResult.data),
+    evidenceLinks: withSupabaseProvenance<DraftEvidenceLink>(linksResult.data),
+    values: (rawValues as Omit<DraftValue, "position_ids" | "provenance">[]).map(
+      (value) => ({
+        ...value,
+        position_ids: valuePositions.get(value.id) ?? [],
+        provenance: "supabase",
+      }),
+    ),
+    tradeoffs: withSupabaseProvenance<DraftTradeoff>(tradeoffsResult.data),
   };
 }
 
 export async function reviewRevision(
   revisionId: string,
-  decision: "approve" | "reject" | "request_changes" | "mark_contested",
+  decision: WorkflowReviewDecision,
   rationale: string,
 ) {
   const client = requireSupabase();
   const { error } = await client.rpc("review_revision", {
     p_revision_id: revisionId,
     p_decision: decision,
-    p_rationale: rationale,
+    p_rationale: requireReviewRationale(rationale),
   });
   if (error) throw error;
 }
@@ -683,7 +1022,7 @@ export async function reviewSupabaseContribution(
   const { error } = await client.rpc("review_contribution", {
     p_contribution_id: contributionId,
     p_decision: decision,
-    p_rationale: rationale,
+    p_rationale: requireReviewRationale(rationale),
   });
   if (error) throw error;
 }

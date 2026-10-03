@@ -2,8 +2,10 @@ import { useSyncExternalStore } from "react";
 
 /**
  * Local reader profile: values quiz results, steelman badges, perception
- * measures. Everything stays in this browser — there is no account system
- * yet, and that is a feature: the profile page says so explicitly.
+ * measures, and a local cache of the reader's position picks. Quiz, steelman,
+ * and perception data stay browser-only. In signed-in backend mode, a position
+ * pick is also stored as a private actor-bound ballot; this local object itself
+ * is not an account profile and is not synchronized wholesale.
  */
 
 const KEY = "parallax.profile.v1";
@@ -26,8 +28,8 @@ export interface ProfileState {
   steelman: Record<string, Record<string, SteelmanResult>>;
   perception: Record<string, { before?: number; after?: number }>;
   // The reader's OWN position pick per phase (fixture-style id, null = undecided).
-  // Stays in THIS browser, exactly like perception; only an anonymous increment
-  // ever reaches the server (see lib/backend castPositionSignal).
+  // Cached in THIS browser. Signed-in backend mode also stores the ballot
+  // privately against the actor so it can be revised (see castPositionSignal).
   signal: Record<string, { before?: string | null; after?: string | null }>;
 }
 
@@ -113,10 +115,10 @@ export function setPerception(
   });
 }
 
-/** The reader's OWN pick per phase (fixture-style id, null = undecided). Stays
- *  in THIS browser, like perception. `before` is first-write-wins (entry
- *  baseline); `after` is last-write-wins (revisable). Never sent as-is — only an
- *  anonymous increment reaches the server. */
+/** Cache the reader's own pick per phase (fixture-style id, null = undecided).
+ *  `before` is first-write-wins (entry baseline); `after` is last-write-wins.
+ *  The backend caller writes only after its private actor-bound ballot succeeds;
+ *  fixture mode calls this directly and remains browser-only. */
 export function castSignal(
   topicId: string,
   phase: "before" | "after",

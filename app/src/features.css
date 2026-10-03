@@ -1505,8 +1505,8 @@ fieldset.quiz__scale {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 8px;
   border: 1px solid var(--rule-strong);
   border-radius: 6px;
@@ -1591,6 +1591,7 @@ fieldset.quiz__scale {
 }
 
 .themechip {
+  min-height: 44px;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -2933,6 +2934,10 @@ fieldset.quiz__scale {
 }
 
 .atlas-spine__seg--contested {
+  background: var(--ev-contradicts);
+}
+
+.atlas-spine__seg--provisional {
   background: var(--ev-partial);
 }
 
@@ -3000,6 +3005,10 @@ fieldset.quiz__scale {
 }
 
 .atlas-stamp--contested {
+  color: var(--ev-contradicts);
+}
+
+.atlas-stamp--provisional {
   color: var(--ev-partial);
 }
 
@@ -3053,6 +3062,7 @@ fieldset.quiz__scale {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-faint);
+  min-height: 44px;
   padding: 8px 12px;
   transition: color 0.2s var(--ease);
 }
@@ -4081,6 +4091,7 @@ fieldset.quiz__scale {
   border: 1px solid var(--rule-strong);
   border-radius: 999px;
   background: var(--paper);
+  min-height: 44px;
   padding: 9px 15px 9px 11px;
   font-family: var(--font-ui);
   font-size: 14px;
@@ -4381,10 +4392,24 @@ fieldset.quiz__scale {
 
 .claimeval__set {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: 8px;
   margin-top: 8px;
+}
+
+.claimeval__policy {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.claimeval__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .claimeval__setlabel {
