@@ -14,9 +14,9 @@ import "./features.css";
 // surfaces in one chunk.
 const DebatesIndex = lazy(() => import("./pages/DebatesIndex"));
 const DebatePage = lazy(() => import("./pages/DebatePage"));
+const LegalPage = lazy(() => import("./pages/LegalPage"));
+const Project = lazy(() => import("./pages/Project"));
 const Method = lazy(() => import("./pages/Method"));
-const ReviewPage = lazy(() => import("./pages/ReviewPage"));
-const You = lazy(() => import("./pages/You"));
 
 function NotFound() {
   const { t } = useI18n();
@@ -92,18 +92,28 @@ class ErrorBoundary extends Component<
   }
 }
 
-/** The route table, mounted under both `/*` (EN) and `/fr/*` (FR). React Router
- *  matches these against the pathname remaining after the locale prefix is
- *  consumed, so `/fr/method` → `/method` and `useParams().slug` still resolves. */
+/** The same reading components serve FR at / and EN under /en/. */
 function AppRoutes() {
+  const { locale } = useI18n();
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/debates" element={<DebatesIndex />} />
       <Route path="/debates/:slug" element={<DebatePage />} />
       <Route path="/method" element={<Method />} />
-      <Route path="/review" element={<ReviewPage />} />
-      <Route path="/you" element={<You />} />
+      <Route
+        path={locale === "fr" ? "/projet" : "/project"}
+        element={<Project />}
+      />
+      <Route
+        path={locale === "fr" ? "/mentions-legales" : "/legal"}
+        element={<LegalPage kind="legal" />}
+      />
+      <Route
+        path={locale === "fr" ? "/confidentialite" : "/privacy"}
+        element={<LegalPage kind="privacy" />}
+      />
+      <Route path="/contact" element={<LegalPage kind="contact" />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -113,17 +123,17 @@ export default function App() {
   const { t } = useI18n();
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a className="skip-link" href="#app-content">
         {t.features.skipToContent}
       </a>
       <ScrollToTop />
       <RouteHead />
       <Masthead />
-      <div id="main" tabIndex={-1} className="app-main">
+      <div id="app-content" tabIndex={-1} className="app-main">
         <ErrorBoundary>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/fr/*" element={<AppRoutes />} />
+              <Route path="/en/*" element={<AppRoutes />} />
               <Route path="/*" element={<AppRoutes />} />
             </Routes>
           </Suspense>

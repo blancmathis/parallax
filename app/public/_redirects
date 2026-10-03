@@ -1,2 +1,5 @@
-/fr/*   /fr/index.html   200
-/*      /index.html      200
+# Known static HTML assets are served directly, with no SPA catch-all rewrite.
+# French is canonical at /; retain redirects for the former /fr routes.
+/fr / 301
+/fr/* /:splat 301
+/en /en/ 301

@@ -414,7 +414,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Source officielle de la FHWA américaine. Publiée en 2006 : elle n'est pas actuelle pour les déploiements récents."
+      "quality_notes": "Source officielle de la FHWA américaine. Publiée en 2006 : elle n'est pas actuelle pour les déploiements récents.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -424,7 +425,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Source officielle de l'opérateur. Utile pour les faits de programme et les affirmations officielles, pas pour une analyse d'impact indépendante."
+      "quality_notes": "Source officielle de l'opérateur. Utile pour les faits de programme et les affirmations officielles, pas pour une analyse d'impact indépendante.",
+      "content_hash": null
     },
     {
       "id": "s3",
@@ -434,7 +436,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Source officielle sur la conception du péage (tarifs, périodes, crédits, montée en charge jusqu'en 2031). Non neutre pour l'évaluation de la politique."
+      "quality_notes": "Source officielle sur la conception du péage (tarifs, périodes, crédits, montée en charge jusqu'en 2031). Non neutre pour l'évaluation de la politique.",
+      "content_hash": null
     },
     {
       "id": "s4",
@@ -444,17 +447,19 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Source officielle pour le montant actuel du péage londonien, ses horaires, exemptions et réductions."
+      "quality_notes": "Source officielle pour le montant actuel du péage londonien, ses horaires, exemptions et réductions.",
+      "content_hash": null
     },
     {
       "id": "s5",
       "url": "https://www.itskrs.its.dot.gov/2007-b00333",
-      "title": "London Congestion Charging Evaluation Summary",
+      "title": "Congestion pricing in London decreases inner city traffic by about 20 percent and generates more than £97 million each year for transit improvements.",
       "publisher": "U.S. DOT ITS Knowledge Resources",
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Résume les rapports de suivi de TfL. À étayer par les rapports originaux avant un usage en production."
+      "quality_notes": "Résumé secondaire officiel U.S. DOT ITS portant l'identifiant 2007-B00333 et s'appuyant sur les rapports de suivi de TfL. À étayer par les rapports originaux avant un usage en production.",
+      "content_hash": null
     },
     {
       "id": "s6",
@@ -464,7 +469,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Source officielle de contrôle américaine. Couvre largement la tarification routière aux États-Unis, pas seulement les péages de cordon."
+      "quality_notes": "Source officielle de contrôle américaine, rapport GAO-12-119. Couvre largement la tarification routière aux États-Unis, pas seulement les péages de cordon.",
+      "content_hash": null
     },
     {
       "id": "s7",
@@ -474,7 +480,8 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Analyse militante / de politique publique, non neutre. Utile comme source de position, pas comme autorité finale."
+      "quality_notes": "Analyse militante / de politique publique, non neutre. Utile comme source de position, pas comme autorité finale.",
+      "content_hash": null
     },
     {
       "id": "s8",
@@ -484,7 +491,50 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-06-09",
-      "quality_notes": "Note de politique d'un institut de recherche. Source centrale pour la position sur les remises et le recyclage des recettes."
+      "quality_notes": "Note de politique d'un institut de recherche. Source centrale pour la position sur les remises et le recyclage des recettes.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c1_s5",
+      "source_id": "s5",
+      "text": "During the first few months of the program, automobile traffic declined by about 20 percent in the charge zone",
+      "locator": "Results, first bullet; ITS identifier 2007-B00333",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c1_s6",
+      "source_id": "s6",
+      "text": "Evaluations of 14 congestion pricing projects in the United States have generally shown reduced congestion, although other results are mixed",
+      "locator": "GAO-12-119, p. 15 (PDF p. 18)",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s6",
+      "source_id": "s6",
+      "text": "Potential concerns include income equity (whether low-income drivers are disproportionately affected by congestion pricing) and geographic equity",
+      "locator": "GAO-12-119, Highlights, PDF p. 1",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c5_s8",
+      "source_id": "s8",
+      "text": "Road pricing can pose a substantial burden for low-income drivers, many of whom have little option to avoid travel during peak times",
+      "locator": "Policy brief, opening section",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s6",
+      "source_id": "s6",
+      "text": "Options to address equity issues include using a portion of toll revenues to finance public transit service.",
+      "locator": "GAO-12-119, Highlights, PDF p. 1",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -492,6 +542,7 @@
       "id": "ev_c1_s5",
       "claim_id": "c1",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c1_s5",
       "label": "supports_claim",
       "rationale": "Le résumé de l'évaluation londonienne rapporte une baisse initiale d'environ 20 % du trafic automobile dans la zone payante et une réduction des retards de congestion en heure de pointe.",
       "confidence": 0.8,
@@ -501,6 +552,7 @@
       "id": "ev_c1_s6",
       "claim_id": "c1",
       "source_id": "s6",
+      "source_excerpt_id": "ex_ev_c1_s6",
       "label": "partially_supports_claim",
       "rationale": "Le GAO a constaté que les projets de tarification évalués montrent généralement une réduction de la congestion, tout en signalant des résultats mixtes et une évaluation incomplète des impacts.",
       "confidence": 0.7,
@@ -546,6 +598,7 @@
       "id": "ev_c4_s6",
       "claim_id": "c4",
       "source_id": "s6",
+      "source_excerpt_id": "ex_ev_c4_s6",
       "label": "supports_claim",
       "rationale": "Le GAO identifie explicitement des préoccupations d'équité de revenu et d'équité géographique.",
       "confidence": 0.85,
@@ -564,6 +617,7 @@
       "id": "ev_c5_s8",
       "claim_id": "c5",
       "source_id": "s8",
+      "source_excerpt_id": "ex_ev_c5_s8",
       "label": "supports_claim",
       "rationale": "UC ITS indique que la tarification routière peut imposer des charges substantielles aux conducteurs à faible revenu disposant de peu d'alternatives.",
       "confidence": 0.8,
@@ -582,6 +636,7 @@
       "id": "ev_c6_s6",
       "claim_id": "c6",
       "source_id": "s6",
+      "source_excerpt_id": "ex_ev_c6_s6",
       "label": "supports_claim",
       "rationale": "Le GAO note que l'usage des recettes peut contribuer à traiter les enjeux d'équité.",
       "confidence": 0.75,
@@ -645,18 +700,18 @@
       "id": "ev_c12_s4",
       "claim_id": "c12",
       "source_id": "s4",
-      "label": "supports_claim",
-      "rationale": "TfL publie des horaires de tarification fixes, des limites de zone et des règles de pénalité, une conception opérationnelle pensée pour la prévisibilité et un contrôle simple.",
-      "confidence": 0.7,
+      "label": "does_not_support_claim",
+      "rationale": "TfL documente les horaires, limites, tarifs, exemptions et pénalités du dispositif, mais n'évalue pas le lien causal affirmé avec le respect des règles ou la réduction des litiges.",
+      "confidence": 0.9,
       "review_status": "unreviewed"
     },
     {
       "id": "ev_c12_s6",
       "claim_id": "c12",
       "source_id": "s6",
-      "label": "partially_supports_claim",
-      "rationale": "Le GAO relie le bon fonctionnement des dispositifs de tarification routière à des règles claires et bien communiquées, tout en traitant les effets sur le respect des règles comme dépendant du programme.",
-      "confidence": 0.6,
+      "label": "does_not_support_claim",
+      "rationale": "GAO-12-119 évalue la congestion, l'équité, le suivi et la performance, mais ne fournit pas le lien causal affirmé entre prévisibilité des règles, respect du public et litiges de contrôle.",
+      "confidence": 0.95,
       "review_status": "unreviewed"
     }
   ],
@@ -759,78 +814,6 @@
       "cost": "Déploiement plus lent, plus grande complexité, recettes nettes plus faibles.",
       "risk": "Trop d'exceptions peuvent compromettre la réduction de la congestion.",
       "review_status": "unreviewed"
-    }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Sujet créé à partir du dossier de départ sur le péage de congestion.",
-      "created_at": "2026-06-11T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "source_added",
-      "summary": "8 sources ajoutées : FHWA, MTA (×2), TfL, US DOT ITS, GAO, CSS NY, UC ITS.",
-      "created_at": "2026-06-11T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "retriever_v0",
-      "event_type": "source_retrieved",
-      "summary": "Les 8 sources ont été récupérées avec succès (statut : found).",
-      "created_at": "2026-06-11T09:06:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "13 affirmations atomiques (C1-C13) extraites manuellement du dossier de départ.",
-      "created_at": "2026-06-11T09:20:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "evidence_labeled",
-      "summary": "19 liens de preuve libellés (alignement affirmation-source). Tous marqués non relus.",
-      "created_at": "2026-06-11T09:40:00Z"
-    },
-    {
-      "id": "ae_06",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "position_generated",
-      "summary": "3 positions structurées avec steelmans, valeurs et compromis.",
-      "created_at": "2026-06-11T10:00:00Z"
-    },
-    {
-      "id": "ae_07",
-      "topic_id": "topic_congestion_pricing",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "Révision 1 publiée. Tâches ouvertes : ajouter une couverture de sources opposées, des preuves sur le report de trafic et les coûts de livraison, ainsi qu'une évaluation indépendante de New York.",
-      "created_at": "2026-06-11T10:15:00Z"
     }
   ]
 }

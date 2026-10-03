@@ -4,7 +4,6 @@ import type { DebateFixture } from "../types";
 import { POSITION_LETTERS, slugOf } from "../data";
 import { debateShape, type ClaimState } from "../data/state";
 import { useI18n } from "../i18n";
-import { pendingFor, useStore } from "../lib/store";
 
 const CARD_TINTS = ["card-tint-a", "card-tint-b", "card-tint-c"];
 
@@ -44,24 +43,35 @@ export function DebateCard({
   /** Landing preview opts out of the heavier ledger chrome (stamp + date). */
   compact?: boolean;
 }) {
-  const store = useStore();
   const { t, locale } = useI18n();
   const armed = useMotionArmed();
-  const pending = pendingFor(store, debate.topic.id).length;
-  const revision =
-    debate.revision.revision_number +
-    (store.revision_bumps[debate.topic.id] ?? 0);
+  const revision = debate.revision.revision_number;
+  // Show a fixture date in static HTML and the first hydration render. Relative
+  // time is a client enhancement, so an old build cannot cause a mismatch.
+  const [revised, setRevised] = useState(
+    debate.revision.published_at.slice(0, 10),
+  );
+  useEffect(() => {
+    const frame = requestAnimationFrame(() =>
+      setRevised(relativeDate(debate.revision.published_at, locale)),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [debate.revision.published_at, locale]);
 
-  const { established, contested, values, total, temperament } =
+  const { established, contested, provisional, values, total, temperament } =
     debateShape(debate);
 
-  // Dot/segment colours mirror the canonical library-of-truths mapping used by
-  // the debate-page StateStrip: established -> supports (green), contested ->
-  // partial (amber), values -> unclear (slate). A min flex-basis guarantees a
-  // 1-claim sliver stays perceivable next to a 6-claim green segment.
+  // Dot/segment colours mirror the canonical claim-state mapping used by
+  // the debate-page StateStrip: established -> green, contested -> red,
+  // provisional -> amber, values -> slate. A min flex-basis guarantees a
+  // 1-claim sliver stays perceivable next to a much larger segment.
   const segments: {
     state: ClaimState;
-    dot: "supports_claim" | "partially_supports_claim" | "unclear";
+    dot:
+      | "supports_claim"
+      | "partially_supports_claim"
+      | "contradicts_claim"
+      | "unclear";
     n: number;
     label: string;
   }[] = [
@@ -73,9 +83,15 @@ export function DebateCard({
     },
     {
       state: "contested",
-      dot: "partially_supports_claim",
+      dot: "contradicts_claim",
       n: contested,
       label: t.debateCard.shapeContested(contested),
+    },
+    {
+      state: "provisional",
+      dot: "partially_supports_claim",
+      n: provisional,
+      label: t.debateCard.shapeProvisional(provisional),
     },
     {
       state: "values",
@@ -122,18 +138,23 @@ export function DebateCard({
       {/* Proportional spine: the same instrument as the corpus masthead, at
           card scale. The bar carries its own meaning — inline counts + a
           legend below it, never a tooltip-only signal. */}
-      <div className="atlas-spine" aria-label={t.atlas.spineAria}>
+      <div className="atlas-spine">
         <div
           className={`atlas-spine__bar${armed ? " atlas-spine__bar--armed" : ""}`}
           role="img"
-          aria-label={t.atlas.spineSummary(established, contested, values)}
+          aria-label={t.atlas.spineSummary(
+            established,
+            contested,
+            provisional,
+            values,
+          )}
         >
           {present.map((s) => (
             <span
               key={s.state}
               className={`atlas-spine__seg atlas-spine__seg--${s.state}`}
               style={{ flexGrow: s.n }}
-              aria-label={s.label}
+              aria-hidden="true"
               title={s.label}
             />
           ))}
@@ -158,7 +179,6 @@ export function DebateCard({
           )}
         </span>
         <span className="dcard__go">
-          {t.common.counts.pendingPrefix(pending)}
           {t.debateCard.read}
         </span>
       </div>
@@ -166,7 +186,7 @@ export function DebateCard({
       {!compact && (
         <span className="atlas-card__revised">
           {t.atlas.revisedPrefix}{" "}
-          {relativeDate(debate.revision.published_at, locale)}
+          {revised}
           {total > 0 ? ` · ${t.atlas.claimsCounted(total)}` : ""}
         </span>
       )}

@@ -42,7 +42,7 @@ export function usePageTitle(title: string) {
 
 /** Counts from 0 to target when `start` flips true. */
 export function useCountUp(target: number, start: boolean, ms = 900): number {
-  const [value, setValue] = useState(start ? target : 0);
+  const [value, setValue] = useState(target);
   useEffect(() => {
     if (!start) return;
     // Under reduced-motion, collapse the duration so the very first animation

@@ -4,28 +4,118 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  app:
-    runs-on: ubuntu-latest
+  frontend:
+    name: Frontend quality gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: app
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: 22.23.0
           cache: npm
           cache-dependency-path: app/package-lock.json
-      - run: npm ci
-      - run: npm run check
-      - run: npm run lint
-      - run: npm run check:fixtures
-      - run: npm run build
-        env:
-          SITE_ORIGIN: https://example.com
-          VITE_SITE_ORIGIN: https://example.com
+
+      - name: Use locked npm CLI
+        run: |
+          npm install --global npm@10.9.8
+          test "$(npm --version)" = "10.9.8"
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Typecheck application and tests
+        run: npm run check
+
+      - name: Lint source, tests, and QA scripts
+        run: npm run lint
+
+      - name: Validate fixture parity
+        run: npm run check:fixtures
+
+      - name: Validate repository metadata
+        run: npm run check:metadata
+
+      - name: Run unit and runtime-contract tests with coverage
+        run: npm run test:coverage
+
+      - name: Build testable production bundle
+        run: npm run build:test
+
+      - name: Enforce bundle budgets
+        run: npm run check:bundle
+
+      - name: Audit production dependencies
+        run: npm run audit:prod
+
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
+
+      - name: Upload unit coverage
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: unit-coverage-${{ github.run_attempt }}
+          path: app/coverage
+          if-no-files-found: ignore
+          retention-days: 7
+
+  browser:
+    name: Browser reading journeys
+    needs: frontend
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.23.0
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Use locked npm CLI
+        run: |
+          npm install --global npm@10.9.8
+          test "$(npm --version)" = "10.9.8"
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Chromium runtime
+        run: npx playwright install --with-deps chromium
+
+      - name: Run EN/FR desktop and mobile journeys
+        run: npm run test:e2e
+
+      - name: Upload Playwright diagnostics
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: playwright-diagnostics-${{ github.run_attempt }}
+          path: |
+            app/playwright-report
+            app/test-results
+          if-no-files-found: ignore
+          retention-days: 7

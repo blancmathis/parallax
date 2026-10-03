@@ -1,106 +1,91 @@
 # Roadmap
 
-Build principle: the smallest thing that proves the debate-structure loop —
+This document owns implementation status, the sequenced plan, and the gates
+that move work forward. Product decisions live in
+[02-product.md](02-product.md) (D16–D25 set the 2026-10-03 direction);
+publication and the launch gate live in
+[deployment/publishing.md](deployment/publishing.md).
 
-> seed packet → AI structure → debate page → contribution → review → revised
-> debate page.
+## Current status (2026-10-03)
 
-## Milestone 0 — Project Setup ✅
+**Current:** a read-only static site. French at `/`, English under `/en/`.
+Every route is prerendered with its text in the HTML. Three debates
+(congestion pricing, smartphones in schools, nuclear power) are **unreviewed
+drafts**, prepared with AI tools, and say so at the top of the page with a
+coverage line computed from the files. The content lives in
+[`app/src/data`](../app/src/data); its Git history is the public record.
 
-- [x] Git repository.
-- [x] README explaining the docs and how to run the app.
-- [x] Minimal web app starts locally (`app/`, Vite + React + TypeScript).
-- [x] Type checks run with one command (`npm run check`).
-- [x] No product features beyond what Milestone 1 requires.
+**Archived (tag `archive/workspace-20260913`):** the Supabase backend
+(39 tables), accounts, contribution and review flows, the position signal,
+the values quiz, the steelman test and badges, the verification-engine
+research, and the team operations runbooks. Nothing was deleted; the tag
+keeps it all. The `supabase/` directory on `main` is frozen and unused by the
+site.
 
-## Milestone 1 — Static Seeded Debate Page ✅
+**North star:** readers misjudge the other side less after reading. Measured
+only through the [pre-registered protocol](protocol/2026-10-03-measurement-preregistration.md).
 
-Prove the information architecture before any AI automation.
+## Phase 1 — two weeks: online and honest
 
-- [x] Three seeded debates stored as JSON fixtures (`app/src/data/*.json`):
-      congestion pricing, smartphones in schools, nuclear power.
-- [x] The app renders: topic, positions, arguments, claims, evidence labels,
-      sources, values, trade-offs, audit events.
-- [x] Users can switch between positions.
-- [x] Every claim visibly links to at least one evidence label.
-- [x] Usable without auth, AI keys, or database setup.
+| Step | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 1. Triage the branch | `main` holds the UI, its tests, front CI and state docs; archive tag on `de6c866` | front CI green on `main` | triage over 3 days: restart from `main`, copy only `app/src` and its tests |
+| 2. Remove what misleads | no demo aggregate, scripted audit log, badge, values quiz, or dead link | a test fails when a displayed number has no source | none: not negotiable |
+| 3. Prerender the body | every debate readable without JavaScript, French by default | debate text present in the raw HTML | hydration blocked over 3 days: plain static rendering |
+| 4. Go online, read-only | domain, 3 debates marked "Brouillon non relu", legal notice, privacy, contact | public address; HTTP check green | — |
+| 5. Pre-register the measure | [one-page protocol](protocol/2026-10-03-measurement-preregistration.md), dated | hypothesis, primary measure, sample size and stop rule written before any data | — |
+| 6. Recruit reviewers | 6 reviewers, 2 per position, for the pilot debate ([kit](relecture/README.md)) | 6 written agreements | under 3 agreements in 3 weeks: change the pilot topic |
 
-Spike questions this milestone answers:
+**Gate 1:** the five controls of the [launch gate](deployment/publishing.md#launch-gate).
 
-- Does the data model render cleanly?
-- Are positions, claims, evidence, values, and trade-offs understandable on
-  one screen?
-- Is the audit log visible without overwhelming the reader?
-- What is the main navigation unit? → **the position**.
+## Phase 2 — ninety days: prove or refute the loop
 
-Stop rule: if the static page feels confusing, fix the model and UI before
-adding AI.
+| Month | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 1. One exemplary debate | the pilot on the new template: prediction, real voices, signed steelmen, cruxes with excerpts | 100% of factual claims with a verified excerpt; 3 of 3 steelmen signed "faithful"; 8 of 10 testers find the crux | no supporter signs after two revisions: rework the steelman template |
+| 2. Pipeline and challenges | offline AI pipeline; 4 debates; "Contester" button; public register; newsletter | 12 hours of work per debate, measured; model–human agreement measured on the gold set | over 25 hours for the fourth debate: shrink the template |
+| 3. The measure | 8 debates; randomized trial; 2 pilot classes | effect ≥ 0.3 point on 7, or prediction error −20%; 30 challenges received, 10 accepted | CI excludes +0.2 point: redo the loop before a ninth debate |
 
-## Milestone 2 — Contribution Draft Flow ✅ *(prototype)*
+**Gate 2** is the only one that can reverse the plan: without a measured
+effect at day 90, the loop is redesigned before more debates are written.
 
-- [x] A user can submit a draft contribution (new claim, new source,
-      challenge to an evidence label, challenge to a steelman, proposed new
-      position) from any debate page.
-- [x] Drafts appear as pending and never mutate the published debate.
+## Phase 3 — twelve months: useful to others
 
-*Prototype note:* drafts persist in `localStorage` (`app/src/lib/store.ts`).
-Server-side persistence arrives with Milestone 4+.
+| Months | Deliverable | Success | Stop |
+| --- | --- | --- | --- |
+| 4–6 | 15 debates; association created; 2 funding applications filed; teacher kit tested in 5 classes | 5 teachers reuse it without a reminder; measure replicated at two weeks | no teacher reuses it: the school channel is wrong, switch to the press |
+| 7–9 | 25 debates; reviewer accounts; grounded AI dialogue experiment; one media partner | 30 active reviewers, present in every camp; 30% of accepted corrections from non-invited people | under 300 complete readings a month despite 20 debates: become a tool for classes or newsrooms |
+| 10–12 | 30 debates; corpus exported under an open licence; first "steelman fidelity" evaluation set; decision on open contributions | funding secured; 1,000 complete readings a month | neither funding nor use: maintenance mode, or hand the corpus over |
 
-## Milestone 3 — Review and Revision Flow ✅ *(prototype)*
+## Cut on 2026-10-03
 
-- [x] A reviewer can approve or reject a pending contribution (`/review`).
-- [x] Approved contributions merge into the live debate view and bump a
-      local revision number.
-- [x] Rejected contributions keep a visible review rationale.
-- [x] The audit log records every submission, decision, and publication.
-- [ ] Users can inspect at least the current and previous revision
-      *(deferred: needs real versioned storage, not a client-side overlay)*.
+The values quiz and personal reweighting; the position signal and per-account
+ballots; steelman badges and the guardian role earned by a test; demo
+aggregates, the fixture audit log and composite voices; user-triggered
+analysis (`analyze-seed`) and "propose a topic"; the eight-attribute integrity
+floor; the two parallel contribution systems and the role separation between
+accounts; the ten-row readiness gate; twelve of the sixteen landing blocks and
+the funder pitch (moved to the Project page); the words "library of truths"
+and "clear answers".
 
-## Milestone 4 — AI Analysis for One Seed Packet
+## Deferred, with the trigger that reopens each item
 
-- [ ] A seed packet can be submitted.
-- [ ] A server-side pipeline runs the six AI stages
-      ([02-product.md](02-product.md#ai-pipeline-contract)).
-- [ ] AI output is validated against [03-data-model.md](03-data-model.md);
-      invalid output fails safely and surfaces as a review problem.
-- [ ] All generated objects are marked AI-generated and unreviewed.
+| Work | Reopen when |
+| --- | --- |
+| Algorithmic bridging | 300 active reviewers spread across the camps |
+| Public accounts and uninvited contributions | 30% of accepted corrections come from non-invited people, and answers stay under 14 days |
+| Global graph, fractal sub-debates, semantic dedup | 50 debates and ten claims really shared between debates |
+| Guardians, random juries, appeals | 100 reviewers and a first conflict the editor cannot settle alone |
+| Verification engine, certificates | a third party commits in writing to a pilot |
+| Paid feeds, commercial evaluation sets, subsidiary | 50 reviewed debates and a written request from a lab |
+| Dialogue with an AI | months 7–9, as an experiment under a randomized trial |
+| Student accounts, GAR connection | ten schools using it regularly |
+| AI agent consensus (D10) | a written and reviewed threat model; not before |
 
-## Milestone 5 — Source Retrieval and Evidence Excerpts
+## Validation surface
 
-- [ ] Source URLs are fetched or marked unavailable.
-- [ ] Extracted source text is stored as excerpts; evidence labels point to
-      exact excerpts.
-- [ ] The UI distinguishes: source not found / found but irrelevant / supports
-      the claim / contradicts the claim.
-
-This is where "verified" becomes concrete instead of rhetorical.
-
-## Milestone 6 — General Topic Creation
-
-- [ ] A user can create a new topic from a seed packet.
-- [ ] The system creates a draft debate structure; a reviewer publishes the
-      first revision.
-- [ ] The app lists available topics.
-- [ ] Topic creation checks for an existing debate (anchor-claim dedup +
-      question similarity + scope comparison) before creating, and offers the
-      existing debate / a sub-debate / a parent node instead of a duplicate
-      ([07-engine.md](07-engine.md)).
-
-## Milestone 7 — Global Claim Graph & Source Engine
-
-Post-core-loop. The backend the engine ([07-engine.md](07-engine.md)) and
-source layer ([08-sources.md](08-sources.md)) imply, once the debate-structure
-loop holds.
-
-- [ ] Claim-graph store with lifecycle (proposed → live → merged/retired).
-- [ ] Embedding dedup service for claims **and** debates.
-- [ ] Bridging-consensus scorer plus its guardrails.
-- [ ] Coverage ledger.
-- [ ] Governance engine: rules-floor, four statuses, rotating juries, appeals.
-- [ ] Sourcing-claim pipeline.
-
-## Explicitly Later
-
-Do not start before the core loop works: public profiles, reputation, agent
-consensus verification, forkable debates, search and discovery, governance
-tooling, mobile app, real-time debate rooms, large-scale moderation queues.
+The frontend commands in [README.md](../README.md#run-the-app), defined by
+[`app/package.json`](../app/package.json), cover types, lint, fixture
+structure, unit and contract tests (including the copy-truth and
+displayed-numbers contracts), the prerendered build, bundle budgets, the
+dependency audit, the launch check, and browser journeys in both languages.

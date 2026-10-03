@@ -11,10 +11,11 @@ import {
   type To,
 } from "react-router-dom";
 import { useI18n } from "./index";
+import { localizedPath } from "./paths";
 
 /**
- * Locale-aware routing. Locale is URL-derived (EN at `/`, FR under `/fr`), so
- * every internal link must carry the prefix in FR. Rather than wrap ~30 call
+ * Locale-aware routing. Locale is URL-derived (FR at `/`, EN under `/en/`), so
+ * every internal link must carry the prefix in EN. Rather than wrap ~30 call
  * sites by hand, components import `LocaleLink as Link` / `LocaleNavLink as
  * NavLink` and the prefix is applied here. Non-internal targets (mailto:, http,
  * #hash, already-localized) pass through untouched.
@@ -22,10 +23,9 @@ import { useI18n } from "./index";
 export function useLocalePath() {
   const { locale } = useI18n();
   return (to: To): To => {
-    if (locale !== "fr" || typeof to !== "string") return to;
-    if (!to.startsWith("/")) return to; // mailto:, http(s):, #hash, relative
-    if (to === "/fr" || to.startsWith("/fr/")) return to; // already localized
-    return to === "/" ? "/fr" : `/fr${to}`;
+    if (typeof to !== "string" || !to.startsWith("/")) return to;
+    if (to === "/en" || to.startsWith("/en/")) return to;
+    return localizedPath(to, locale);
   };
 }
 

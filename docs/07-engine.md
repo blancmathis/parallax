@@ -1,13 +1,32 @@
 # The Objectivity Engine
 
-How a topic advances. This is the product mechanism Parallax is implementing:
-maximum objectivity, spam-resistance, completeness, and navigability — on
-topics that can be huge, emotional, and adversarial. The claim lifecycle it
-feeds is defined in [06-vision.md](06-vision.md#the-library-of-truths).
+This document owns the **target** mechanism for advancing a topic while keeping
+the dossier inspectable, spam-resistant, complete enough to be useful, and
+navigable. It does not describe the current runtime unless a paragraph is
+explicitly labelled Current, Mock, or Experimental. The target claim lifecycle
+is defined in [06-vision.md](06-vision.md#the-library-of-truths).
+
+## Current implementation boundary
+
+| Layer | Status |
+| --- | --- |
+| Fixture-backed debate pages, local contribution/review overlay, local steelman exercises and badges | **Current / Mock** |
+| Lexical claim suggestions while contributing and the browser-derived state summary, including a provisional state | **Current heuristics** — neither is semantic deduplication or adversarial establishment |
+| Supabase revisions, contribution merge, claim evaluations, and a simple two-camp count gate | **Experimental** |
+| Semantic claim/debate deduplication, stewards, graph fractalization, scoped propagation, robust cross-group consensus, and the full AI membrane | **Target** |
+
+The engine's target output is an exact, structured, source-grounded provisional
+dossier, not an oracle of truth. `established` is a scoped, dated, revisable
+procedural status that requires review evidence; human agreement cannot make a
+false claim true.
+
+External mechanisms are design references, not copied specifications. Before
+implementing a formula, threshold, or policy, record the authoritative URL,
+retrieval date, applicable version or commit, and local decision rationale.
 
 ## 1. A contribution is a diff, not a post
 
-The atomic unit is the **claim**. Every incoming contribution is first
+In the target engine, the atomic unit is the **claim**. Every incoming contribution is first
 matched against the existing map (semantic deduplication: AI proposes,
 humans confirm — the `normalized_key` and `DUPLICATES` relation in
 [03-data-model.md](03-data-model.md)):
@@ -22,9 +41,9 @@ A topic with 10,000 comments collapses into ~80 claims, ~12 arguments,
 ~5 positions. The ~5 is illustrative, not a cap: there is **no fixed limit**
 on the number of positions — it is emergent, kept readable by dedup,
 fractalization, and UI folding (see [02-product.md](02-product.md) D13).
-**UI status: implemented** — the contribution form runs a
-similarity check against existing claims as you type and offers the
-existing claim instead.
+**Current heuristic:** the contribution form can suggest existing claims using
+lexical overlap while the user types. It is useful duplicate-warning UI, not
+the embedding-based semantic identity or human-confirmed merge described above.
 
 **The same gate applies at the debate altitude.** A debate is a diff, not a
 post: creating a topic first resolves its **anchor claim** through the
@@ -47,49 +66,56 @@ creation in [04-roadmap.md](04-roadmap.md) Milestone 6.
 
 ## 2. Bridging consensus, not majority
 
-Sensitive judgments (evidence labels, steelman fairness, dedup merges) are
-validated by **agreement across camps**, not by majority — the mechanism
-proven by X/Twitter's Community Notes: a judgment ships only when raters
-who usually disagree both endorse it.
+The target validates sensitive judgments (evidence labels, steelman fairness,
+dedup merges) by **agreement across groups that usually disagree**, not by a
+simple majority. X's Community Notes is a changing design reference, not proof
+that the Parallax mechanism is correct or complete; the current official
+[ranking guide](https://communitynotes.x.com/guide/en/under-the-hood/ranking-notes)
+was consulted on 2026-08-30 and must be version-pinned before implementation.
 
 - An evidence label is confirmed when reviewers from opposing positions
   converge on it.
 - A steelman is "fair" when supporters of that position recognize
   themselves in it.
-- Majorities can brigade; bridges cannot.
+- A cross-group requirement can reduce simple majority capture, but it can
+  still be coordinated, strategically blocked, or biased by the sampled raters.
 
-**UI status: shown** — the review queue explains the bridge requirement;
-the single-reviewer mode of the prototype is explicitly labeled as such.
+**Current / Experimental boundary:** the review UI explains the target bridge
+requirement. The database has a simple two-camp count gate, but no production
+thresholds, representative sampling, matrix-factorization model, or demonstrated
+anti-coordination defense.
 
 ## 3. Moderation rights are earned by understanding
 
 To become a **steward** of a debate you must pass the steelman test on
 *every* position of that debate — the Ideological Turing Test as a
-moderation gate. You may only moderate what you have proven you can state
+moderation gate. You may only moderate what you have demonstrated you can state
 fairly.
 
 - Steward eligibility is per-debate, revocable, and public.
 - Stewards handle merges, contested labels, and structure changes
   (new/merged positions) through a public RFC window.
 
-**UI status: implemented** — steward progress (badges per position) is
-tracked on the profile page and surfaced on each debate.
+**Current / Target boundary:** the local profile tracks steelman exercise
+badges. A badge is not a moderation credential; steward eligibility, RFCs,
+revocation, and public moderation rights remain target behavior.
 
 ## 4. Big topics fractalize
 
-"Immigration" is not a page — it is an atlas of sub-questions, each its own
-debate page, sharing one **global claim library**: a claim is verified once
-and cited everywhere. Each page opens with the **state of the debate**:
+In the target engine, "Immigration" is not one page but an atlas of
+sub-questions sharing one **global claim library**: a scoped claim can be
+evaluated once under recorded evidence and reused without losing scope. Each
+page opens with the **state of the debate**:
 
 - what is *established* (survived adversarial review),
 - what is *contested* (and exactly where it blocks),
 - what is *values-dependent* (legitimate plurality).
 
-**UI status: implemented** — every debate page derives and displays its
-three-bucket state; the atlas hierarchy arrives with general topic
-creation (Milestone 6). Sub-debates are promoted as `DebateView` nodes in
-the graph ([03-data-model.md](03-data-model.md)); each shares the global
-claim library and its sources ([08-sources.md](08-sources.md)).
+**Current heuristic / Target boundary:** every debate page derives and displays
+a summary from review state, accessible evidence, and optional evaluations. The
+fixture fallback is presentation scaffolding, not evidence that a claim
+survived adversarial review. Atlas hierarchy, `DebateView` graph nodes, and the
+shared global claim/source library remain target behavior.
 
 ### Staying navigable when a topic explodes
 
@@ -112,8 +138,9 @@ a time, and chooses to descend.**
   ([03-data-model.md](03-data-model.md)) and foreground the few load-bearing
   contested ones that would actually change a position; fold the minor tail. A
   crux shared by two positions is shown as the real fault line.
-- **Shared nodes, no duplication** — a recurring sub-debate is one node cited in
-  many places (verify once, cite everywhere), which contains the explosion.
+- **Shared nodes, no duplication** — a recurring sub-debate is one scoped node
+  cited in many places (evaluate one version, reuse with scope), which contains
+  the explosion.
 - **AI compresses each subtree** into a reviewed state summary, so a 60-claim
   branch is graspable in a paragraph without descending.
 - **Three zooms of one graph:** atlas (zoom out — the topic tree, colored by
@@ -153,6 +180,10 @@ composes with recursion and scope; the data model is in
 
 ## 5. AI does the mass work, humans do the judgment
 
+**Status: Target.** The current analysis function produces deterministic mock
+artifacts and rejects the unavailable live-provider path. The table below
+defines responsibilities for a future reviewable pipeline.
+
 | AI (auditable, challengeable) | Humans (bridging) |
 | --- | --- |
 | semantic dedup matching | confirm/deny merges |
@@ -162,8 +193,8 @@ composes with recursion and scope; the data model is in
 | state-of-debate summaries | steelman fairness |
 | translation FR/EN | values/trade-off curation |
 
-Every AI action lands in the audit trail and can be challenged like any
-other contribution (Decision 6, [02-product.md](02-product.md)). Agent
+Every target AI action must land in the audit trail and remain challengeable
+like any other contribution (Decision 6, [02-product.md](02-product.md)). Agent
 guardrails for sourcing work are specified in [08-sources.md](08-sources.md)
 (section 12).
 
@@ -181,14 +212,17 @@ human-anchored trusted layer, plus three anchors:
 - **Proposals are provisional.** AI contributions enter as visible candidates
   ("AI-proposed, unverified") and never silently join the established corpus
   (the `auto-extracted` curation state, [08-sources.md](08-sources.md) §11).
-- **Anchor 1 — graduation needs real cross-camp humans.** Reaching `established`
-  requires bridging among people who usually disagree (§2). AI may propose
-  infinitely; only human cross-camp agreement makes a thing true.
-- **Anchor 2 — every claim traces to a NON-AI primary.** An AI claim must be
-  backed by a human-world primary source, verified for citation fidelity; AI
-  output is never itself a primary. This breaks the AI-citing-AI loop and keeps
-  the corpus tethered to reality. **No argument — human or AI — enters without a
-  source.**
+- **Anchor 1 — graduation needs real cross-group humans.** Reaching
+  `established` requires review among people who usually disagree (§2). AI may
+  propose at scale; human review can approve the procedural status, never make
+  the underlying claim true.
+- **Anchor 2 — every truth-apt claim traces to a NON-AI artifact.** An AI claim
+  must point to a versioned human-world artifact, exact excerpt and locator,
+  retrieval evidence, and content identity; AI output is never itself a
+  primary source. This breaks the AI-citing-AI loop and keeps the corpus
+  tethered to inspectable evidence. Normative contributions may be unsourced,
+  but must be classified as normative and must not receive factual support
+  labels.
 - **Anchor 3 — plurality is validated by actual supporters.** An AI-drafted
   steelman is "fair" only when real supporters of that position recognize
   themselves in it, so AI cannot flatten genuine positions into a centre.
@@ -200,14 +234,14 @@ adversarial models** (one proposes, another refutes) to avoid a single model's
 monoculture; AI **flags, never sets state** ([03-data-model.md](03-data-model.md)),
 so an AI error's blast radius is contained.
 
-The line to hold as models improve: AI scales *proposing* and *first-pass
-triage* without limit; the cross-camp human anchor on *established* truth is
-permanent — that anchor is what distinguishes Parallax from simply asking an
-LLM. AI is the tireless librarian; humans across camps are the jury.
+The line to hold as models improve: AI may scale *proposing* and *first-pass
+triage*; the cross-group human anchor on an `established` procedural status is
+permanent. AI is the tireless librarian; humans remain accountable for review.
 
 ## 6. Reputation rewards understanding, not winning
 
-- **Steelman badges** — pass the test per position (implemented).
+- **Steelman exercise badges** — tracked locally per position (**Current**);
+  they do not grant moderation rights.
 - **Bridge score** — are your formulations endorsed by the *other* camp?
 - **Acceptance rate** — contributions that survive review.
 - No karma for volume, dunks, or pile-ons. Anti-brigading: rate limits,
@@ -255,6 +289,9 @@ improve future matching. Nothing is deleted.
 | AI flooding | AI contributions enter the same dedup + review pipeline |
 
 ## Backend milestones this implies
+
+**Status: Target**, except for the limited experimental contracts identified in
+[04-roadmap.md](04-roadmap.md).
 
 1. Claim store with lifecycle states + global claim library.
 2. Embedding-based dedup service (AI propose, human confirm).

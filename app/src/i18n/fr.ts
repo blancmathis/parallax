@@ -6,56 +6,28 @@ export const fr = {
     nav: {
       debates: "Débats",
       method: "Méthode",
-      review: "File de revue",
-      readDebate: "Lire un débat",
-      you: "Vous",
     },
     actions: {
       allDebates: "Tous les débats",
-      browseDebates: "Parcourir les débats",
-      read: "Lire",
-      close: "Fermer",
-      approve: "Approuver",
-      reject: "Rejeter",
-      resetDemo: "Réinitialiser les données de démo (efface contributions, revues et événements d'audit locaux)",
     },
     counts: {
-      claims: (n: number) => `${n} affirmation${n > 1 ? "s" : ""}`,
-      sources: (n: number) => `${n} source${n > 1 ? "s" : ""}`,
-      publicSources: (n: number) => `${n} source${n > 1 ? "s" : ""} publique${n > 1 ? "s" : ""}`,
-      evidenceLinks: (n: number) => `${n} lien${n > 1 ? "s" : ""} de preuve`,
-      draftContributions: (n: number) =>
-        `${n} contribution${n > 1 ? "s" : ""} en attente de revue — ouvrir la file ->`,
       seriousAnswers: (n: number) => `${n} réponse${n > 1 ? "s" : ""} sérieuse${n > 1 ? "s" : ""}.`,
       previewStats: (claims: number, sources: number, links: number) =>
         `${claims} affirmations · ${sources} sources publiques · ${links} liens de preuve.`,
       cardStats: (claims: number, sources: number, links: number) =>
         `${claims} affirmations · ${sources} sources · ${links} liens de preuve`,
-      pendingPrefix: (n: number) => (n > 0 ? `${n} en attente · ` : ""),
       sourceCount: (n: number) => `${n} source${n > 1 ? "s" : ""}`,
     },
     labels: {
       revision: "Révision",
       revisionShort: "rév.",
       publicPolicy: "Politique publique",
-      step: "Étape",
       confidence: "confiance",
       retrieved: "récupérée le",
-      utc: "UTC",
-      community: "Communauté",
-      submitted: "Soumis",
-      pending: "En attente",
-      decided: "Traitées",
-      reviewer: "Relecteur",
-      on: "sur",
-      proposedLabel: "libellé proposé",
       evidence: "Preuve",
-      source: "source",
       noSourceYet: "aucune source pour l'instant",
       unreviewedStamp: "Non relu",
-      openSource: "Open source",
-      nonProfit: "Sans but lucratif",
-      auditable: "Auditable",
+      nonProfit: "Projet d'intérêt public",
     },
     claimTypes: {
       factual: "factuelle",
@@ -87,19 +59,6 @@ export const fr = {
       contested: "contesté",
       rejected: "rejeté",
     },
-    contributionStatusLabels: {
-      submitted: "soumis",
-      accepted: "accepté",
-      rejected: "rejeté",
-    },
-    contributionLabels: {
-      new_claim: "nouvelle affirmation",
-      new_source: "nouvelle source",
-      new_position: "nouvelle position",
-      challenge_evidence_label: "contestation de libellé de preuve",
-      challenge_steelman: "contestation du steelman",
-      value_tradeoff_correction: "correction de valeur/arbitrage",
-    },
     sourceTypes: {
       article: "article",
       paper: "article scientifique",
@@ -113,37 +72,19 @@ export const fr = {
       found: "trouvée",
       missing: "manquante",
       blocked: "bloquée",
+      failed: "échec de récupération",
       partial: "partielle",
-    },
-    actorTypes: {
-      user: "utilisateur",
-      admin: "admin",
-      ai: "IA",
-      system: "système",
-    },
-    auditEventTypes: {
-      topic_created: "sujet créé",
-      source_added: "source ajoutée",
-      source_retrieved: "source récupérée",
-      claim_extracted: "affirmation extraite",
-      evidence_labeled: "preuves libellées",
-      position_generated: "position générée",
-      revision_published: "révision publiée",
-      contribution_submitted: "contribution soumise",
-      review_completed: "revue terminée",
     },
   },
   meta: {
     titleHome: "Parallax — L'atlas du désaccord",
     titleDebates: "Débats — Parallax",
     titleMethod: "Méthode — Parallax",
-    titleReview: "File de revue — Parallax",
-    titleYou: "Votre carte — Parallax",
     description:
       "Parallax cartographie les désaccords sérieux : chaque point de vue dans sa version la plus forte, chaque affirmation reliée à ses sources, chaque valeur nommée. De quoi vous faire un avis fondé — et comprendre pourquoi des gens raisonnables divergent : parfois les mêmes valeurs pesées autrement, parfois des valeurs différentes. Aucun vainqueur désigné.",
     ogTitle: "Parallax — Comprendre chaque point de vue. Y compris le vôtre.",
     ogDescription:
-      "Un atlas du désaccord, sans but lucratif et open source. Les faits, puis le cas le plus solide, puis les valeurs en dessous. Aucun vainqueur déclaré. Jamais.",
+      "Un atlas open source du désaccord, conçu avec une vocation d'intérêt public. Les faits, puis le cas le plus solide, puis les valeurs en dessous. Aucun vainqueur déclaré.",
     descriptionDebates:
       "Parcourez tous les débats sur Parallax — chacun posé à plat : les positions dans leur version la plus forte, les preuves, et les valeurs en dessous.",
     descriptionMethod:
@@ -156,44 +97,109 @@ export const fr = {
   },
   chrome: {
     footerMotto:
-      "La plupart des désaccords portent sur des valeurs, pas sur des faits. Quand les valeurs de chacun deviennent lisibles, l'adversaire cesse d'être un ennemi.",
+      "Une fois les faits posés, il reste des valeurs, des paris sur l'avenir et de la confiance. Vu clairement, l'adversaire cesse d'être un ennemi.",
     explore: "Explorer",
     principles: "Principes",
     project: "Projet",
     allDebates: "Tous les débats",
     howItWorks: "Fonctionnement",
-    reviewQueue: "File de revue",
     principleItems: [
       "Aucun gagnant déclaré",
       "Chaque camp steelmanné",
       "Chaque libellé auditable",
     ],
-    projectItems: ["Open source", "Sans but lucratif", "Prototype jalons 1-3"],
+    projectItems: [
+      "Open source",
+      "Vocation d'intérêt public",
+      "Brouillons en lecture seule",
+    ],
     legal: {
       instrument: "parallax — un instrument de raisonnement public",
       seed: "débats de départ fondés sur des sources publiques · structure non relue",
     },
     languageLabel: "Langue",
-    skipToContent: "Aller au contenu",
     primaryNavLabel: "Principale",
+    ctaReadDebate: "Lire un débat",
     commandPaletteLabel: "Rechercher et accéder à une page",
-    ctaTakeQuiz: "Faire le quiz",
     menuOpen: "Ouvrir le menu",
     menuClose: "Fermer le menu",
-    pendingCount: (n: number) =>
-      `${n} contribution${n > 1 ? "s" : ""} en attente de revue`,
+  },
+  legal: {
+    legal: {
+      title: "Mentions légales",
+      lede: "Identité de l’éditeur et informations relatives à la publication de Parallax.",
+    },
+    privacy: {
+      title: "Confidentialité",
+      lede: "Vous pouvez lire les dossiers sans compte, sans cookie et sans traceur dans l’application.",
+    },
+    contact: {
+      title: "Contact",
+      lede: "Une erreur dans une affirmation, un extrait ou un libellé ? Indiquez le passage concerné pour permettre sa relecture.",
+    },
+    editorTitle: "Éditeur et publication",
+    editor: "Éditeur",
+    director: "Directeur de la publication",
+    address: "Adresse postale",
+    email: "Courriel de contact",
+    addressPending: "Adresse postale à renseigner avant publication.",
+    phone: "Téléphone",
+    phonePending: "Numéro de téléphone à renseigner avant publication.",
+    nonProfessional:
+      "Parallax est édité à titre non professionnel. Conformément à l'article 1-1, II de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, l'adresse et le téléphone de l'éditeur ne sont pas publiés : ils sont communiqués à l'hébergeur ci-dessous.",
+    emailPending: "Courriel de contact à renseigner avant publication.",
+    hostTitle: "Hébergeur",
+    hostPolicy: "Politique de confidentialité de Cloudflare",
+    sourceTitle: "À propos des dossiers",
+    sourceBody: "Les dossiers actuels ont été préparés avec des outils d’IA. Ils ne sont pas encore relus ni signés par des personnes nommées. Les sources, extraits et libellés restent ouverts à la correction.",
+    reportError: "Signaler une erreur",
+    reportBody: "Le formulaire GitHub est public : n’y publiez pas de données personnelles ou confidentielles. Identifiez l’affirmation, la source et l’extrait concerné.",
+    privateTitle: "Contact privé",
+    privateBody: "Pour une demande privée ou relative à vos données, utilisez le courriel de l’éditeur. Une vulnérabilité peut être signalée par le formulaire privé de sécurité de GitHub.",
+    securityLink: "Signaler une vulnérabilité en privé",
+    privacySections: [
+      {
+        title: "Lecture sans profil",
+        body: "L’application n’a ni compte, ni formulaire de collecte, ni profil d’opinion. Elle ne dépose aucun cookie et n’intègre aucun traceur ou outil de mesure d’audience. Les polices sont hébergées avec le site.",
+      },
+      {
+        title: "Stockage dans votre navigateur",
+        body: "localStorage contient uniquement parallax.locale, avec la valeur fr ou en : la dernière langue consultée. Cette préférence reste dans ce navigateur, sans être envoyée à une base de données. Aucun vote, quiz, profil, brouillon de contribution ou historique de lecture n’est enregistré. Vous pouvez l’effacer dans les réglages du navigateur ; la langue de lecture est déterminée par l’adresse de la page.",
+      },
+      {
+        title: "Journaux d’hébergement",
+        body: "Cloudflare peut traiter l’adresse IP et des informations techniques sur les requêtes pour acheminer les pages et assurer leur sécurité. Ces traitements et leur conservation dépendent des services d’hébergement et de leur configuration ; nous ne promettons pas une absence de journaux. Consultez la politique de Cloudflare pour ses traitements et transferts internationaux.",
+      },
+      {
+        title: "Liens externes et messages",
+        body: "Les sources et les liens GitHub vous conduisent sur des sites tiers soumis à leurs propres règles. Les signalements GitHub sont publics. Si vous contactez l’éditeur par courriel, les informations de votre message servent à traiter votre demande, sans enrichir un profil d’opinion.",
+      },
+      {
+        title: "Vos droits",
+        body: "Pour une demande d’accès, de rectification ou d’effacement relative à vos données, contactez l’éditeur. Vous pouvez aussi saisir la CNIL. N’envoyez pas de données sensibles dans une issue publique.",
+      },
+    ],
+    rightsLink: "Contacter la CNIL",
   },
   landing: {
+    draftNote: "Méthode visée : ces brouillons préparés avec des outils d’IA attendent une relecture humaine et une signature.",
+    projectMission: "Un socle de réflexion sourcée et auditable : une boussole pour les humains, un corpus pour aligner les IA.",
+    methodSummary: "Présenter chaque position dans sa version la plus forte, relier les affirmations aux extraits de leurs sources, puis nommer les valeurs et les incertitudes qui expliquent le désaccord. La relecture doit rendre chaque étape vérifiable.",
+    reviewers: {
+      eyebrow: "Appel aux relecteurs",
+      headline: "Vous défendez une position ?",
+      headlineEm: "Aidez-nous à la rendre juste.",
+      body: "Nous cherchons des partisans de chaque position et des relecteurs des sources. Les dossiers attendent encore cette relecture : découvrez le protocole et les modalités de signature.",
+      cta: "Participer à la relecture",
+    },
     hero: {
       kicker: "L'atlas du désaccord",
-      titleLine: "La bibliothèque vivante des",
-      titleEm: "grands débats.",
+      titleLine: "Le dossier de chaque grand débat,",
+      titleEm: "relu par ceux qui ne sont pas d’accord.",
       lede:
-        "On y fait avancer chaque grande question vers des réponses claires, structurées et sourcées. Tous les points de vue, à leur meilleur.",
+        "Chaque position à son meilleur, signée par ses partisans. Chaque fait relié à l'extrait exact de sa source. Ce qui reste — valeurs, paris sur l'avenir, confiance — dit sans désigner de vainqueur.",
       primaryCta: "Explorer les débats",
       secondaryCta: "Lire la méthode",
-      tertiaryCta: "Mesurer votre propre regard",
-      tertiaryCtaTime: "test d'une minute",
     },
     schematic: {
       topicLabel: "sujet",
@@ -279,38 +285,16 @@ export const fr = {
       creedSub: "Chaque point de vue reste — mais chaque affirmation doit être sourcée, et une affirmation fausse est réfutée au grand jour.",
       chip: "Trois débats de départ · structure non relue, volontairement",
     },
-    interactive: {
-      eyebrow: "Lisez, puis mettez-vous à l'épreuve",
-      titleLine: "Ne faites pas que lire —",
-      titleEm: "prouvez que vous savez défendre l'autre camp.",
-      lede:
-        "Parallax n'est pas un mur de texte à survoler. Prenez une position, puis prouvez que vous savez défendre l'autre camp — et observez votre regard sur « eux » se déplacer.",
-      quizStep: "Une minute",
-      quizTitle: "Situez-vous",
-      quizBody:
-        "Cinq compromis relient vos priorités à la position la plus proche — et aux valeurs que vous partagez avec ceux qui ne sont pas d'accord.",
-      steelStep: "Le vrai test",
-      steelTitle: "Défendez l'autre camp",
-      steelBody:
-        "Réussissez le test du steelman sur une position que vous rejetez. Formulez-la comme le ferait un soutien, et gagnez un badge qui prouve que vous l'avez comprise.",
-      deltaStep: "Mesuré sur vous, pas sur eux",
-      deltaMetric: "avant → après",
-      deltaBody:
-        "Notez l'autre camp avant de lire, puis après. L'écart est calculé sur vos propres réponses, reste dans votre navigateur, et ne nous est jamais envoyé — un miroir, pas une métrique que l'on collecte. Savoir si la lecture déplace les lecteurs en général est une étude que nous voulons mener, pas un résultat que nous revendiquons.",
-      refrain: "C'est là que l'ennemi redevient une personne.",
-      cta: "Commencer par le débat sur les smartphones",
-      profileLink: "ou voir votre profil",
-    },
     ai: {
       eyebrow: "Humains et IA",
       titleLine: "Une boussole pour les humains.",
       titleEm: "Un corpus pour les IA.",
       lede:
-        "Le même moteur sert les deux : une base vivante de réflexion vérifiée et sourcée, où humains et IA apprennent à mieux penser, ensemble.",
-      buildStep: "L'IA aide à le construire",
+        "Aujourd'hui, Parallax est une collection vivante de cartes de débats sourcées et non relues. La cible est un corpus contestable et révisable, utile aux personnes comme aux systèmes d'IA.",
+      buildStep: "Le contrat IA prévu",
       buildTitle: "L'IA propose. Les humains tranchent.",
       buildBody:
-        "L'IA peut extraire des affirmations, formuler une position à son meilleur, ou qualifier l'alignement d'une source. Mais chaque contribution de l'IA est signalée, doit porter une source, et est confirmée par un humain avant d'entrer au dossier. L'IA propose la structure ; elle ne publie jamais de verdict.",
+        "Des outils d’IA ont aidé à préparer ces dossiers. Les affirmations, steelmans et libellés d’alignement restent non relus jusqu’à une décision humaine nommée.",
       alignStep: "Elle aide à aligner l'IA",
       alignTitle: "Un corpus pour aligner les IA.",
       alignBody:
@@ -318,36 +302,9 @@ export const fr = {
     },
     preview: {
       eyebrow: "Les dossiers",
-      title: "Trois dossiers de départ, ouverts dès le premier jour.",
+      title: "Les dossiers à relire.",
       note: "Assemblés à la main depuis des sources publiques et marqués non relus jusqu'à vérification indépendante. Ce statut fait partie du produit, ce n'est pas une clause de style.",
       allDebates: "Tous les débats ->",
-    },
-    loop: {
-      eyebrow: "La boucle",
-      titleLine: "Contribution ouverte,",
-      titleEm: "encadrée par la relecture.",
-      steps: [
-        {
-          verb: "Lire",
-          text: "un débat — positions, affirmations, preuves, valeurs, compromis.",
-        },
-        {
-          verb: "Contribuer",
-          text: "un brouillon — affirmation, source, contestation ou position manquante.",
-        },
-        {
-          verb: "Relire",
-          text: "les brouillons restent en attente jusqu'à acceptation ou rejet par un relecteur, avec une justification écrite.",
-        },
-        {
-          verb: "Auditer",
-          text: "chaque transformation entre au registre. Rien ne change en silence.",
-        },
-      ],
-      noteStart: "Essayez : ouvrez un débat et cliquez sur",
-      noteButton: "Améliorer ce débat",
-      noteMiddle: "puis jouez le rôle de relecteur dans la",
-      noteLink: "file de revue",
     },
     trust: {
       titleStart: "« Si vous ne nous faites pas confiance,",
@@ -358,22 +315,22 @@ export const fr = {
           body: "Tous les prompts, algorithmes et règles de modération sont conçus pour être publics et inspectables.",
         },
         {
-          title: "Sans but lucratif",
-          body: "Conçu sans but lucratif : aucune métrique d'engagement à gonfler, aucun camp à favoriser.",
+          title: "Vocation d'intérêt public",
+          body: "Parallax est aujourd'hui un projet open source, pas une association reconnue sans but lucratif. Sa cible est une gouvernance indépendante d'intérêt public, sans incitation à gonfler l'engagement ni camp favorisé.",
         },
         {
           title: "Auditable",
-          body: "Chaque décision de relecture est au registre ; quand le pipeline IA arrivera, chaque étape IA sera journalisée de la même façon. La neutralité s'audite, elle ne se proclame pas — un auditeur externe est un livrable, pas un badge.",
+          body: "Le contenu vit dans des fichiers versionnés. Leur historique Git conserve les changements réels ; chaque brouillon indique qu’il n’a pas de relecture humaine nommée.",
         },
       ],
     },
     invite: {
       eyebrow: "Une invitation",
-      headline: "Un libellé vous semble faux ?",
-      headlineEm: "Touchez-y.",
+      headline: "Voir les sources d’une affirmation ?",
+      headlineEm: "Ouvrez-la.",
       body:
-        "Parallax n'est pas en lecture seule. Contestez un libellé, ajoutez une meilleure source, écrivez la position manquante — sans compte. Votre brouillon ne modifie jamais la page directement : il attend une relecture, avec une justification écrite, au registre.",
-      cta: "Ouvrir un débat réel →",
+        "Lisez chaque position et ouvrez une affirmation pour examiner ses sources et les extraits disponibles. Ces brouillons sont en lecture seule et n’ont pas de relecture humaine nommée.",
+      cta: "Ouvrir un débat de démonstration →",
     },
     whyNow: {
       eyebrow: "Pourquoi maintenant",
@@ -381,8 +338,8 @@ export const fr = {
       headlineEm: "enfin réalisable.",
       items: [
         {
-          title: "La méthode de validation est prouvée.",
-          body: "Des jugements confirmés seulement lorsqu'ils obtiennent l'accord entre camps — pas à la majorité — fonctionnent désormais à grande échelle. Community Notes l'a démontré.",
+          title: "L'accord inter-groupes est une référence prometteuse.",
+          body: "La relecture inter-groupes est une référence de conception. Parallax n’a pas de seuil de revue actif ; signatures, couverture et résistance à la coordination restent à valider.",
         },
         {
           title: "Le coût de construction s'est effondré.",
@@ -405,7 +362,7 @@ export const fr = {
       cards: [
         {
           title: "Mission verrouillée",
-          body: "Parallax est en cours de constitution en association loi 1901, destinée à détenir la mission, le corpus et la gouvernance, toute activité commerciale logée dans une filiale juridiquement séparée — pour que les lignes rouges ne puissent pas être bradées en silence.",
+          body: "Aucune entité juridique ni association n'existe aujourd'hui. La cible est une structure indépendante d'intérêt public qui détienne la mission, le corpus et la gouvernance, avec toute activité commerciale juridiquement séparée.",
         },
         {
           title: "Corpus ouvert",
@@ -413,7 +370,7 @@ export const fr = {
         },
         {
           title: "Pas d'économie de l'attention",
-          body: "Aucune métrique d'engagement à optimiser, aucun camp à favoriser. Les données individuelles — votre quiz, votre profil, votre déplacement de perception — ne sont jamais vendues ; aujourd'hui elles ne quittent jamais votre navigateur.",
+          body: "Le site de lecture ne comporte ni compte, ni profil d’opinion, ni bulletin. Seule la préférence de langue est enregistrée dans ce navigateur.",
         },
       ],
       fundingLine:
@@ -437,16 +394,11 @@ export const fr = {
     titleEm: "organisé.",
     lede:
       "Chaque dossier décompose une question de politique publique en positions, affirmations, preuves libellées par source, valeurs et compromis — à partir de sources publiques, ouvert aux contributions, relu avant toute intégration.",
-    next: "suivant",
-    proposeTitle: "Proposer un sujet",
-    proposeSummary:
-      "La création générale de sujets arrive au jalon 6 — après preuve de solidité de la boucle contribution-revue. Bons candidats : des questions de politique publique appuyées sur des sources inspectables publiquement.",
-    notOpen: "pas encore ouvert",
-    proposeHint: "votre idée",
-    proposeAction: "La proposer →",
     emptyTitle: "Aucun débat ne correspond à cette recherche.",
     emptyBody: "Essayez un terme plus large, ou effacez les filtres pour voir tous les dossiers.",
     emptyClear: "Effacer les filtres",
+    resultsCount: (n: number) => `${n} dossier${n > 1 ? "s" : ""} de débat trouvé${n > 1 ? "s" : ""}.`,
+    dataDemo: "Les dossiers de démonstration intégrés sont actifs ; aucune bibliothèque en direct n'est configurée.",
     noteStart: "Les dossiers de départ ont été assemblés à la main depuis des sources publiques et sont marqués",
     noteStrong: "non relus",
     noteEnd: "jusqu'à vérification indépendante. Ce statut fait partie du produit, ce n'est pas une clause de style.",
@@ -458,13 +410,20 @@ export const fr = {
       `${n} affirmation${n > 1 ? "s" : ""} qui tien${n > 1 ? "nent" : "t"}`,
     shapeContested: (n: number) =>
       `${n} affirmation${n > 1 ? "s" : ""} contestée${n > 1 ? "s" : ""}`,
+    shapeProvisional: (n: number) =>
+      `${n} affirmation${n > 1 ? "s" : ""} provisoire${n > 1 ? "s" : ""} en attente de relecture`,
     shapeValues: (n: number) =>
       `${n} affirmation${n > 1 ? "s" : ""} ramenée${n > 1 ? "s" : ""} aux valeurs`,
   },
   atlas: {
     spineAria: "Forme épistémique de ce débat",
-    spineSummary: (established: number, contested: number, values: number) =>
-      `${established} établie${established > 1 ? "s" : ""}, ${contested} contestée${contested > 1 ? "s" : ""}, ${values} ramenée${values > 1 ? "s" : ""} aux valeurs`,
+    spineSummary: (
+      established: number,
+      contested: number,
+      provisional: number,
+      values: number,
+    ) =>
+      `${established} établie${established > 1 ? "s" : ""}, ${contested} contestée${contested > 1 ? "s" : ""}, ${provisional} provisoire${provisional > 1 ? "s" : ""}, ${values} liée${values > 1 ? "s" : ""} aux valeurs`,
     revisedPrefix: "Révisé",
     claimsCounted: (n: number) =>
       `${n} affirmation${n > 1 ? "s" : ""} au registre`,
@@ -472,16 +431,19 @@ export const fr = {
     temperaments: {
       settled: "Plutôt établi",
       contested: "Contesté",
+      provisional: "À relire",
       values: "Affaire de valeurs",
-    } as Record<"settled" | "contested" | "values", string>,
+    } as Record<"settled" | "contested" | "provisional" | "values", string>,
     legend: {
       established: (n: number) => `${n} établie${n > 1 ? "s" : ""}`,
       contested: (n: number) => `${n} contestée${n > 1 ? "s" : ""}`,
+      provisional: (n: number) => `${n} provisoire${n > 1 ? "s" : ""}`,
       values: (n: number) => `${n} aux valeurs`,
     },
     views: {
       all: "Tous les dossiers",
       contested: "Les plus contestés",
+      provisional: "Les plus à relire",
       values: "Affaire de valeurs",
       recent: "Révisés récemment",
     },
@@ -494,54 +456,44 @@ export const fr = {
       links: (_n: number) => "libellés source-affirmation",
       questions: (_n: number) => "questions ouvertes",
       settledNote:
-        "« Établie » signifie appuyée sur des preuves, pas un verdict — les positions divergent encore sur ce qu'il faut FAIRE de ces faits.",
+        "Ce sont des états de relecture, pas des scores de vérité : « établie » exige une évaluation approuvée ; « provisoire » signifie que la relecture indépendante reste à faire.",
     },
+  },
+  draft: {
+    title: "Brouillon non relu",
+    provenance: "Préparé avec des outils d’IA ; aucune relecture humaine nommée à ce jour.",
+    coverage: (positions: string, excerpts: number, links: number, percent: number | null) =>
+      `Sources par position — ${positions} · liens avec un extrait exact enregistré : ${excerpts}/${links}${percent === null ? "" : ` (${percent} %)`}.`,
+    reviewers: "Relecteurs : aucun pour l’instant.",
+    excerptNote: "La présence d’un extrait ne certifie pas sa fidélité à la source : la relecture reste à faire.",
+    unverifiedExcerpt: "extrait non vérifié",
   },
   debatePage: {
     notFound: "Dossier introuvable.",
-    communityPosition: "Position de la communauté",
     sharedClaim: (positions: string) => `partagée avec ${positions}`,
     evidenceEmpty: "Aucune source n'est encore rattachée à cette affirmation.",
-    communityUnmapped: "Pas encore placée sur la matrice des valeurs.",
     legendCaption:
       "Un libellé décrit comment une source se rapporte à une affirmation — jamais si l'affirmation est « vraie ».",
     argMeta: (claims: number, contested: number, dominant: string) =>
       `${claims} affirmation${claims > 1 ? "s" : ""} · ${
         contested > 0 ? `${contested} contestée${contested > 1 ? "s" : ""} · ` : ""
       }surtout : ${dominant}`,
-    switcherPassed: "Test du steelman réussi",
-    switcherMatch: "Votre position la plus proche",
-    switcherTakeTest: "Test du steelman disponible",
-    openReviewQueue: "Ouvrir la file de revue",
     continueEyebrow: "Continuer",
     continueTitle: "Comprendre le suivant.",
-    continueDelta: (delta: number) =>
-      `Après lecture, vous avez jugé l'autre camp +${delta} plus raisonnable.`,
-    continueProfileLink: "Voir sur votre profil",
-    continueYouLink: "votre carte",
     back: "<- Tous les débats",
     heroStatus: (revision: number, sources: number) =>
       `Révision ${revision} · ${sources} sources publiques · structure pas encore relue indépendamment`,
-    improve: "Améliorer ce débat",
     step1: "Étape 1",
     chooserEm: "Choisissez une position et lisez-la dans sa version la plus solide.",
-    communityAccepted: "Communauté · accepté",
     readingBelow: "Lecture ci-dessous ↓",
     readThisView: "Lire cette vue ->",
     chooserNote: "Parallax organise le désaccord — il ne choisit jamais de gagnant.",
     positionAria: "Position",
     readingEyebrow: (letter: string) => `Position ${letter} — lire en entier`,
-    communityReadingEyebrow: "Position de la communauté — acceptée en revue",
     steelmanLabel: "Le cas le plus solide, tel qu'un soutien le formulerait",
-    contested: "contesté",
-    communityChallenge: "Contestation communautaire :",
     restsOn: "Ce sur quoi repose cette position",
     restsHint:
       "Chaque argument s'appuie sur des affirmations. Ouvrez une affirmation pour voir ses sources et leur alignement.",
-    communityAdditions: "Ajouts de la communauté",
-    communityAdditionsHint: "Acceptés en revue. Les sources attendent encore leur libellé d'alignement.",
-    communityNote:
-      "Cette position a été proposée par un visiteur et acceptée par un relecteur. Elle n'a pas encore d'arguments structurés — contestations et sources bienvenues.",
     asksAccept: "Ce que cette position demande d'accepter",
     youGain: "Vous gagnez",
     youPay: "Vous payez",
@@ -556,8 +508,9 @@ export const fr = {
     workTitle: "Montrer le travail.",
     workEm: "Chaque source, chaque changement, au registre.",
     allSources: "Toutes les sources",
-    communitySubmittedSource: "source proposée par la communauté · acceptée en revue · en attente de libellé d'alignement",
-    auditTrail: "Piste d'audit",
+    fileHistory: "Historique du fichier",
+    fileHistoryNote: "Les changements réels de ce dossier sont consignés dans Git. Les dates du contenu décrivent la version de travail, pas une relecture humaine.",
+    fileHistoryLink: "Voir les changements sur GitHub",
     howToRead: "Comment lire cette page",
     howToReadP1:
       "Chaque position est écrite comme un steelman : la version la plus solide de cette position, telle qu'un soutien réfléchi la formulerait.",
@@ -565,11 +518,9 @@ export const fr = {
     howToReadP2End:
       "Un libellé concerne une source et une affirmation. Ce n'est jamais un verdict sur le débat.",
     howToReadP3:
-      "Tout ce contenu est actuellement non relu : la structure a été assemblée à la main à partir du dossier de départ et n'a pas encore été vérifiée par des relecteurs indépendants.",
+      "Ces brouillons ont été préparés avec des outils d’IA et ne sont pas encore vérifiés par des relecteurs humains nommés. L’historique des fichiers conserve les changements réels.",
     evidenceNote:
       "Les libellés décrivent comment chaque source se rapporte à cette affirmation précise — jamais si l'affirmation est « vraie ».",
-    communityChallengeProposes: (label: string) =>
-      `Contestation communautaire — propose « ${label} »`,
     faultEyebrow: "La carte des lignes de fracture",
     faultTitle: "Là où le débat se divise vraiment.",
     faultEm: "Lire l'accord avant le conflit.",
@@ -594,73 +545,6 @@ export const fr = {
     faultEmptyContested: "Rien n'est contesté par les preuves actuellement.",
     faultEmptyValues:
       "Aucune affirmation purement liée aux valeurs n'a émergé.",
-    faultWeightLead: "Classé selon ce que vous valorisez le plus",
-    faultWeightNote:
-      "Vos priorités du quiz, mesurées face aux valeurs de chaque position. Un prisme, pas un verdict.",
-    faultWeightEmpty:
-      "Faites le quiz des valeurs pour voir quelles positions vous correspondent.",
-    faultWeightEmptyCta: "Situez-vous ↑",
-  },
-  contribute: {
-    types: [
-      {
-        id: "new_claim",
-        label: "Nouvelle affirmation",
-        hint: "Ajouter une assertion sur laquelle repose une position (avec une source si vous en avez une).",
-      },
-      {
-        id: "new_source",
-        label: "Nouvelle source",
-        hint: "Rattacher une source publique à une affirmation existante.",
-      },
-      {
-        id: "challenge_evidence_label",
-        label: "Contester un libellé",
-        hint: "Expliquer pourquoi le libellé d'alignement entre affirmation et source est faux.",
-      },
-      {
-        id: "challenge_steelman",
-        label: "Contester un steelman",
-        hint: "Un soutien de cette position ne s'y reconnaîtrait pas ? Expliquez pourquoi.",
-      },
-      {
-        id: "new_position",
-        label: "Position manquante",
-        hint: "Une réponse sérieuse à la question n'est pas encore représentée.",
-      },
-    ],
-    improve: "Améliorer ce débat",
-    title: "Rédiger une contribution",
-    submitted: "Soumis",
-    pendingTitle: "Votre brouillon attend une revue.",
-    pendingBody:
-      "Il ne modifiera pas le débat publié tant qu'un relecteur ne l'aura pas accepté — avec une justification écrite, au registre.",
-    openReview: "Ouvrir la file de revue",
-    draftAnother: "Rédiger autre chose",
-    whatAdding: "Qu'ajoutez-vous ?",
-    whichPosition: "Quelle position ?",
-    choosePosition: "Choisir une position...",
-    whichClaim: "Quelle affirmation ?",
-    chooseClaim: "Choisir une affirmation...",
-    whichEvidenceLink: "Quel lien de preuve ?",
-    chooseLink: "Choisir le lien...",
-    currently: "actuellement",
-    shouldBeLabeled: "Il devrait être libellé...",
-    positionTitle: "Titre de la position",
-    positionTitlePlaceholder: "ex. « Oui, mais seulement par référendum ville par ville »",
-    sourceUrl: "URL de la source",
-    optional: "(facultatif)",
-    textareaPlaceholder: "Écrivez-le comme un relecteur attentif voudrait le lire...",
-    submit: "Soumettre à revue",
-    hint: "Les brouillons ne modifient jamais directement le débat publié.",
-    bodyLabels: {
-      new_claim: "L'affirmation, formulée atomiquement",
-      new_source: "Que dit cette source sur l'affirmation ?",
-      challenge_evidence_label: "Pourquoi le libellé actuel est-il faux ?",
-      challenge_steelman: "Dans quoi un soutien ne se reconnaîtrait-il pas ?",
-      new_position: "La position, dans sa version la plus solide",
-      value_tradeoff_correction: "Quelle valeur ou quel arbitrage est mal formulé, et comment ?",
-    },
   },
   method: {
     labels: [
@@ -693,7 +577,7 @@ export const fr = {
     eyebrow: "La méthode",
     titleStart: "Comment lire",
     mission:
-      "La plupart des désaccords sérieux portent sur des valeurs, pas sur des faits. Quand on voit clairement les valeurs de chacun — ce que chaque camp protège, et le prix qu'il est prêt à payer — on cesse de traiter l'autre en ennemi et on le voit comme quelqu'un qui pèse le monde autrement.",
+      "Les désaccords sérieux portent rarement sur les seuls faits. Une fois les faits posés, il reste des valeurs, des paris sur l'avenir et de la confiance. Quand on voit clairement les valeurs de chacun — ce que chaque camp protège, et le prix qu'il est prêt à payer — on cesse de traiter l'autre en ennemi et on le voit comme quelqu'un qui pèse le monde autrement.",
     lede:
       "Le produit ne vous dit pas quoi penser. Il organise un débat pour vous permettre de penser clairement — et montre son travail à chaque étape.",
     filtersEyebrow: "Les trois filtres",
@@ -703,7 +587,7 @@ export const fr = {
       eyebrow: "Du début à la fin",
       title: "La vie d'un sujet.",
       intro:
-        "Une question arrive, se démonte, et ne cesse jamais d'être inspectable — la même mécanique tourne à toutes les échelles.",
+        "Voici le cycle cible : une question se décompose sans perdre ses sources, son périmètre, son état de relecture ni sa piste d'audit. Le prototype actuel n'en démontre qu'une partie.",
       steps: [
         {
           n: "1",
@@ -724,28 +608,28 @@ export const fr = {
           key: "evidence",
           title: "Les affirmations rencontrent leurs sources",
           body:
-            "Chaque position s'appuie sur des affirmations ; chaque affirmation est reliée à ses sources avec un libellé d'alignement précis. Les sources sont vérifiées — l'IA d'abord, puis les gens — et rejoignent une bibliothèque réutilisable.",
+            "Chaque position s'appuie sur des affirmations. Dans le prototype actuel, une affirmation vérifiable peut pointer vers des fiches sources libellées à la main et non relues ; la revue assistée par IA et la bibliothèque versionnée restent des cibles.",
         },
         {
           n: "4",
           key: "recurse",
           title: "Les points contestés se détachent",
           body:
-            "Une affirmation assez contestée devient sa propre question, avec son périmètre — un sous-débat — et le cycle recommence. Un gros sujet est un atlas de sous-débats, pas une page.",
+            "Dans le système cible, une affirmation suffisamment contestée pourra devenir sa propre question tout en gardant ses liens avec le débat parent. Le prototype actuel ne crée pas encore de sous-débats.",
         },
         {
           n: "5",
           key: "state",
-          title: "Tout se range en trois",
+          title: "Chaque affirmation montre son état de relecture",
           body:
-            "À chaque niveau : établi (a tenu l'épreuve), contesté (et où précisément ça bloque), ou dépendant des valeurs (un choix de priorités légitime).",
+            "« Établie » exige une évaluation approuvée ; « contestée » signale une objection relue ; « provisoire » attend encore une relecture indépendante ; « liée aux valeurs » nomme un choix légitime de priorités.",
         },
         {
           n: "6",
           key: "review",
           title: "Rien ne change en silence",
           body:
-            "Les jugements sensibles ne passent que si des relecteurs de camps opposés convergent. Chaque étape est au registre, et tout reste contestable.",
+            "La cible exige une relecture entre camps opposés pour les jugements sensibles. Les dossiers actuels sont non relus ; les changements sont consignés dans l’historique Git des fichiers.",
         },
       ],
       recursionNote:
@@ -767,24 +651,19 @@ export const fr = {
         body:
           "La plupart d'un débat difficile ne porte pas sur la validité des faits, mais sur les valeurs à prioriser : équité, efficacité, liberté, sécurité, confiance. Chaque position déclare les valeurs qu'elle privilégie et le prix qu'elle accepte : ce que vous gagnez, ce que vous payez, ce que vous risquez. C'est souvent là que vit le vrai désaccord.",
       },
-      {
-        title: "4 — Les changements passent par revue, au registre",
-        body:
-          "N'importe qui peut rédiger une contribution : nouvelle affirmation, nouvelle source, contestation d'un libellé ou d'un steelman, position manquante. Les brouillons ne touchent jamais le débat publié. Un relecteur accepte ou rejette chacun d'eux avec une justification écrite, et chaque étape — soumission, décision, publication — entre dans la piste d'audit. Rien ne change en silence.",
-      },
     ],
     noVerified:
       "Il n'y a volontairement pas de « vérifié vrai ». La vérité exige souvent une synthèse de nombreuses sources et une expertise de domaine. L'alignement affirmation-source est plus étroit — et auditable. Le libellé indique ce que la source dit de l'affirmation ; le verdict reste le vôtre.",
     sources: {
       eyebrow: "La confiance dans les sources",
-      title: "Vérifiées sans arbitre.",
+      title: "Évaluer un usage sans estampiller toute une source.",
       lede:
         "La question la plus dure d'un débat, c'est : à quelles sources se fier. Parallax n'y répond jamais à votre place en estampillant une source « fiable » — dès qu'une plateforme se fait juge, la moitié de ses lecteurs s'en va. Alors on déplace la question, et on montre notre travail.",
       points: [
         {
           title: "Faire confiance au fait, pas à la marque.",
           body:
-            "Une source n'est jamais « fiable » dans l'absolu — seulement utilisable, ou non, pour un fait précis, dans un domaine précis, sur une période précise. On remonte chaque citation à sa source primaire et on vérifie qu'elle dit vraiment ce qu'on lui fait dire.",
+            "Une source n'est jamais « fiable » dans l'absolu — seulement utilisable, ou non, pour une affirmation délimitée. La cible est de relier chaque citation à une version précise et d'en montrer la relation ; les fixtures actuelles restent partielles et non relues.",
         },
         {
           title: "Deux questions, jamais confondues.",
@@ -794,37 +673,37 @@ export const fr = {
         {
           title: "L'accord entre camps, pas la majorité.",
           body:
-            "Un jugement sur une source ne tient que si des relecteurs qui d'habitude s'opposent l'acceptent tous les deux. Une meute ne peut pas l'imposer ; un seul camp ne peut pas le bloquer — le mécanisme derrière les Community Notes de X.",
+            "La cible est une relecture par des personnes aux positions différentes. Les brouillons actuels n’ont pas de relecture humaine nommée ; aucun vivier de production ni échantillonnage n’est implémenté.",
         },
         {
           title: "Rien n'est supprimé.",
           body:
-            "Une source faible est signalée avec son défaut exact et reléguée — jamais effacée. Elle reste au registre, avec sa raison, ouverte à la contestation.",
+            "La cible garde une source contestée visible avec son défaut exact et sa justification, au lieu d'effacer le registre. Cet historique versionné complet n'est pas encore implémenté.",
         },
       ],
-      flowTitle: "Comment une source est vérifiée",
+      flowTitle: "Parcours cible de relecture d'une source",
       flow: [
         {
           step: "01",
-          title: "Une IA vérifie d'abord",
+          title: "Un assistant prépare les contrôles",
           body:
-            "Quand une source arrive, l'assistant la remonte à sa source primaire, vérifie que la citation dit vraiment ce qu'on lui attribue, et signale rétractations ou conflits d'intérêts — puis rédige une fiche neutre.",
+            "Des outils d’IA ont aidé à préparer les sources et libellés du brouillon. Leurs extraits et alignements proposés doivent être relus ; les lecteurs ne peuvent pas déclencher d’analyse.",
         },
         {
           step: "02",
-          title: "Puis les gens l'analysent",
+          title: "Les personnes prennent la décision",
           body:
-            "Des lecteurs de différents camps pèsent son intégrité et laissent des notes structurées. C'est l'accord entre camps — pas un vote à main levée — qui fait tenir un verdict.",
+            "La cible est une relecture structurée par des personnes aux positions différentes. Aucun vivier de relecteurs, échantillonnage ni seuil de couverture de production n'est encore implémenté.",
         },
         {
           step: "03",
-          title: "Et elle rejoint la bibliothèque",
+          title: "Une version relue peut rejoindre la bibliothèque",
           body:
-            "Une source vérifiée par beaucoup devient une entrée réutilisable. Les débats suivants la citent sans tout recommencer, et l'assistant peut proposer des sources déjà vérifiées pendant que vous construisez votre argument.",
+            "Après une revue suffisante et délimitée, la cible est une entrée versionnée et réutilisable dont les preuves, limites et fraîcheur restent visibles. Aucune bibliothèque de sources relues n'existe dans le prototype actuel.",
         },
       ],
       libraryLine:
-        "Vérifier une source une fois ; la réutiliser partout. Plus Parallax avance, plus ce commun de preuves vérifiées se renforce — analysé par des milliers de personnes, propriété de personne.",
+        "Relire une version de source pour un usage délimité ; la cible est de la réutiliser sans perdre son périmètre, sa fraîcheur ni ses limites. Cette bibliothèque n'est pas encore implémentée.",
       keyline:
         "On peut promettre un processus équitable — jamais une conclusion confortable. C'est vous qui accordez votre confiance ; Parallax se charge de la transparence.",
     },
@@ -846,111 +725,39 @@ export const fr = {
       "publier des changements sensibles sans revue",
     ],
     aiSourceRule:
-      "L'IA peut participer aussi — mais tout ce qu'elle ajoute est signalé « proposé par IA », vérifié avant de compter, et doit citer une source. En réalité aucun argument n'entre sans source, qu'il vienne d'une personne ou d'une machine.",
+      "Contrat cible : toute sortie IA reste signalée « proposée par IA, non relue » jusqu'à une revue humaine, avec une provenance de source pour chaque affirmation vérifiable.",
     note:
-      "Dans ce prototype, la structure de départ a été assemblée à la main ; le pipeline IA arrive au jalon 4 et sera tenu au même contrat.",
+      "Ces dossiers ont été préparés avec des outils d’IA et n’ont pas encore de relecture humaine nommée. Les lecteurs ne peuvent pas déclencher d’analyse.",
     cta: "Lire un débat avec cette grille",
   },
-  review: {
-    targetPosition: (letter: string, title: string) => `Position ${letter} — ${title}`,
-    targetClaim: (id: string, text: string) => `${id.toUpperCase()} — ${text}`,
-    targetEvidence: (publisher: string, claim: string) => `Preuve : ${publisher} sur ${claim}`,
-    eyebrow: "Mode relecteur",
-    title: "La file de revue.",
-    titleEm: "Rien ne change en silence.",
-    lede:
-      "Les contributions brouillon attendent ici. Les approuver les intègre à la vue publiée du débat et publie une nouvelle révision locale ; les rejeter les garde au registre avec votre justification. Dans ce prototype, vous êtes le relecteur — les décisions persistent dans votre navigateur.",
-    clear: "La file est vide.",
-    emptyHintStart: "Ouvrez un débat et cliquez sur",
-    emptyHintButton: "Améliorer ce débat",
-    emptyHintEnd: "pour rédiger une contribution, puis revenez ici pour la relire.",
-    rationalePlaceholder: "Justification écrite — elle entre au registre...",
-    mergeAction: "Fusionner au registre",
-    mergeHint:
-      "Clone la révision publiée, applique cette contribution, publie une nouvelle révision datée.",
-    mergeAdminOnly:
-      "Rôle admin requis pour fusionner — un relecteur accepte, un admin publie.",
-    mergeDeferred:
-      "Pas encore fusionnable automatiquement — ce type de contribution nécessite d'abord une structuration humaine.",
-    mergeDone: (slug: string) =>
-      `Fusionnée dans une nouvelle révision publiée — ouvrez /debates/${slug}.`,
-    mergeFailed: "La fusion a échoué ; le registre canonique est inchangé.",
-    mergedInto: (rev: string) => `Fusionnée au registre canonique · ${rev}.`,
-    sampleType: "nouvelle source",
-    sampleTopic: "Les écoles devraient-elles interdire les smartphones en cours ?",
-    sampleTag: "exemple",
-    sampleTarget:
-      "Affirmation : « Interdire le téléphone pendant la journée d'école améliore le bien-être des adolescents. »",
-    sampleBody:
-      "Une étude longitudinale concentre les gains de bien-être chez les gros utilisateurs — à rattacher, mais elle soutient une affirmation plus étroite que celle énoncée.",
-    sampleHint:
-      "Un exemple, pour voir à quoi ressemble la relecture. Les commandes sont inertes — rédigez une vraie contribution pour les utiliser.",
-  },
   features: {
-    voicesEyebrow: "D'où vient cette conviction",
-    voicesHint: "Les valeurs sont souvent la trace d'une histoire. Les voix d'amorçage sont des portraits composites réalistes, relus comme toute contribution.",
-    voicesSample: "voix composite · contenu d'amorçage",
     statsDebates: "débats ouverts à la lecture",
     statsClaims: "affirmations, chacune reliée à ses sources",
     statsSources: "sources publiques, étiquetées à la main",
-    statsDeltas: "Un processus, pas des verdicts.",
     classroomsEyebrow: "Pour les classes",
     classroomsTitle: "Une leçon toute prête pour apprendre à bien être en désaccord.",
-    classroomsBody: "Un débat, le quiz des valeurs, le test du steelman : une séance d'éducation civique complète où le devoir consiste à formuler loyalement le camp adverse. Les kits enseignants arrivent avec le programme pilote.",
+    classroomsBody: "Un débat, ses sources et la meilleure version de chaque position : une séance de lecture où l’exercice consiste à formuler loyalement le camp adverse. Les kits enseignants sont prévus pour un pilote.",
     classroomsCta: "En savoir plus sur le pilote",
-    proposeTitle: "Proposer un sujet",
-    proposeLede: "Les bons candidats sont des questions de politique publique dont les preuves sont publiquement vérifiables. Les brouillons restent sur votre appareil jusqu'à l'ouverture de la création de sujets (jalon 6).",
-    proposeQuestion: "La question du débat",
-    proposeQuestionPh: "Faut-il… ?",
-    proposeWhy: "Pourquoi c'est important maintenant",
-    proposeWhyPh: "Ce qui rend ce débat digne d'être cartographié…",
-    proposeSources: "Deux sources publiques pour commencer",
-    proposeEmail: "E-mail",
-    proposeEmailPh: "vous@exemple.org",
-    proposeEmailHint: "Facultatif — sert uniquement à vous prévenir quand votre sujet sera publié.",
-    proposeSubmit: "Enregistrer ma proposition",
-    proposeSavedToast: "Proposition enregistrée sur cet appareil — la création de sujets ouvre au jalon 6",
-    proposeSavedTitle: "Enregistré, sur votre appareil.",
-    proposeSavedBody: "Quand la création de sujets ouvrira, votre brouillon sera là, prêt à passer par la même chaîne de relecture que tout le reste.",
     nameOrigin: "La parallaxe, c'est ainsi que les astronomes mesurent la distance des étoiles : le même objet, visé depuis deux points de vue, révèle une vérité qu'aucun point de vue seul ne peut atteindre.",
     libraryEyebrow: "La bibliothèque",
     libraryTitle: "Ce que le débat établit,",
     libraryTitleEm: "la bibliothèque le garde.",
     libThesis: "Le désaccord n'est pas l'obstacle à la vérité — c'est ainsi qu'elle se fabrique. Une affirmation qui survit à la plus forte objection de ses adversaires vaut plus qu'une affirmation tamponnée par un vérificateur neutre.",
-    libraryLede: "Chaque affirmation est conçue pour aboutir à l'un de trois états — et les trois sont un progrès.",
+    libraryLede: "Chaque affirmation commence provisoire et vise l'un de trois résultats relus — les trois constituent un progrès.",
     libEstablished: "Établie",
     libEstablishedDesc: "L'état qu'une affirmation gagne lorsqu'elle survit à la relecture inter-camps face aux meilleures contre-preuves apportées. Datée, révisable — jamais \"définitive\". (Aujourd'hui, chaque affirmation de départ est encore non relue — c'est tout l'enjeu.)",
     libContested: "Contestée",
     libContestedDesc: "Là où les preuves s'opposent encore. La page du débat montre exactement où une affirmation bloque, et quelle preuve la débloquerait.",
     libValues: "Un choix de valeurs",
     libValuesDesc: "Faits partagés, positions comprises — ce qui reste est une différence légitime de priorités. La nommer, c'est la résolution.",
-    libProtoNote: "La relecture inter-camps, c'est ainsi que c'est conçu, et ce que nous construisons. Le prototype d'aujourd'hui tourne en mode relecteur unique — et le dit sur chaque débat.",
+    libProtoNote: "La relecture inter-camps est la méthode visée. Chaque dossier actuel est un brouillon non relu ; aucun relecteur humain nommé ne l’a encore signé.",
     stateEyebrow: "État du débat",
     stateEstablished: (n: number) => `${n} qui tiennent`,
     stateContested: (n: number) => `${n} contestée${n > 1 ? "s" : ""}`,
     stateValues: (n: number) => `${n} liée${n > 1 ? "s" : ""} aux valeurs`,
-    stateNote: "Dérivé de l'alignement affirmations-sources. La relecture inter-camps affinera ces états.",
-    dedupTitle: "Affirmations similaires déjà sur la carte",
-    dedupHint: "Parallax fusionne les doublons au lieu de les multiplier. Si votre point figure ci-dessous, ajoutez-y plutôt une source ou une distinction.",
-    dedupUseIt: "C'est mon point",
-    bridgeNote: "Règle de production : une décision n'est publiée que si des relecteurs de camps opposés convergent (consensus par pont). Ce prototype fonctionne en mode relecteur unique.",
-    stewardTitle: "Éligibilité gardien",
-    stewardHint: (done: number, total: number) => `Réussissez le test du steelman sur chaque position pour obtenir les droits de modération. ${done}/${total} obtenus.`,
-    stewardEligible: "Éligible — vous avez prouvé que vous savez formuler loyalement chaque camp.",
-    engineTitle: "Comment un sujet avance",
-    engineLede: "Le moteur derrière chaque page — conçu pour l'objectivité à grande échelle, contre le spam, et pour l'exhaustivité.",
-    engineItems: [
-      { title: "Une contribution est un diff, pas un post", body: "Chaque soumission est d'abord confrontée à la carte existante. Les doublons sont fusionnés, jamais multipliés — la répétition et le spam meurent à la porte, sans censure." },
-      { title: "Consensus par pont, pas par majorité", body: "Labels et steelmans sont validés quand des relecteurs de camps opposés convergent — le mécanisme des Community Notes. Une majorité peut brigader ; un pont, non." },
-      { title: "La modération se gagne par la compréhension", body: "Pour devenir gardien d'un débat, il faut réussir le test du steelman sur chacune de ses positions. On ne modère que ce qu'on sait formuler loyalement." },
-      { title: "Les grands sujets se fractalisent", body: "Une question immense devient un atlas de sous-questions partageant une bibliothèque d'affirmations globale — vérifiée une fois, citée partout." },
-      { title: "L'IA fait le travail de masse, les humains jugent", body: "Dédoublonnage, extraction, récupération, premiers labels : l'IA, entièrement auditée. Validation, équité, arbitrage : les humains, par pont." },
-    ],
-    searchPh: "Rechercher dans les débats…",
+    stateNote: "Dérivé du statut de relecture et d'évaluations auditables de l'affirmation. Un simple libellé source-affirmation ne suffit jamais à l'établir.",
+    searchPh: "Rechercher questions, arguments, affirmations ou sources…",
     allThemes: "Tous",
-    revHistory: "historique",
-    revSeed: "structure d'amorçage publiée depuis le dossier de recherche",
-    revLocal: "contribution communautaire intégrée (locale à ce navigateur)",
     notFoundTitle: "Cette page n'existe pas.",
     notFoundBody: "Les débats, si.",
     notFoundCta: "Parcourir les débats",
@@ -960,124 +767,13 @@ export const fr = {
     errorCta: "Recharger la page",
   },
   interactive: {
-    scale: {
-      min: "pas du tout",
-      max: "tout à fait",
-    },
-    quiz: {
-      introEyebrow: "Avant de lire",
-      introTitle: "Où vous situez-vous ?",
-      introLede:
-        "Cinq compromis, une minute. Pas de bonnes réponses — seulement vos priorités. Voyez ensuite quelle position leur correspond, et quelles valeurs vous partagez avec l'autre camp.",
-      start: "Commencer",
-      privacy: "reste dans votre navigateur",
-      sightedAt: (n: number) => `Visé à ${n} · avant lecture`,
-      baselineEyebrow: "Calibrage rapide",
-      baselineQuestion:
-        "Les personnes en désaccord avec vous sur ce sujet — à quel point sont-elles raisonnables ?",
-      back: "← Retour",
-      resultEyebrow: "Vos valeurs, cartographiées",
-      matchLead: "Votre position la plus proche",
-      readFirst: "La lire d'abord",
-      bridgesLead: "Et voici ce qui compte vraiment :",
-      bridge: (value: string, letter: string) =>
-        `Vous partagez « ${value.toLowerCase()} » avec les personnes qui répondent ${letter}.`,
-      lensNote:
-        "Les valeurs sont une grille de lecture, pas un verdict — on arrive aussi à une position par son histoire, ses peurs, ce qu'on a vécu. La carte montre la grille. La personne est toujours plus grande qu'elle.",
-      savedToast: "Enregistré sur votre profil local — voir /you",
-      savedLink: "Enregistré sur votre profil →",
-      compactLeadStart: "Votre position la plus proche est",
-      compactLeadEnd: (values: string[]) =>
-        ` — vos priorités : ${values.join(" et ").toLowerCase()}.`,
-      reRead: "La relire →",
-      retake: "Refaire le quiz",
-    },
-    steelman: {
-      eyebrow: "Test du steelman",
-      title: "Comprenez-vous vraiment cette position ?",
-      counter: (n: number, total: number, position: string) =>
-        `Question ${n} sur ${total} · ${position}`,
-      exactly: "Exactement.",
-      notQuite: "Pas tout à fait.",
-      next: "Question suivante",
-      seeResult: "Voir le résultat",
-      passStamp: "Steelman ✓",
-      passTitle: "Vous savez formuler cette position comme le ferait un soutien.",
-      passBody:
-        "C'est la compétence la plus rare dans un débat — et le badge figure désormais sur votre profil local. Essayez le test sur la position avec laquelle vous êtes le plus en désaccord.",
-      failTitle: "Presque — mais un soutien objecterait.",
-      failBody:
-        "Relisez le steelman et le registre des compromis, puis réessayez. Comprendre l'autre camp, c'est tout l'enjeu.",
-      backToReading: "Revenir à la lecture",
-      tryAgain: "Réessayer",
-      badgeToast: "Badge steelman obtenu — enregistré sur votre profil",
-    },
-    perception: {
-      eyebrow: "Avant de partir",
-      beforeLabel: "Avant",
-      afterLabel: "Après",
-      movedDownStart: "Votre réponse a bougé de",
-      movedDownEnd:
-        "après lecture. Cela arrive aussi — au moins, le désaccord est désormais précis au lieu de rester vague.",
-      measuredLine: "Nous l'avons mesuré sur vous — jamais sur eux.",
-      question:
-        "La même question qu'à votre arrivée : les personnes en désaccord avec vous sur ce sujet — à quel point sont-elles raisonnables ?",
-      noBaseline:
-        "C'est noté. La prochaine fois, faites le quiz des valeurs avant de lire — nous pourrons alors vous montrer si la lecture vous a fait bouger.",
-      movedUpStart: "Votre réponse a bougé de",
-      movedUpEnd:
-        "après lecture. Non parce que quelqu'un a gagné — parce que vous avez vu ce que l'autre camp valorise réellement.",
-      held:
-        "Votre réponse n'a pas bougé. Comprendre ne signifie pas toujours changer d'avis — c'est savoir précisément où et pourquoi vous divergez.",
-      movedDown: (delta: number) =>
-        `Votre réponse a bougé de ${delta}. Cela arrive aussi — au moins, le désaccord est désormais précis au lieu de rester vague.`,
-      note: "Ce chiffre reste dans votre navigateur. Il existe pour vous, pas pour nous.",
-    },
-    you: {
-      eyebrow: "Votre carte",
-      titleLine: "Ce que vous valorisez.",
-      titleEm: "Qui vous comprenez.",
-      lede:
-        "Vos résultats de quiz, vos badges steelman et vos évolutions de perception — le tout stocké uniquement dans ce navigateur. Pas de compte, pas de traçage, pas de serveur. Effacer vos données de navigation efface cette page.",
-      emptyTitle: "Rien ici pour l'instant.",
-      emptyBody:
-        "Ouvrez un débat, faites le quiz des valeurs d'une minute, tentez un test du steelman. Votre carte se construit d'elle-même.",
-      emptyCta: "Commencer par un débat",
-      previewLabel: "Ce que votre carte gardera",
-      previewValues: "Les valeurs sur lesquelles vous vous appuyez, agrégées sur tous les débats que vous lisez.",
-      previewBadges: "Un badge pour chaque camp que vous savez défendre aussi bien que ses propres soutiens.",
-      previewDelta: "Si la lecture a déplacé votre regard sur les gens qui ne sont pas d'accord.",
-      valuesTitle: "Votre profil de valeurs",
-      valuesHint: "Agrégé à partir de tous les quiz que vous avez faits. Pas un verdict — un miroir.",
-      debatesTitle: "Vos débats",
-      closestPosition: "Votre position la plus proche :",
-      quizNotTaken: "Quiz des valeurs pas encore fait",
-      badgePassed: "Test du steelman réussi",
-      badgeAttempt: (correct: number, total: number) =>
-        `Meilleur essai : ${correct}/${total}`,
-      badgeNotAttempted: "Test du steelman pas encore tenté",
-      badgeLabel: "badges steelman",
-      deltaUp: (delta: number) =>
-        `Votre regard sur l'autre camp s'est adouci de +${delta} après lecture.`,
-      deltaHeld: "Votre regard sur l'autre camp n'a pas bougé.",
-      deltaDown: (delta: number) =>
-        `Votre regard sur l'autre camp s'est durci de ${delta}.`,
-      contributionsTitle: "Vos contributions",
-      contributionsSummary: (drafted: number, accepted: number, rejected: number, pending: number) =>
-        `${drafted} rédigée${drafted > 1 ? "s" : ""} · ${accepted} acceptée${accepted > 1 ? "s" : ""} · ${rejected} rejetée${rejected > 1 ? "s" : ""} · ${pending} en attente — `,
-      reviewQueueLink: "voir la file de revue",
-      reset: "Réinitialiser mon profil",
-      resetConfirm: "Effacer votre profil local (résultats de quiz, badges, données de perception) ?",
-    },
     palette: {
       home: "Accueil",
       allDebates: "Tous les débats",
       method: "Méthode — comment lire Parallax",
-      review: "File de revue",
-      you: "Votre profil — valeurs, badges",
       hintPage: "page",
       hintDebate: "débat",
-      placeholder: "Aller à une page ou à un débat…",
+      placeholder: "Rechercher pages, débats, affirmations ou sources…",
       empty: "Aucun résultat.",
     },
     debate: {
@@ -1085,213 +781,6 @@ export const fr = {
       debateLinkCopied: "Lien du débat copié — envoyez-le au cœur de la discussion",
       claimLinkCopied: "Lien vers cette affirmation copié",
       claimCopyTitle: "Copier le lien vers cette affirmation",
-      smctaText: "Vous pensez comprendre cette position ? Prouvez-le — à vous-même.",
-      smctaEarned: "Steelman ✓ obtenu",
-      smctaButton: "Passer le test du steelman",
-    },
-  },
-  positionSignal: {
-    eyebrow: "Où se situent les lecteurs",
-    beforeTitle: "Avant lecture — où vous situez-vous ?",
-    afterTitle: "Maintenant que vous avez tout lu — où vous situez-vous ?",
-    pickFirst:
-      "Positionnez-vous d'abord. Ensuite on vous montre où chacun s'est situé — pas d'effet de foule.",
-    undecided: "Ça dépend / indécis",
-    cast: "Enregistrer ma position",
-    casting: "Enregistrement…",
-    revealTitle: "Où se sont situés les lecteurs",
-    notLeaderboard:
-      "Un paysage, pas un classement — ni gagnant, ni rang. Juste où se situent les gens.",
-    priorityNote:
-      "C'est une priorité, pas un fait. Vous indiquez la position que vous soutiendriez — pas si les preuves sont vraies.",
-    youMark: "vous",
-    pctBand: (lo: number, hi: number) => `~${lo}–${hi} %`,
-    withheld: "Trop peu pour afficher",
-    confidenceEmerging:
-      "Émergent — trop peu de signaux pour en tirer quoi que ce soit.",
-    confidenceForming: "En formation — une forme se dessine.",
-    confidenceSettled:
-      "Stabilisé — une répartition stable sur de nombreux lecteurs.",
-    shiftTitle: "Ce qui a bougé",
-    shiftLede:
-      "Parmi les lecteurs ayant parcouru tout le débat, voici comment la répartition a évolué.",
-    shiftDelta: (pts: number, letter: string) =>
-      `${pts > 0 ? "+" : ""}${pts} pts vers ${letter}`,
-    shiftYouMoved: "Vous vous êtes rapproché d'une autre position après lecture.",
-    shiftYouHeld: "Vous avez maintenu votre position après lecture.",
-    shiftDignity:
-      "Se rapprocher, maintenir ou se conforter comptent à égalité. Bouger n'est pas gagner.",
-    shiftEmpty:
-      "Pas encore assez de lecteurs entrés-et-sortis pour montrer le mouvement.",
-    change: "Changer ma réponse",
-    privacy:
-      "Seul le total anonyme est conservé. Votre choix reste dans ce navigateur et n'est jamais vendu.",
-    demoNote:
-      "Répartition de démonstration — données non réelles. Les vrais agrégats apparaissent dès que le signal a des lecteurs.",
-    signedOutNote:
-      "Connectez-vous pour enregistrer votre position (garde le décompte honnête, jamais lié à vous).",
-  },
-  claimEval: {
-    stateLabel: {
-      established: "Établie",
-      contested: "Contestée",
-      values: "Un choix de valeurs",
-    },
-    byReview: (date: string) => `relue le ${date}`,
-    setState: "Consigner l'état :",
-    savedToast: "Évaluation enregistrée — au registre de la bibliothèque",
-    failedToast: "Impossible d'enregistrer — rôle relecteur requis",
-    bridge: {
-      status: {
-        bridged_established: (n: number) =>
-          `Établie — confirmée par recoupement entre ${n} camp${n === 1 ? "" : "s"} opposé${n === 1 ? "" : "s"}`,
-        bridged_contested: (n: number) =>
-          `Contestée — confirmée par recoupement entre ${n} camp${n === 1 ? "" : "s"} opposé${n === 1 ? "" : "s"}`,
-        bridged_established_nocount: "Établie — confirmée par recoupement inter-camps",
-        bridged_contested_nocount: "Contestée — confirmée par recoupement inter-camps",
-        bridged_conflicting:
-          "Les camps sont arrivés à des conclusions inter-camps différentes — non résolu",
-        pending_single_camp:
-          "En attente — un seul camp l'a approuvée pour l'instant",
-        insufficient: "Pas encore de verdict inter-camps",
-      },
-      explainer:
-        "Confirmée seulement quand des relecteurs de positions opposées s'accordent — pas à la majorité, pas par un seul relecteur. Un seul camp, quelle que soit sa taille, ne peut pas confirmer.",
-      scopeNote:
-        "Ceci mesure l'accord inter-camps sur l'état de l'affirmation uniquement — pas un verdict de fiabilité complet (la distinction intégrité/pertinence et les jurys tournants ne sont pas encore en vigueur).",
-      demo: "démo",
-      endorse: "Approuver cet état :",
-      endorsed: (state: string) => `Vous avez approuvé : ${state}`,
-      endorseSaved: "Approbation enregistrée — ne compte qu'entre camps distincts",
-      endorseFailed: "Enregistrement impossible — rôle relecteur requis",
-      yourCamp: (camp: string) => `Votre position : ${camp}`,
-      yourCampHint:
-        "Vous seul voyez votre position. Elle n'est jamais rendue publique ni montrée aux autres relecteurs.",
-      camp: {
-        prompt: "Avant d'approuver, déclarez votre position sur ce débat.",
-        why: "Votre position est enregistrée une fois pour ce débat et n'est jamais affichée publiquement. Elle permet de mesurer l'accord entre camps — pour qu'un seul camp ne puisse pas confirmer seul.",
-        pick: (letter: string, title: string) => `Position ${letter} — ${title}`,
-        undecided: "Indécis·e / ça dépend",
-        confirm: "Définir ma position",
-        saved: "Position enregistrée pour ce débat",
-        failed: "Enregistrement impossible — rôle relecteur requis",
-        lockHint:
-          "Enregistrée une fois pour ce débat. La modifier recompte vos approbations sous le nouveau camp.",
-      },
-    },
-  },
-  sourceFloor: {
-    legendEyebrow: "Intégrité de la source",
-    verdicts: {
-      meets_floor: "passe le seuil pour cet usage",
-      attribution_required: "à attribuer pour cet usage",
-      context_required: "demande du contexte pour cet usage",
-      below_floor: "sous le seuil pour cet usage",
-    } as Record<string, string>,
-    verdictHint: {
-      meets_floor:
-        "Aucune règle de seuil ne s’est déclenchée pour cette source sur cette affirmation. Pas une caution, pas « fiable », pas « vrai ».",
-      attribution_required:
-        "Utilisable ici uniquement comme point de vue attribué, pas comme autorité factuelle autonome.",
-      context_required:
-        "Un attribut matériel (sponsorisé / IA / conflit non divulgué / domaine à seuil élevé) doit être divulgué avant de s’y fier ici.",
-      below_floor:
-        "Une règle l’a jugée structurellement inadéquate pour CET usage. Rétrogradée et étiquetée — conservée au dossier, jamais supprimée. Pas « faux », pas « mauvais dans l’abstrait ».",
-    } as Record<string, string>,
-    rules: {
-      ugc_controversial_factual:
-        "Un contenu non vérifié d’utilisateur n’est pas une source valable pour une affirmation factuelle contestée.",
-      no_editorial_accountability:
-        "Aucune responsabilité éditoriale identifiable ni politique de correction — présomption négative.",
-      opinion_attribution:
-        "Opinion ou analyse — utilisable comme point de vue attribué, pas comme autorité factuelle.",
-      conflict_context:
-        "Un conflit, un financement, un contenu sponsorisé ou généré par IA doit être divulgué avant de s’y fier ici.",
-      high_bar_domain:
-        "Les affirmations de santé, droit, finance ou sur des personnes vivantes exigent un seuil de source plus élevé.",
-      documented_fabrication:
-        "Fabrication documentée au dossier (preuve externe) — visibilité restreinte, conservée au dossier.",
-      no_floor_rule:
-        "Aucune règle de seuil ne s’est déclenchée pour cette source sur cette affirmation.",
-    } as Record<string, string>,
-    attrValues: {
-      content_genre: {
-        primary: "primaire / données",
-        reporting: "reportage",
-        analysis: "analyse",
-        opinion: "opinion",
-        sponsored: "sponsorisé",
-        ugc: "contenu d’utilisateur",
-        ai_generated: "généré par IA",
-        unknown: "inconnu",
-      },
-      editorial_accountability: {
-        named_masthead: "ours nommé",
-        named_author: "auteur nommé",
-        org_only: "organisation seule",
-        anonymous: "anonyme",
-        none: "aucune",
-        unknown: "inconnue",
-      },
-      correction_policy: {
-        documented: "documentée",
-        informal: "informelle",
-        none: "aucune",
-        unknown: "inconnue",
-      },
-      independence: {
-        independent: "indépendant",
-        funded_disclosed: "financé (divulgué)",
-        funded_undisclosed: "financé (non divulgué)",
-        self_interested: "intéressé",
-        unknown: "inconnue",
-      },
-      fabrication_record: {
-        none_known: "aucun connu",
-        corrected_history: "corrections au dossier",
-        retraction_history: "rétractations au dossier",
-        documented_fabrication: "fabrication documentée",
-      },
-      expertise_basis: {
-        peer_reviewed: "évalué par les pairs",
-        domain_expert: "expert du domaine",
-        journalistic: "journalistique",
-        lay: "profane",
-        none: "aucune",
-        unknown: "inconnue",
-      },
-      identity_basis: {
-        verified: "vérifiée",
-        pseudonymous: "pseudonyme",
-        unverified: "non vérifiée",
-        unknown: "inconnue",
-      },
-      sensitive_domain: {
-        none: "—",
-        health: "santé",
-        law: "droit",
-        finance: "finance",
-        living_persons: "personnes vivantes",
-      },
-    } as Record<string, Record<string, string>>,
-    drivenBy: (drivers: string) => `déterminé par ${drivers}`,
-    demo: "démo",
-    vsRelevance:
-      "Deux questions distinctes. Le label de preuve demande : cette source appuie-t-elle CETTE affirmation ? L’intégrité demande : est-ce une source crédible en soi, selon des règles fixes ? On ne les confond jamais.",
-    notTruth:
-      "C’est un contrôle de règles sur l’intégrité, pas un verdict de vérité. La v1 garantit des règles mécaniques identiques pour chaque source — la controverse et le domaine à seuil élevé proviennent de signaux inter-camps, pas du seul avis d’un relecteur. Une source n’est jamais « fiable » dans l’abstrait ; le seuil est toujours rapporté à un usage.",
-    libraryReuse:
-      "Une évaluation suit la source, pas le débat — évaluez une source une fois, et le seuil se re-rapporte à chaque usage où elle est citée.",
-    assess: {
-      title: "Évaluer cette source (seuil d’intégrité)",
-      hint: "Déclarez les attributs mécaniques de la source et toute preuve externe. Le verdict est calculé par les règles, par affirmation — vous ne le fixez pas.",
-      proofLabel:
-        "Preuve externe (pour le sous-seuil fabrication / sans responsabilité)",
-      save: "Enregistrer les attributs",
-      saved:
-        "Source évaluée — les règles calculent le verdict par affirmation, au dossier de la bibliothèque",
-      failed: "Enregistrement impossible — rôle de relecteur requis",
-      verdictReadonly: "Verdict (calculé par les règles) :",
     },
   },
 } satisfies Messages;

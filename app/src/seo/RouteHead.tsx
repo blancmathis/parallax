@@ -5,17 +5,20 @@ import { useLocation } from "react-router-dom";
 import { buildHead, type RouteKey, type DebateMeta } from "./head";
 import { getDebates, slugOf } from "../data";
 import { useI18n } from "../i18n";
+import { unlocalizedPath } from "../i18n/paths";
 
 /** Map a (locale-stripped) pathname to the SEO route key. */
 export function routeFromPath(pathname: string): RouteKey {
-  const p = pathname.replace(/^\/fr(?=\/|$)/, "").replace(/\/+$/, "") || "/";
+  const p = unlocalizedPath(pathname).replace(/\/+$/, "") || "/";
   if (p === "/") return { kind: "home" };
   if (p === "/debates") return { kind: "debates" };
   if (p.startsWith("/debates/"))
     return { kind: "debate", slug: p.slice("/debates/".length).replace(/\/$/, "") };
   if (p === "/method") return { kind: "method" };
-  if (p === "/review") return { kind: "review" };
-  if (p === "/you") return { kind: "you" };
+  if (p === "/projet") return { kind: "project" };
+  if (p === "/mentions-legales") return { kind: "legal" };
+  if (p === "/confidentialite") return { kind: "privacy" };
+  if (p === "/contact") return { kind: "contact" };
   return { kind: "notfound" };
 }
 
@@ -41,8 +44,13 @@ function upsertCanonical(href: string) {
   el.setAttribute("href", href);
 }
 
-function apply(route: RouteKey, locale: "en" | "fr", debate?: DebateMeta) {
-  const h = buildHead(route, locale, debate);
+function apply(
+  route: RouteKey,
+  locale: "en" | "fr",
+  debate?: DebateMeta,
+  debateLookupUnavailable = false,
+) {
+  const h = buildHead(route, locale, debate, { debateLookupUnavailable });
   document.documentElement.lang = h.lang;
   document.title = h.title;
   upsertMeta("name", "description", h.description);
@@ -75,16 +83,24 @@ function apply(route: RouteKey, locale: "en" | "fr", debate?: DebateMeta) {
 export function RouteHead() {
   const { pathname } = useLocation();
   const { locale } = useI18n();
+  const debates = getDebates(locale);
   const route = routeFromPath(pathname);
   let debate: DebateMeta | undefined;
   if (route.kind === "debate") {
-    const d = getDebates(locale).find((x) => slugOf(x) === route.slug);
+    const d = debates.find((x) => slugOf(x) === route.slug);
     if (d)
       debate = { slug: route.slug, question: d.topic.question, summary: d.topic.summary };
   }
-  const key = route.kind + (route.kind === "debate" ? `:${route.slug}` : "");
+  const debateLookupUnavailable = false;
+  const key = [
+    route.kind,
+    route.kind === "debate" ? route.slug : "",
+    debate?.question ?? "",
+    debate?.summary ?? "",
+    debateLookupUnavailable ? "unavailable" : "resolved",
+  ].join(":");
   useEffect(() => {
-    apply(route, locale, debate);
+    apply(route, locale, debate, debateLookupUnavailable);
     // route/debate reconstructed each render; `key` captures their identity.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, locale]);

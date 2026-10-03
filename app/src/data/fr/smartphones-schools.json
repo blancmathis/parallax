@@ -284,7 +284,8 @@
       "source_type": "report",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Rapport phare de l'ONU avec une large synthèse des preuves ; il plaide ouvertement pour limiter l'usage des smartphones à l'école, donc son cadrage penche vers la restriction. Solide pour le contexte international des politiques ; beaucoup des études citées sont corrélationnelles."
+      "quality_notes": "Rapport phare de l'ONU avec une large synthèse des preuves ; il plaide ouvertement pour limiter l'usage des smartphones à l'école, donc son cadrage penche vers la restriction. Solide pour le contexte international des politiques ; beaucoup des études citées sont corrélationnelles.",
+      "content_hash": null
     },
     {
       "id": "s2",
@@ -294,7 +295,8 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Étude quasi expérimentale très citée (différence de différences dans 91 écoles anglaises) par Beland et Murphy. Conception solide pour les effets sur les examens, mais les données sont antérieures à 2013 et peuvent mal se transférer aux téléphones et applications actuels."
+      "quality_notes": "Étude quasi expérimentale très citée (différence de différences dans 91 écoles anglaises) par Beland et Murphy. Conception solide pour les effets sur les examens, mais les données sont antérieures à 2013 et peuvent mal se transférer aux téléphones et applications actuels.",
+      "content_hash": null
     },
     {
       "id": "s3",
@@ -303,8 +305,9 @@
       "publisher": "UK Department for Education",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-04-28",
-      "quality_notes": "Recommandation gouvernementale officielle en faveur de journées scolaires sans téléphone. Utile pour comprendre ce qu'un grand ministère de l'Éducation recommande et pourquoi ; c'est une position de politique publique, pas une évaluation d'impact."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Guide statutaire officiel mis à jour le 29 juin 2026. Utile pour comprendre ce que le ministère britannique de l'Éducation exige et pourquoi ; c'est une source primaire de politique publique, pas une évaluation d'impact.",
+      "content_hash": null
     },
     {
       "id": "s4",
@@ -314,17 +317,19 @@
       "source_type": "paper",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Étude évaluée par les pairs de l'Université de Birmingham auprès d'environ 1 200 élèves dans 30 écoles anglaises, la comparaison directe la plus récente entre politiques restrictives et permissives. La conception transversale ne peut pas établir la causalité et compare des politiques existantes plutôt qu'une interdiction nouvellement introduite."
+      "quality_notes": "Étude évaluée par les pairs de l'Université de Birmingham auprès d'environ 1 200 élèves dans 30 écoles anglaises, la comparaison directe la plus récente entre politiques restrictives et permissives. La conception transversale ne peut pas établir la causalité et compare des politiques existantes plutôt qu'une interdiction nouvellement introduite.",
+      "content_hash": null
     },
     {
       "id": "s5",
-      "url": "https://www.commonsensemedia.org/research/constant-companion-a-week-in-the-life-of-a-young-persons-smartphone-use",
+      "url": "https://www.commonsensemedia.org/sites/default/files/research/report/2023-cs-smartphone-research-report_final-for-web.pdf",
       "title": "Constant Companion: A Week in the Life of a Young Person's Smartphone Use",
       "publisher": "Common Sense Media",
       "source_type": "report",
       "retrieval_status": "found",
-      "retrieved_at": "2026-04-28",
-      "quality_notes": "Recherche associative fondée sur le suivi passif d'environ 200 Américains de 11 à 17 ans (Android seulement). Données d'usage exceptionnellement directes, y compris pendant la journée scolaire, mais échantillon réduit et non représentatif ; l'organisation milite pour la santé médiatique des enfants."
+      "retrieved_at": "2026-08-30",
+      "quality_notes": "Rapport primaire versionné fondé sur le suivi passif d'environ 200 Américains de 11 à 17 ans (Android seulement). Données d'usage exceptionnellement directes, y compris pendant la journée scolaire, mais échantillon réduit et non représentatif ; l'organisation milite pour la santé médiatique des enfants.",
+      "content_hash": "sha256:ba827858732c6baf782ebb5fd6ba30749143750990597fee022222b6af97adc6"
     },
     {
       "id": "s6",
@@ -334,7 +339,50 @@
       "source_type": "article",
       "retrieval_status": "found",
       "retrieved_at": "2026-04-28",
-      "quality_notes": "Information officielle du gouvernement néerlandais (en néerlandais) sur l'enquête du ministère auprès de près de 600 établissements secondaires après l'interdiction nationale des téléphones en classe ; le personnel rapporte des élèves plus concentrés et plus sociaux. Utile pour les effets déclarés à l'échelle nationale, mais fondé sur les perceptions du personnel et sur un gouvernement évaluant sa propre politique."
+      "quality_notes": "Information officielle du gouvernement néerlandais (en néerlandais) sur l'enquête du ministère auprès de près de 600 établissements secondaires après l'interdiction nationale des téléphones en classe ; le personnel rapporte des élèves plus concentrés et plus sociaux. Utile pour les effets déclarés à l'échelle nationale, mais fondé sur les perceptions du personnel et sur un gouvernement évaluant sa propre politique.",
+      "content_hash": null
+    }
+  ],
+  "source_excerpts": [
+    {
+      "id": "ex_ev_c1_s5",
+      "source_id": "s5",
+      "text": "97% of participants used their phones, for a median of 43 minutes",
+      "locator": "Constant Companion, p. 5 (PDF p. 11), Key Finding 2",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c3_s4",
+      "source_id": "s4",
+      "text": "There is no evidence that restrictive school policies are associated with overall phone and social media use or better mental wellbeing in adolescents.",
+      "locator": "Abstract, Interpretation; PMID 40213498",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c4_s4",
+      "source_id": "s4",
+      "text": "there was no evidence for differences when comparing usage time on weekdays or weekends",
+      "locator": "Abstract, Findings; PMID 40213498",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c5_s5",
+      "source_id": "s5",
+      "text": "policies about phone use in schools vary—sometimes even from classroom to classroom—and aren't always enforced",
+      "locator": "Constant Companion, executive summary, PDF p. 4",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
+    },
+    {
+      "id": "ex_ev_c6_s3",
+      "source_id": "s3",
+      "text": "All staff should consistently enforce the school's policy on the use of mobile phones.",
+      "locator": "Mobile phones in schools, section 'The role of staff'",
+      "extracted_by": "human",
+      "created_at": "2026-08-30T00:00:00Z"
     }
   ],
   "evidence_links": [
@@ -351,6 +399,7 @@
       "id": "ev_c1_s5",
       "claim_id": "c1",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c1_s5",
       "label": "supports_claim",
       "rationale": "Les données de suivi montrent que les participants recevaient environ un quart de leurs notifications quotidiennes pendant les heures d'école et utilisaient leur téléphone 43 minutes en médiane pendant la journée scolaire ; cela documente le volume d'interruptions plutôt qu'une perte d'attention mesurée directement.",
       "confidence": 0.7,
@@ -378,6 +427,7 @@
       "id": "ev_c3_s4",
       "claim_id": "c3",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c3_s4",
       "label": "contradicts_claim",
       "rationale": "L'étude SMART Schools n'a trouvé aucune différence significative de bien-être mental, d'anxiété ou de dépression entre élèves d'écoles à politiques restrictives et élèves d'écoles permissives.",
       "confidence": 0.8,
@@ -396,6 +446,7 @@
       "id": "ev_c4_s4",
       "claim_id": "c4",
       "source_id": "s4",
+      "source_excerpt_id": "ex_ev_c4_s4",
       "label": "supports_claim",
       "rationale": "Les politiques scolaires restrictives n'étaient pas associées à un moindre temps total de téléphone ou de réseaux sociaux chez les adolescents ; c'est le temps total plus élevé, où qu'il ait lieu, qui suivait un moins bon bien-être, sommeil et niveau scolaire.",
       "confidence": 0.8,
@@ -405,6 +456,7 @@
       "id": "ev_c5_s5",
       "claim_id": "c5",
       "source_id": "s5",
+      "source_excerpt_id": "ex_ev_c5_s5",
       "label": "supports_claim",
       "rationale": "Presque tous les participants suivis utilisaient leur téléphone pendant les heures d'école, avec une médiane de 43 minutes par jour scolaire ; le rapport note aussi que les règles varient d'une classe à l'autre et ne sont pas appliquées de manière constante.",
       "confidence": 0.7,
@@ -423,6 +475,7 @@
       "id": "ev_c6_s3",
       "claim_id": "c6",
       "source_id": "s3",
+      "source_excerpt_id": "ex_ev_c6_s3",
       "label": "partially_supports_claim",
       "rationale": "La recommandation du DfE affirme que les approches cohérentes à l'échelle de toute l'école sont les plus efficaces pour gérer les téléphones, mais comme guide de politique elle s'appuie sur des exemples plutôt que sur une évaluation systématique.",
       "confidence": 0.6,
@@ -513,58 +566,6 @@
       "cost": "Une règle conditionnelle est plus difficile à appliquer régulièrement qu'une interdiction générale et invite à tester la limite à chaque sonnerie.",
       "risk": "L'usage entre les cours peut déborder sur le temps de classe, sans offrir ni la concentration d'une interdiction ni l'autonomie d'un usage maîtrisé.",
       "review_status": "unreviewed"
-    }
-  ],
-  "audit_events": [
-    {
-      "id": "ae_01",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "topic_created",
-      "summary": "Sujet créé à partir du dossier de départ sur les smartphones à l'école.",
-      "created_at": "2026-04-30T09:00:00Z"
-    },
-    {
-      "id": "ae_02",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "system",
-      "actor_id": "retriever_v0",
-      "event_type": "source_added",
-      "summary": "6 sources ajoutées et récupérées avec succès (statut : found) : UNESCO GEM Report, CEP (LSE), UK DfE, The Lancet Regional Health - Europe, Common Sense Media, Gouvernement des Pays-Bas.",
-      "created_at": "2026-04-30T09:05:00Z"
-    },
-    {
-      "id": "ae_03",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "claim_extracted",
-      "summary": "6 affirmations atomiques (C1-C6) extraites manuellement du dossier de départ.",
-      "created_at": "2026-04-30T09:20:00Z"
-    },
-    {
-      "id": "ae_04",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "evidence_labeled",
-      "summary": "10 liens de preuve libellés (alignement affirmation-source), dont 1 lien contradictoire et 1 lien à clarifier sur l'affirmation de bien-être. Tous marqués non relus.",
-      "created_at": "2026-04-30T09:40:00Z"
-    },
-    {
-      "id": "ae_05",
-      "topic_id": "topic_smartphones_schools",
-      "revision_id": "rev_001",
-      "actor_type": "admin",
-      "actor_id": "user_admin",
-      "event_type": "revision_published",
-      "summary": "3 positions structurées avec steelmans, valeurs et compromis ; révision 1 publiée. Tâches ouvertes : preuves longitudinales sur le bien-être et évaluation indépendante de l'interdiction néerlandaise.",
-      "created_at": "2026-04-30T10:15:00Z"
     }
   ]
 }

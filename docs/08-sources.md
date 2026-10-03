@@ -1,15 +1,51 @@
 # Sources & Evidence
 
-How Parallax handles the single hardest problem of the project: different
-people trust different sources, and any system that *declares* which sources
-are reliable becomes the arbiter — and the moment it does, one camp rejects
-everything else. This document specifies the source layer of the
-[objectivity engine](07-engine.md). It feeds the same claim lifecycle defined
-in [06-vision.md](06-vision.md#the-library-of-truths) and shares its
-governance (bridging consensus, stewards, audit trail).
+This document owns the **target** policy and architecture for source artifacts,
+claim-source use, source assessment, and their governance. Different people
+trust different sources, and any system that declares a source reliable in the
+abstract becomes an arbiter. Unless a paragraph is explicitly labelled Current
+or Experimental, the mechanisms below are requirements—not current behavior.
+The target extends the [objectivity engine](07-engine.md) and claim lifecycle in
+[06-vision.md](06-vision.md#the-library-of-truths).
 
 > **The reader does the trusting. Parallax does the disclosure — and audits
 > its own disclosure.**
+
+## Current implementation boundary
+
+| Layer | Status |
+| --- | --- |
+| Fixture source cards, claim-scoped evidence labels, and optional exact excerpts | **Current demonstration data** — selected excerpts exist, but coverage and immutable artifact identity are incomplete; no factual-verification claim |
+| Stored source excerpts, locators, content-hash fields, source-access results, source-floor assessments, and a simple two-camp claim gate | **Experimental Supabase contracts** |
+| Four-level integrity analysis, citation-fidelity proof, source-version graph, matrix-factorization bridging, anti-coordination, dossiers, coverage ledger, juries, and reusable source library | **Target** |
+
+The target output is an exact, structured, source-grounded **provisional
+dossier**, not an oracle of truth or a global rating service. A procedural
+status is scoped to one claim, source artifact, use, version, and review date.
+
+## Source evidence required for target implementation
+
+Before a truth-apt claim-source assessment can be reviewed for publication, the
+record must identify:
+
+- canonical URL or repository identifier and publisher/author when available;
+- publication date and exact edition, revision, dataset release, or captured
+  artifact version;
+- retrieval date, access outcome, and content digest;
+- exact quoted excerpt with page, paragraph, timestamp, table/cell, or other
+  reproducible locator;
+- claim scope and intended use;
+- who or what extracted the material, which model/parser version was used, and
+  the human review decision;
+- correction, retraction, supersession, and refresh behavior.
+
+No label silently carries to a changed artifact. If an external method,
+formula, threshold, rubric, or policy informs implementation, the decision must
+pin its primary URL, retrieval date, applicable version or commit, and local
+rationale. A moving webpage is a research reference, not an executable spec.
+External references linked below were consulted on 2026-08-30. They are design
+inputs only; adopting any of them requires a version-pinned local decision and
+evaluation against Parallax's own threat model.
 
 ## 0. Where the arbiter actually hides
 
@@ -43,12 +79,12 @@ Integrity is therefore stored at **four separate levels**, never collapsed:
 | **Corpus weight** | How does it stand against the other relevant sources? |
 
 The visible label is always **"weak *use* for this claim"**, never "weak
-*source*". This is the core of the project's thesis: truth is manufactured in
-the argumentative relation, not in a global reputation.
+*source*". Support is evaluated in the scoped relation between artifact, claim,
+and use—not inferred from a global reputation.
 
 ## 2. A source is a node in the same graph — its reliability is a claim
 
-A source gets its own page, and the discussion there is **itself structured
+In the target system, a source gets its own page, and the discussion there is **itself structured
 as claims** with the same lifecycle (`proposed → contested → established →
 refuted`):
 
@@ -102,14 +138,17 @@ Three locks before it can stand:
 2. **Counterfactual-symmetry test** — would the same defect have demoted a
    source supporting the *opposite* camp? Raters must affirm this, and it is
    auditable.
-3. **Domain rubric** — "methodologically weak" routes through recognised
-   per-domain grids, not crowd intuition: e.g. **GRADE** (risk of bias,
-   inconsistency, indirectness, imprecision, publication bias) and **Cochrane
-   RoB 2** for trials. The rubric makes the judgment legible and comparable.
+3. **Domain rubric** — "methodologically weak" routes through a selected,
+   versioned per-domain grid, not crowd intuition. Research examples include the
+   GRADE Working Group's [GRADE Book](https://book.gradepro.org/about) and
+   Cochrane's [RoB 2 tool](https://www.riskofbias.info/welcome/rob-2-0-tool).
+   A rubric makes the judgment legible and comparable only after its scope and
+   version are recorded.
 
-**Meta-moderation (Slashdot precedent):** the integrity *judgments
-themselves* are rated, to surface raters who misuse the categories — a second
-layer that audits acts of moderation, not just content.
+**Target meta-moderation hypothesis:** integrity *judgments themselves* are
+reviewed to surface misuse of the categories—a second layer that audits acts of
+moderation, not just content. No external precedent by itself validates this
+mechanism for Parallax.
 
 ## 5. Metadata is shown only behind a bridged relevance claim
 
@@ -141,9 +180,9 @@ No single number. Displayed side by side:
 - **conditional track record** (see below);
 - **structured discussion thread**.
 
-Users, journalists, and adversaries *will* compress any vector into "Parallax
-says this source is bad", and third parties will scrape the signals to build
-their own score (Goodhart's law). The track record must therefore be
+Users, journalists, and adversaries may compress any vector into "Parallax says
+this source is bad", and third parties may scrape the signals into their own
+score. The track record must therefore be
 **conditional, never global**:
 
 - by domain, by claim type, by period, by *exact use* of the source;
@@ -172,75 +211,49 @@ auto-extracted clean properties — that would make the agent a hidden arbiter
 
 ## 8. The bridging mechanism (how a sensitive label actually ships)
 
-An integrity label, a merge, or a steelman-fairness call ships only when
-raters who *usually disagree* converge. The deployed reference is X's
-**Community Notes**; Parallax reimplements its core and its guardrails.
+An integrity label, a merge, or a steelman-fairness call should publish only
+after review spans materially different perspectives and the documented
+procedure's other safeguards pass. Cross-group agreement is a procedural
+signal—not proof that the conclusion is true.
 
-**Model — matrix factorization** over a sparse `rater × note` matrix
-(`Helpful = 1.0`, `Somewhat = 0.5`, `Not = 0`):
+X's Community Notes is a design reference because it publishes notes only
+after scoring across people who have disagreed in prior ratings. Its official
+[ranking guide](https://communitynotes.x.com/guide/en/under-the-hood/ranking-notes)
+was consulted on 2026-08-30. The guide and implementation evolve, so this
+document deliberately does not copy numerical constants as Parallax truth.
 
-```
-r̂[u,n] = μ + i_u + i_n + f_u · f_n
-```
+**Experimental boundary:** the current database gate counts qualifying
+endorsements across two declared camps. It has no learned disagreement model,
+representative-sample check, demonstrated anti-coordination layer, or accepted
+production threshold. It may exercise UI states; it must not be presented as
+the target bridging mechanism.
 
-- `i_n` (the *note intercept*) is the published helpfulness score: what
-  remains useful **after** removing a rater's general leniency (`i_u`) and the
-  camp agreement captured by `f_u · f_n`.
-- `f_u` is a **latent disagreement factor**, *learned* from voting patterns —
-  **never declared, never named, never shown**. Its sign has no political
-  meaning; we speak of a latent factor, never "left/right".
+**Target requirements before selecting an algorithm:**
 
-**Operative thresholds (to reimplement faithfully):**
+- version-pinned primary references and a local decision record;
+- a threat model for coordination, Sybil identities, strategic non-participation,
+  sampling bias, language/domain imbalance, and privacy leakage;
+- offline evaluation against adversarial and ordinary cases;
+- published minimum coverage and uncertainty rules;
+- reproducible versioned scorer inputs and outputs;
+- human appeal and rollback paths;
+- a public explanation that exposes procedure and limitations without exposing
+  individual inferred affiliations.
 
-- a label is not even scored before ≥ 5 ratings;
-- ships as *helpful* when `i_n ≥ 0.40` (captures < 10% of items) **and**
-  `|f_n| < 0.50` (not too polarized);
-- requires net support from **both signs** of the latent factor (e.g. ≥ 5
-  positive-factor and ≥ 5 negative-factor raters endorsing).
+Deliberation, disagreement mapping, and publication scoring may use different
+tools. Any future Polis-, Community Notes-, or research-derived component must
+be evaluated and versioned independently; naming a precedent does not accept
+its thresholds or make it suitable for Parallax.
 
-**Guardrails that matter most for us** (plain matrix factorization is
-manipulable):
+Coverage will be incomplete. An unbridged source use therefore reads *"no
+cross-group label established yet"*—an absence of verdict, never "unreliable".
+The target coverage ledger (§11) must disclose how much of the relevant source
+set remains unreviewed or blocked.
 
-- **anti-coordination / independence** — anomalously correlated raters are
-  treated as one entity;
-- **population-sample filter** — a representative sample can veto a label that
-  only an active sub-crowd liked;
-- **diligence / sourcing tags** — "sources do not support note", "unreliable
-  sources" can block a label even when it is liked;
-- **multi-model** (core + expansion + topic/group + language) to cover blind
-  spots.
-
-**Delegation of roles:** **Polis** for the *deliberative/explanatory* phase
-(surface the dimensions of disagreement; produce cross-group consensus
-wordings via Group-Informed Consensus — products of per-group agreement
-probabilities, so a large group cannot steamroll a small one); a Community
-Notes-style gate for the *publication* decision. As a **shadow metric** from
-day one, compute the pairwise-disagreement / p-means **bridging** score (Blair
-et al., *The Structure of Bridging*) — a negative `p` rewards labels endorsed
-by usually-distant pairs and punishes one-camp approval without giving a
-micro-group an absolute veto. Ship on the Community Notes gate; use the others
-to audit false positives/negatives and clustering fragility.
-
-**Coverage is low — by design.** Bridging publishes little: in Community Notes
-< 10% of submitted notes ship (English fell from ~9.5% in 2023 to ~4.9% in
-early 2025; > 90% never reach the public; Meta reported ~6%). For a source map
-this means most sources stay **unbridged** — not a bug but the price of the red
-line. An unbridged source therefore reads *"no cross-camp label established
-yet"* (absence of verdict), **never** "unreliable"; the dossier (§2) shows
-regardless; sort by marginal utility (high-stakes, frequently-cited,
-near-threshold-but-missing-one-side); merge duplicate proposals into one
-canonical sourcing claim; publish coverage as a health metric (§11).
-
-**The latent factor is private, scoped, never named.** `f_u` is *learned* from
-voting patterns, never declared — its sign carries no political meaning, so the
-UI says "latent disagreement factor", never "left/right". Treat `rater_factor`
-as **sensitive data**: private encrypted table, separate public vs scoring IDs,
-only k-anonymised / DP aggregates published (never "2 raters on the negative
-side" → say "insufficient cross-group coverage"). A single global axis breaks
-across religion / geopolitics / science / gender (the Meta Oversight Board
-flagged exactly this), so use **scoped factors `f_u(domain)`** — a rater can be
-camp A on climate, camp B on foreign policy, neutral on health — judged by the
-latent camps *relevant to the domain*, not a universal political identity.
+Any learned disagreement factor is sensitive, scoped, and never named as a
+political identity. The target must use privacy-preserving aggregates and avoid
+a universal left/right axis; exact storage, anonymity floors, and publication
+rules require a separate reviewed security design.
 
 ## 9. "Camp" is multi-axis — bridging can be choreographed
 
@@ -263,10 +276,9 @@ ranking people.
 
 ## 10. Refusal to bridge must not become a veto
 
-A bad-faith camp can simply *never converge* — always demand "more context",
-contest a definition, call the category biased. With bridging required, "no
-consensus" then protects the bad source (the Wikipedia "no consensus → status
-quo" stonewall, generalised).
+A bad-faith camp can simply *never converge*—always demand "more context",
+contest a definition, or call the category biased. If bridging has no
+non-convergence state, refusal can preserve the status quo indefinitely.
 
 Introduce an explicit **procedural** state — *"unresolved disagreement after
 full procedure"* — distinct from any integrity verdict. Rules:
@@ -310,11 +322,18 @@ reliability verdict.
 
 ## 12. Agents do volume — but volume is already a form of editorial power
 
+**Status: Target.** The experimental path can store bounded excerpts and
+content hashes. It does not yet prove document sandboxing, deterministic
+metadata extraction, random audit, or the complete proof-attachment contract
+below.
+
 Agents type sources, extract properties, trace primaries, check citation
-fidelity, flag contradictions. They "only propose" — but *deciding what enters
-the human field of view is already deciding*. Plus adversarial sources carry
-**prompt injection** (OWASP LLM01) and agents **hallucinate** (documented even
-in law).
+fidelity, and flag contradictions. They "only propose"—but *deciding what
+enters the human field of view is already deciding*. Adversarial documents also
+create prompt-injection risk; the current reference is OWASP's
+[LLM01:2025 Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/).
+Model error must be treated as an ordinary failure mode requiring attached
+proof, not as an exceptional edge case.
 
 No agent output is stored as a source property without **attached proof**:
 
@@ -340,9 +359,16 @@ contradiction vs limitation vs non-replication vs mixed result?
 
 ## 14. Versioned artefacts, explicit propagation
 
-The base source node is an **exact versioned artefact**, not a vague "source"
-(Crossref/Crossmark and Retraction Watch exist precisely because status
-changes). Relations are typed: `isVersionOf`, `cites`, `summarizes`,
+**Status: Experimental fields / Target lifecycle.** The Supabase schema has
+content-hash and excerpt fields; exact artifact identity, refresh detection,
+typed version relations, and propagation rules are not implemented end to end.
+
+The base source node is an **exact versioned artefact**, not a vague "source".
+Crossref's
+[Crossmark documentation](https://www.crossref.org/documentation/crossmark/participating-in-crossmark/)
+is one concrete research-output example where corrections, retractions,
+withdrawals, and new versions change an item's status. Relations are typed:
+`isVersionOf`, `cites`, `summarizes`,
 `isRetractedBy`, `isCorrectionOf`, `translationOf`, `mirrorOf`,
 `sameDatasetAs`. Labels propagate **only by explicit rule**: a retraction may
 affect dependent versions; a citation dispute in a hostile secondary must
@@ -366,6 +392,11 @@ retention** from **public discoverability**:
 We do not delete. We control re-exposure.
 
 ## 16. The hard floor is rule-based, not a vote
+
+**Status: Experimental v1 / Target governance.** A reviewer-only source-floor
+assessment and rule-derived display path exist in the Supabase migrations. The
+complete jurisdiction policy, proof requirements, appeal, rollback, and public
+governance described below remain target work.
 
 The only true hard removal is a **published, rule-based** policy with appeal —
 never crowd mood, because this is where arbitration re-appears and where legal
@@ -416,12 +447,15 @@ Evidence is not evenly distributed across camps. Honest typing makes some maps
 *lean*, and the disadvantaged camp will read an accurate map as bias — while
 one of our North-Star signals is *perceived* neutrality. You cannot
 simultaneously optimise process neutrality, apparent symmetry, and weight of
-evidence; forcing apparent symmetry is **false balance** (Boykoff & Boykoff).
+evidence; forcing apparent symmetry can create **false balance**. One domain-
+specific empirical reference is Boykoff and Boykoff's 2004
+[study of US climate coverage](https://doi.org/10.1016/j.gloenvcha.2003.10.001);
+it motivates the risk but is not universal proof for every Parallax topic.
 
 Parallax separates the three explicitly:
 
 - **Procedural neutrality** — identical rules of search, typing, contestation,
-  appeal. *Guaranteed.*
+  and appeal. *Target invariant; must be continuously audited.*
 - **Evidential asymmetry** — results may lean. *Allowed.*
 - **Perceived neutrality** — a diagnostic metric, **never an optimisation
   target.**
@@ -439,12 +473,15 @@ which keywords, which languages, which camp-proposed sources were examined.
 
 ## 20. Governance: a separation of powers, not a source rating
 
-Community Notes is the best *deployed* cross-camp gate but too slow and
-low-coverage to be a source map alone; Wikipedia is the best *institutional*
-model of sourcing memory and rules but has no formal cross-camp guarantee.
-Parallax's strongest design is the **hybrid** — public sourcing rules +
-adversarial evidence dossiers + bridging gate + rotating juries + public audit —
-deliberately split into five layers:
+Among the design references considered here, Community Notes contributes a
+deployed cross-group publication gate, while Wikipedia's
+[reliable-sources guideline](https://en.wikipedia.org/wiki/Wikipedia:Reliable_sources)
+and [consensus policy](https://en.wikipedia.org/wiki/Wikipedia:Consensus)
+contribute examples of explicit, revisable sourcing and governance rules
+without a formal cross-group guarantee. These are design hypotheses, not a
+benchmark result. The target design is a **hybrid**—public sourcing rules,
+adversarial evidence dossiers, a bridging gate, rotating juries, and public
+audit—deliberately split into five layers:
 
 1. **Public sourcing rules (the floor).** A rules-based anti-disinformation
    floor, readable *before any vote*, claim-scoped (domain, claim type, period,
@@ -453,28 +490,29 @@ deliberately split into five layers:
    *without* bridging: unverified UGC is never a source for a controversial
    factual claim; no identifiable editorial accountability → negative
    presumption; opinion → attribution mandatory; health/law/finance/
-   living-persons → higher bar. This is Wikipedia's strength (rules + context +
-   archived consensus + revisable, with explicit exceptions). Replacing law
-   with mood is the failure to avoid.
+   living-persons → higher bar. The relevant design hypothesis is rules plus
+   context, archived decisions, revision, and explicit exceptions; it must be
+   evaluated rather than imported wholesale.
 2. **Adversarial evidence dossier.** Agents assemble for/against (external
    citations, corrections, retractions, methodology vs documented errors,
    conflicts, UGC/AI) and dedupe; humans decide; every agent output is
    challengeable (§12).
 3. **Bridging gate** (§8) — sensitive labels ship only cross-camp, never by
    simple majority.
-4. **Rotating source juries** for the hard cases — sortition from a qualified
-   pool (the OECD deliberative mini-public / citizens'-assembly model) — used
+4. **Rotating source juries** for the hard cases—sortition from a qualified
+   pool, informed by the OECD's documented
+   [representative deliberative-process models](https://www.oecd.org/en/publications/innovative-citizen-participation-and-new-democratic-institutions_339306da-en.html)—used
    when a source is heavily used, the label is hotly contested, bridging is
    long-blocked, the domain needs expertise, or a false label is socially
    costly. The jury gets the adversarial dossier, applies the published rules,
    and produces a *reasoned recommendation* that still ships only if it then
    survives bridging — otherwise it stays "jury recommendation, unbridged".
    Temporary and rotated, never a permanent caste (→ §17).
-5. **Forecasting as a signal, not a verdict.** Prediction / replication markets
-   (DARPA SCORE) answer empirical sub-questions — "corrected within 90 days?",
-   "will an independent replication succeed?" — feeding the dossier. They never
-   decide "reliable"; governance-by-speculators is manipulable and legally
-   fraught.
+5. **Forecasting as a signal, not a verdict.** Programs such as DARPA's completed
+   [SCORE program](https://www.darpa.mil/research/programs/systematizing-confidence-in-open-research-and-evidence)
+   motivate testing calibrated confidence on reproducibility questions. Any
+   prediction or replication signal would feed the dossier; it would never
+   decide "reliable" or substitute for review.
 
 **Four statuses — never a rating:**
 
@@ -485,20 +523,23 @@ deliberately split into five layers:
 | **Bridged label** | a scoped claim validated by cross-camp consensus |
 | **Contested / unbridged** | evidence exists, cross-camp agreement not reached |
 
-**Where bridging-*only* governance fails** (hence the floor + juries): too many
-false negatives (the worst sources stay unlabelled if a camp blocks); strategic
-veto / consensus-denial (→ §10); politics-vs-expertise confusion (on a medical
-claim the relevant disagreement is method / conflict-of-interest / evidence
-level, not left/right — judge by domain-relevant latent camps, §8–§9);
-over-global labels ("S is reliable" is almost always false — always scope);
-**infinite regress** (if "S is reliable" is a claim, so is the evidence judging
-it — close it with *procedural primitives* that are not infinitely
-re-debatable); privacy-vs-audit (prove bridging via aggregate evidence — code,
-thresholds, k-anonymised distributions, independent audits — not by exposing
-camps); legal/reputational risk (a published map reads as a rating agency —
-phrase everything as *scoped guidance*, never an absolute verdict).
+**Where bridging-only governance fails** (hence the target floor and juries):
+
+- false negatives when a group blocks a label;
+- strategic veto or consensus denial (→ §10);
+- confusion between political disagreement and domain expertise;
+- over-global labels such as "S is reliable" without scope;
+- infinite regress when every procedural primitive is reopened recursively;
+- privacy loss when auditability exposes inferred groups or identities;
+- legal and reputational risk when a scoped map is read as a rating agency.
+
+Public language must therefore remain scoped guidance, never an absolute
+verdict.
 
 ## 21. The canonical object is a sourcing claim, not a source fiche
+
+**Status: Target.** The current browser and experimental backend do not expose
+this seven-stage sourcing-claim lifecycle end to end.
 
 The unit is never a fiche ("NYT = 92/100", "Fox = unreliable"). It is a
 **scoped sourcing claim** running the standard lifecycle:
@@ -514,9 +555,10 @@ value_dependent`.
 1. **Claim generator** — agents propose / dedupe / rescope sourcing claims.
 2. **Evidence dossier** — agents collect for/against; humans contest.
 3. **Rater matrix** — Helpful / Somewhat / Not + rationale.
-4. **Bridging scorer** — Community Notes-like MF with cross-factor minimums +
-   anti-coordination.
-5. **Deliberation** — Polis-like consensus statements + disagreement maps.
+4. **Bridging scorer** — a versioned, evaluated cross-group model with explicit
+   coverage and anti-coordination requirements.
+5. **Deliberation** — a disagreement map; [Polis](https://pol.is/home) is a
+   research reference, not an accepted implementation.
 6. **Governance** — public rules + rotating juries + appeals + audits.
 7. **Public display** — no global score; only scoped statuses, dossiers,
    uncertainty, coverage.
@@ -530,14 +572,17 @@ value_dependent`.
 > médicaux. Dernier audit : X. Couverture : suffisante des deux côtés latents.
 > Appel possible. »*
 
-Every red line holds: no winner, no ranking of people, no global source score,
+Every target red line must hold: no winner, no ranking of people, no global source score,
 no proclaimed neutrality, nothing deleted, AI in the audit trail, humans for
 judgment, bridging for sensitive decisions.
 
 ## 22. The living source library (AI-first, community-vetted, reusable)
 
-A verified source must not stay trapped in the debate that vetted it. The
-compounding asset Parallax builds is a **living library of vetted sources** —
+**Status: Target.** No reusable reviewed-source library currently exists.
+
+A reviewed source use should not stay trapped in the debate that evaluated it.
+The target compounding asset is a **living library of reviewed source
+artifacts and scoped uses** —
 the source-side twin of the global claim library
 ([03-data-model.md](03-data-model.md#the-global-claim-graph-cross-debate-model)).
 A two-stage flow feeds it:
@@ -550,12 +595,12 @@ A two-stage flow feeds it:
    structured notes; a verdict stands only by cross-camp agreement (§8), never
    a show of hands.
 
-Once analyzed by enough people, a source becomes a **reusable library entry**
-carrying its vetting with it: **verify once, cite everywhere.** Later debates
-cite it without re-litigating it, and the assistant can **propose
-already-vetted sources** from the library while a contributor builds an
-argument — surfacing high-integrity evidence instead of leaving everyone to
-start from a blank page.
+After sufficient review, an exact artifact and scoped use may become a
+**reusable library entry** carrying its evidence and limitations with it:
+**evaluate one version under one scope, reuse without losing either.** A later
+debate must still check semantic fit, scope fit, freshness, corrections, and
+retractions. The assistant may propose previously reviewed entries; humans
+confirm their applicability to the new claim.
 
 This is a network effect, not a feature: the longer Parallax runs, the deeper
 the commons of vetted evidence gets — analyzed by thousands, owned by no one.

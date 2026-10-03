@@ -7,7 +7,7 @@ Parallax is developed and maintained by **Peerlab**.
 Parallax is an open-source platform for turning difficult public questions into
 structured, auditable debate maps. Instead of flattening everything into a
 comment thread, it separates positions, arguments, claims, sources, values,
-trade-offs, review decisions, and revision history.
+trade-offs, and the Git history of each dossier.
 
 Parallax does not declare winners or present AI output as truth. It helps
 readers inspect what each position depends on, where sources align with a
@@ -17,56 +17,76 @@ specific claim, and where disagreement is driven by values or uncertainty.
 
 Parallax is an actively developed prototype, not a finished public service.
 
-- The browser app includes English and French interfaces and three sourced
-  demonstration debates.
-- It runs without a backend in a read-only fixture mode.
-- An optional Supabase backend adds authentication, contributions, review,
-  revisions, position signals, source assessments, and an analysis pipeline.
-- The analysis pipeline uses deterministic mock output by default. Live model
-  use is optional, server-side, and explicitly configured.
-- The project does not yet provide production guarantees, comprehensive topic
-  coverage, or automated factual verification.
+| Layer | Status | What that means today |
+| --- | --- | --- |
+| Reading site | **Current** | French at `/`, English under `/en/`; three fixture-backed drafts with a prerendered reading body and no account, database, or API key. |
+| Human review | **Pending** | Drafts were prepared with AI tools. No named reviewer or supporter has signed them yet; coverage is computed from the fixtures. |
+| Source alignment | **Draft** | Labels and stored excerpts are inspectable but unreviewed. Links without an excerpt are marked as unverified. |
+| Backend archive | **Frozen** | The retained `supabase/` tree is inactive; the reading site and CI do not use it. |
+
+Parallax does not provide production guarantees, comprehensive topic coverage,
+or automated factual verification. Its bounded target is an exact, structured,
+source-grounded **provisional dossier**, not an oracle that declares truth.
+The shared status vocabulary and documentation map live in
+[`docs/INDEX.md`](docs/INDEX.md).
 
 ## Run the app
 
-Requirements: Node.js 22 or newer and npm.
+Requirements: Node.js `>=22.22.2 <23` or `>=24.15.0`, and npm `10.9.8`, as
+declared by [`app/package.json`](app/package.json).
 
 ```bash
-git clone https://github.com/Swarek/parallax.git
+git clone https://github.com/blancmathis/parallax.git
 cd parallax/app
 npm ci
 npm run dev
 ```
 
-The printed local URL opens the fixture-backed version. No account, database,
-or API key is required.
+The printed local URL opens the fixture-backed reading site. No account,
+database, or API key is required.
 
-Useful checks:
+The maintained frontend quality gates are:
 
 ```bash
-npm run check
-npm run lint
-npm run check:fixtures
-SITE_ORIGIN=https://example.com VITE_SITE_ORIGIN=https://example.com npm run build
+npm run qa
+npx playwright install chromium # first local browser run only
+npm run test:e2e
 ```
 
-For the optional Supabase deployment, start with
-[`docs/deployment/deploy-runbook.md`](docs/deployment/deploy-runbook.md). Never
-put service-role, database, JWT, or model-provider secrets in frontend
-variables.
+`qa` covers TypeScript, lint, fixture structure, repository metadata,
+unit/runtime-contract tests, coverage, a test-origin production build, bundle
+budgets, and the production dependency audit. The browser suite covers French
+and English on desktop and mobile, language navigation, legal routes, and
+reading a dossier without JavaScript.
+
+Before publishing, complete the postal address and contact email in
+[`app/src/config/identity.json`](app/src/config/identity.json), set `SITE_ORIGIN`
+and `VITE_SITE_ORIGIN` to the same controlled origin, and build again. Then run
+`npm run check:launch`. It fails while identity placeholders remain, while a
+legal page is missing, or while the build still contains an old placeholder.
+`npm run qa:release` includes this publication gate after the frontend checks.
 
 ## What is implemented
+
+Current in the default fixture-backed app:
 
 - Structured positions, arguments, claims, evidence labels, values, and
   trade-offs.
 - Source panels that describe claim-source alignment rather than assigning a
   global reliability score.
-- Contribution drafts, human review, revision publishing, and audit history.
-- Position signals with vote-before-reveal behavior.
-- Reviewer claim evaluations and source-integrity assessments.
-- Keyboard-accessible, responsive English and French interfaces.
-- Static fixture fallback plus an optional Supabase-backed workflow.
-- A guarded seed-analysis edge function with mock and opt-in live-model modes.
+- A draft notice, AI preparation disclosure, computed source/excerpt coverage,
+  and a link to each fixture's Git history.
+- Keyboard-accessible, responsive French and English reading interfaces.
+- A short home page, project page, legal notice, privacy page, and contact page.
+- Static HTML reading content hydrated by React 19.
+
+Not implemented end to end:
+
+- named human review, supporter signatures, or reviewed publication;
+- exact source excerpts and locators for every truth-apt claim;
+- a versioned source-artifact registry with freshness and change handling;
+- cross-camp governance and the general-purpose verification in the target
+  documents.
 
 The implementation roadmap and completion criteria live in
 [`docs/04-roadmap.md`](docs/04-roadmap.md).
@@ -88,14 +108,18 @@ The implementation roadmap and completion criteria live in
 
 | Path | Purpose |
 | --- | --- |
-| `app/` | Vite, React, and TypeScript browser application |
+| `app/` | Vite, React 19, TypeScript, and static HTML generation |
 | `app/src/data/` | English and French demonstration fixtures |
-| `supabase/migrations/` | Database schema, policies, and backend functions |
-| `supabase/functions/` | Server-side analysis edge function |
-| `supabase/tests/` | SQL security and behavior checks |
+| `app/src/config/identity.json` | Publisher identity and required launch coordinates |
+| `supabase/` | Frozen backend archive; unused by the reading site |
+| `docs/INDEX.md` | Documentation navigation and status vocabulary |
 | `docs/01-vision.md` | Product problem and principles |
+| `docs/02-product.md` | Product decisions and bounded MVP |
 | `docs/03-data-model.md` | Main data contracts |
 | `docs/04-roadmap.md` | Current implementation roadmap |
+| `docs/05-research.md` | Research process and open questions |
+| `docs/06-vision.md` | Target identity and theory of change |
+| `docs/07-engine.md` | Target contribution and review engine |
 | `docs/08-sources.md` | Source-governance model |
 
 ## Contributing and security

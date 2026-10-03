@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LocaleLink as Link, LocaleNavLink as NavLink } from "../i18n/links";
-import { localeFromPath } from "../i18n/provider";
+import { localeFromPath, localizedPath } from "../i18n/paths";
+import { SOURCE_ERROR_URL } from "../config/identity";
 import { useI18n, type Locale } from "../i18n";
-import { pendingFor, useStore } from "../lib/store";
 
-// Deep-link the single masthead CTA at a genuinely divisive seeded debate
-// rather than duplicating the "debates" nav item. Kept as a static path so
-// the chrome stays decoupled from the (lazily loaded) debate data.
+// Keep the masthead CTA on the featured reading route.
 const FEATURED_DEBATE = "/debates/smartphones-schools";
 
 export function ScrollToTop() {
@@ -18,12 +16,9 @@ export function ScrollToTop() {
   return null;
 }
 
-/** Swap the /fr prefix on the current path, preserving the rest of the route. */
+/** Preserve the current route, query and hash when switching languages. */
 function pathForLocale(pathname: string, target: Locale): string {
-  if (localeFromPath(pathname) === target) return pathname;
-  if (target === "fr") return pathname === "/" ? "/fr" : `/fr${pathname}`;
-  const stripped = pathname.replace(/^\/fr(?=\/|$)/, "");
-  return stripped === "" ? "/" : stripped;
+  return localizedPath(pathname, target);
 }
 
 function LocaleSwitch({ className = "" }: { className?: string }) {
@@ -56,8 +51,6 @@ function LocaleSwitch({ className = "" }: { className?: string }) {
 }
 
 export function Masthead() {
-  const store = useStore();
-  const pending = pendingFor(store).length;
   const { t } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
@@ -104,9 +97,6 @@ export function Masthead() {
 
   return (
     <header className="masthead" ref={headerRef}>
-      <a className="skip-link" href="#main">
-        {t.chrome.skipToContent}
-      </a>
       <div className="masthead__inner">
         <Link to="/" className="masthead__brand">
           Parallax<em>.</em>
@@ -114,18 +104,7 @@ export function Masthead() {
         <nav className="masthead__nav" aria-label={t.chrome.primaryNavLabel}>
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
-          <NavLink to="/review" className="masthead__review">
-            {t.common.nav.review}
-            {pending > 0 && (
-              <span className="masthead__badge" aria-hidden="true">
-                {pending}
-              </span>
-            )}
-            {pending > 0 && (
-              <span className="sr-only">{t.chrome.pendingCount(pending)}</span>
-            )}
-          </NavLink>
-          <NavLink to="/you">{t.common.nav.you}</NavLink>
+          <NavLink to="/projet">{t.chrome.project}</NavLink>
         </nav>
         <div className="masthead__right">
           <button
@@ -140,7 +119,7 @@ export function Masthead() {
           </button>
           <LocaleSwitch />
           <Link to={FEATURED_DEBATE} className="masthead__cta">
-            {t.chrome.ctaTakeQuiz}
+            {t.chrome.ctaReadDebate}
           </Link>
           <button
             ref={burgerRef}
@@ -164,18 +143,7 @@ export function Masthead() {
         >
           <NavLink to="/debates">{t.common.nav.debates}</NavLink>
           <NavLink to="/method">{t.common.nav.method}</NavLink>
-          <NavLink to="/review">
-            {t.common.nav.review}
-            {pending > 0 && (
-              <span className="masthead__badge" aria-hidden="true">
-                {pending}
-              </span>
-            )}
-            {pending > 0 && (
-              <span className="sr-only">{t.chrome.pendingCount(pending)}</span>
-            )}
-          </NavLink>
-          <NavLink to="/you">{t.common.nav.you}</NavLink>
+          <NavLink to="/projet">{t.chrome.project}</NavLink>
           <div className="masthead__sheetfoot">
             <LocaleSwitch />
           </div>
@@ -203,7 +171,7 @@ export function Footer() {
               <h4>{t.chrome.explore}</h4>
               <Link to="/debates">{t.chrome.allDebates}</Link>
               <Link to="/method">{t.chrome.howItWorks}</Link>
-              <Link to="/review">{t.chrome.reviewQueue}</Link>
+              <Link to="/projet">{t.chrome.project}</Link>
             </div>
             <div>
               <h4>{t.chrome.principles}</h4>
@@ -222,6 +190,10 @@ export function Footer() {
         <div className="colophon__legal">
           <span>{t.chrome.legal.instrument}</span>
           <span>{t.chrome.legal.seed}</span>
+          <Link to="/mentions-legales">{t.legal.legal.title}</Link>
+          <Link to="/confidentialite">{t.legal.privacy.title}</Link>
+          <Link to="/contact">{t.legal.contact.title}</Link>
+          <a href={SOURCE_ERROR_URL}>{t.legal.reportError}</a>
           <LocaleSwitch className="locale-switch--footer" />
         </div>
       </div>

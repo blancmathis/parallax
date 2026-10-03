@@ -28,7 +28,6 @@ const allowedTextDiffs = new Set([
   "tradeoffs.*.gain",
   "tradeoffs.*.cost",
   "tradeoffs.*.risk",
-  "audit_events.*.summary",
 ]);
 
 function readJson(filePath) {
@@ -69,7 +68,6 @@ function checkReferences(fixture, file) {
   const evidenceIds = ids(fixture.evidence_links, "evidence_link", file);
   const valueIds = ids(fixture.values, "value", file);
   const tradeoffIds = ids(fixture.tradeoffs, "tradeoff", file);
-  ids(fixture.audit_events, "audit_event", file);
 
   assert(fixture.topic.current_revision_id === revisionId, `${file}: topic current_revision_id mismatch`);
   assert(fixture.revision.topic_id === topicId, `${file}: revision topic_id mismatch`);
@@ -106,10 +104,6 @@ function checkReferences(fixture, file) {
     has(positionIds, tradeoff.position_id, "tradeoff position", file);
   }
 
-  for (const event of fixture.audit_events) {
-    has(new Set([topicId]), event.topic_id, "audit topic", file);
-    has(new Set([revisionId]), event.revision_id, "audit revision", file);
-  }
 }
 
 function compareStructure(enValue, frValue, parts, file) {

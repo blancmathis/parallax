@@ -12,10 +12,9 @@ export default function Method() {
   usePageTitle(t.meta.titleMethod);
 
   // Canonical three-filters order: facts -> comprehension/steelman -> values,
-  // then the on-the-record review that protects all three. The seed array is
-  // authored as steelman(0) / sources(1) / values(2) / review(3); we read it
-  // in canonical order and renumber at render so it matches the Landing pillars.
-  const order = [1, 0, 2, 3];
+  // with no contribution or review flow. The array is authored as steelman(0) /
+  // sources(1) / values(2); renumber to match the Landing pillars.
+  const order = [1, 0, 2];
 
   return (
     <main className="page method">
@@ -140,19 +139,6 @@ export default function Method() {
         </div>
 
         <p className="method__sourcekey">{t.method.sources.keyline}</p>
-      </section>
-
-      <section className="method__section">
-        <h2>{t.features.engineTitle}</h2>
-        <p>{t.features.engineLede}</p>
-        <ol className="engine">
-          {t.features.engineItems.map((item) => (
-            <li key={item.title} className="engine__item">
-              <b>{item.title}</b>
-              <p>{item.body}</p>
-            </li>
-          ))}
-        </ol>
       </section>
 
       <section className="method__section method__section--ai">

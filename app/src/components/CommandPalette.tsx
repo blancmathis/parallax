@@ -8,6 +8,14 @@ interface Item {
   label: string;
   hint: string;
   to: string;
+  searchText: string;
+}
+
+function normalizeSearch(value: string, locale: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase(locale);
 }
 
 export function CommandPalette() {
@@ -19,30 +27,59 @@ export function CommandPalette() {
   const restoreRef = useRef<HTMLElement | null>(null);
   const navigate = useLocaleNavigate();
   const { locale, t } = useI18n();
+  const debates = getDebates(locale);
 
   const items: Item[] = useMemo(() => {
-    const debates = getDebates(locale);
     const p = t.interactive.palette;
+    const page = (id: string, label: string, to: string): Item => ({
+      id,
+      label,
+      hint: p.hintPage,
+      to,
+      searchText: `${label} ${p.hintPage}`,
+    });
     return [
-      { id: "home", label: p.home, hint: p.hintPage, to: "/" },
-      { id: "debates", label: p.allDebates, hint: p.hintPage, to: "/debates" },
-      { id: "method", label: p.method, hint: p.hintPage, to: "/method" },
-      { id: "review", label: p.review, hint: p.hintPage, to: "/review" },
-      { id: "you", label: p.you, hint: p.hintPage, to: "/you" },
+      page("home", p.home, "/"),
+      page("debates", p.allDebates, "/debates"),
+      page("method", p.method, "/method"),
       ...debates.map((d) => ({
         id: d.topic.id,
         label: d.topic.question,
         hint: p.hintDebate,
         to: `/debates/${slugOf(d)}`,
+        searchText: [
+          d.topic.title,
+          d.topic.question,
+          d.topic.summary,
+          ...d.positions.flatMap((position) => [
+            position.title,
+            position.short_summary,
+            position.steelman,
+          ]),
+          ...d.arguments.map((argument) => argument.summary),
+          ...d.claims.map((claim) => claim.text),
+          ...d.sources.flatMap((source) => [
+            source.title,
+            source.publisher,
+            source.url,
+            source.quality_notes,
+          ]),
+          ...d.values.flatMap((value) => [value.name, value.description]),
+          ...d.tradeoffs.flatMap((tradeoff) => [
+            tradeoff.gain,
+            tradeoff.cost,
+            tradeoff.risk,
+          ]),
+        ].join(" "),
       })),
     ];
-  }, [locale, t]);
+  }, [debates, t]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = normalizeSearch(query.trim(), locale);
     if (!q) return items;
-    return items.filter((i) => i.label.toLowerCase().includes(q));
-  }, [items, query]);
+    return items.filter((item) => normalizeSearch(item.searchText, locale).includes(q));
+  }, [items, locale, query]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -123,6 +160,7 @@ export function CommandPalette() {
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
                 e.preventDefault();
+                if (filtered.length === 0) return;
                 setActive((a) => Math.min(a + 1, filtered.length - 1));
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();

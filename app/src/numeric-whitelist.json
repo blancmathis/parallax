@@ -1,0 +1,42 @@
+[
+  {
+    "selector": ".pillar__no, .whynow__no, .method__num, .srcflow__n",
+    "numbers": ["01", "02", "03", "1", "2", "3"],
+    "reason": "Retained editorial section ordinals, not measured product results."
+  },
+  {
+    "selector": ".topicflow__n",
+    "numbers": ["1", "2", "3", "4", "5", "6"],
+    "reason": "Six numbered steps in the explicitly described target lifecycle."
+  },
+  {
+    "selector": ".chooser > .section__eyebrow, .disagree > .section__eyebrow",
+    "numbers": ["1", "2"],
+    "reason": "The two retained reading steps: positions, then values and trade-offs."
+  },
+  {
+    "selector": ".founder__line",
+    "numbers": ["42", "2023"],
+    "reason": "Founder biography supplied in the existing project copy: Ecole 42 and AI work since 2023; not an outcome statistic."
+  },
+  {
+    "selector": ".notfound > .stamp",
+    "numbers": ["404"],
+    "reason": "HTTP not-found status code, not a corpus or user count."
+  },
+  {
+    "selector": ".legal-host__address",
+    "numbers": ["101", "94107"],
+    "reason": "Cloudflare hosting address published in https://www.cloudflare.com/privacypolicy/; a legal identity detail, not a measured result."
+  },
+  {
+    "selector": ".legal-host__phone",
+    "numbers": ["1", "650", "319", "8930"],
+    "reason": "Cloudflare contact phone published in https://www.cloudflare.com/privacypolicy/; a legal contact detail, not a measured result."
+  },
+  {
+    "selector": ".legal-editor__status",
+    "numbers": ["1", "2004", "575", "21"],
+    "reason": "Legal reference: article 1-1, II of French law no. 2004-575 of 21 June 2004 (LCEN); not a measured result."
+  }
+]

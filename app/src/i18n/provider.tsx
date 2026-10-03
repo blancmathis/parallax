@@ -3,13 +3,11 @@
 import { useCallback, useEffect, useMemo, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { I18nContext, dictionaries, type Locale } from "./index";
+import { localeFromPath } from "./paths";
 
 const STORAGE_KEY = "parallax.locale";
 
-/** Pure, SSR-safe: locale is a function of the path only (EN at /, FR under /fr). */
-export function localeFromPath(pathname: string): Locale {
-  return pathname === "/fr" || pathname.startsWith("/fr/") ? "fr" : "en";
-}
+export { localeFromPath } from "./paths";
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();

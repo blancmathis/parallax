@@ -1,75 +1,93 @@
 import type { Claim, DebateFixture } from "../types";
-import { POSITION_LETTERS } from "./index";
+
+// Kept local so this pure state module can be exercised without importing the
+// fixture registry (which eagerly loads every JSON debate).
+const POSITION_LETTERS = ["A", "B", "C", "D", "E", "F"];
 
 /**
  * Canonical epistemic-state derivation, shared by the debate page StateStrip
  * and the library cards' shape bar so the ledger never disagrees with its
  * cards. Previously duplicated verbatim in DebatePage.tsx and DebateCard.tsx.
  */
-export type ClaimState = "established" | "contested" | "values";
+export type ClaimState =
+  | "established"
+  | "contested"
+  | "provisional"
+  | "values";
 
-/** The single source of truth for a claim's derived epistemic state. A stored,
- *  reviewer-authored evaluation (G2), when present, is authoritative over the
- *  heuristic — the Library-of-Truths record wins. */
-export function claimState(
-  debate: DebateFixture,
-  claim: Claim,
-  evaluations?: Map<string, ClaimState>,
-): ClaimState {
-  const stored = evaluations?.get(claim.id);
-  if (stored) return stored;
+/** Fixture labels describe source alignment, never an established verdict.
+ *  Without a human review record, truth-apt claims remain provisional. */
+export function claimState(_debate: DebateFixture, claim: Claim): ClaimState {
   if (claim.claim_type.includes("normative")) return "values";
-  const links = debate.evidence_links.filter((l) => l.claim_id === claim.id);
+  if (claim.review_status === "unreviewed") return "provisional";
   if (
     claim.review_status === "contested" ||
-    links.some(
-      (l) => l.label === "contradicts_claim" || l.label === "unclear",
-    )
-  )
+    claim.review_status === "rejected"
+  ) {
     return "contested";
-  // "Established" must be earned by positive evidence — an unsupported claim is
-  // not established by default; it stays contested until a source backs it.
-  const supported = links.some(
-    (l) =>
-      l.label === "supports_claim" || l.label === "partially_supports_claim",
-  );
-  return supported ? "established" : "contested";
+  }
+  return "provisional";
 }
 
-/** The three epistemic temperaments the corpus can show at a glance. */
-export type Temperament = "settled" | "contested" | "values";
+/** The four aggregate temperaments the corpus can show at a glance. */
+export type Temperament =
+  | "settled"
+  | "contested"
+  | "provisional"
+  | "values";
 
 /** Per-debate aggregate of claim states + the dominant temperament. */
 export function debateShape(
   debate: DebateFixture,
-  evaluations?: Map<string, ClaimState>,
 ): {
   established: number;
   contested: number;
+  provisional: number;
   values: number;
   total: number;
   temperament: Temperament;
 } {
   let established = 0;
   let contested = 0;
+  let provisional = 0;
   let values = 0;
   for (const claim of debate.claims) {
-    const s = claimState(debate, claim, evaluations);
+    const s = claimState(debate, claim);
     if (s === "established") established += 1;
     else if (s === "contested") contested += 1;
+    else if (s === "provisional") provisional += 1;
     else values += 1;
   }
-  const total = established + contested + values;
-  // A debate is "values-dependent" or "contested" only when that signal is a
-  // real share of the corpus (>= a quarter of its claims), otherwise it reads
-  // as a settled / evidence-backed dossier with a minor caveat.
+  const total = established + contested + provisional + values;
+  // A non-settled temperament appears only when that exclusive state is a real
+  // share of the corpus (>= a quarter of its claims). Provisional is never
+  // folded into contested: pending review and an actual challenge are
+  // materially different signals.
   let temperament: Temperament = "settled";
-  if (values >= contested && values * 4 >= total && values > 0) {
+  if (
+    values >= contested &&
+    values >= provisional &&
+    values * 4 >= total &&
+    values > 0
+  ) {
     temperament = "values";
-  } else if (contested > 0 && contested * 4 >= total) {
+  } else if (
+    contested >= provisional &&
+    contested * 4 >= total &&
+    contested > 0
+  ) {
     temperament = "contested";
+  } else if (provisional * 4 >= total && provisional > 0) {
+    temperament = "provisional";
   }
-  return { established, contested, values, total, temperament };
+  return {
+    established,
+    contested,
+    provisional,
+    values,
+    total,
+    temperament,
+  };
 }
 
 /** Letters of every position whose arguments reference a given claim id. */

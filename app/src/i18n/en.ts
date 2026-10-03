@@ -1,7 +1,5 @@
 import type {
   ClaimType,
-  Contribution,
-  ContributionType,
   DebateFixture,
   EvidenceLabel,
   ReviewStatus,
@@ -10,47 +8,12 @@ import type {
 type Direction = DebateFixture["arguments"][number]["direction"];
 type SourceType = DebateFixture["sources"][number]["source_type"];
 type RetrievalStatus = DebateFixture["sources"][number]["retrieval_status"];
-type ActorType = DebateFixture["audit_events"][number]["actor_type"];
-
-type ContributionOption = {
-  id: ContributionType;
-  label: string;
-  hint: string;
-};
 
 type MethodLabel = {
   cls: EvidenceLabel;
   name: string;
   desc: string;
 };
-
-const contributionTypes: ContributionOption[] = [
-  {
-    id: "new_claim",
-    label: "New claim",
-    hint: "Add an assertion a position relies on (with a source if you have one).",
-  },
-  {
-    id: "new_source",
-    label: "New source",
-    hint: "Attach a public source to an existing claim.",
-  },
-  {
-    id: "challenge_evidence_label",
-    label: "Challenge a label",
-    hint: "Argue that a claim-source alignment label is wrong.",
-  },
-  {
-    id: "challenge_steelman",
-    label: "Challenge a steelman",
-    hint: "A supporter of this view would not recognize it? Say why.",
-  },
-  {
-    id: "new_position",
-    label: "Missing position",
-    hint: "A serious answer to the question that is not represented yet.",
-  },
-];
 
 const evidenceLabels: Record<EvidenceLabel, string> = {
   supports_claim: "supports",
@@ -73,12 +36,6 @@ const reviewStatusLabels: Record<ReviewStatus, string> = {
   rejected: "rejected",
 };
 
-const contributionStatusLabels: Record<Contribution["status"], string> = {
-  submitted: "submitted",
-  accepted: "accepted",
-  rejected: "rejected",
-};
-
 const sourceTypes: Record<SourceType, string> = {
   article: "article",
   paper: "paper",
@@ -93,23 +50,8 @@ const retrievalStatuses: Record<RetrievalStatus, string> = {
   found: "found",
   missing: "missing",
   blocked: "blocked",
+  failed: "retrieval failed",
   partial: "partial",
-};
-
-const actorTypes: Record<ActorType, string> = {
-  user: "user",
-  admin: "admin",
-  ai: "AI",
-  system: "system",
-};
-
-const contributionLabels: Record<ContributionType, string> = {
-  new_claim: "new claim",
-  new_source: "new source",
-  new_position: "new position",
-  challenge_evidence_label: "evidence label challenge",
-  challenge_steelman: "steelman challenge",
-  value_tradeoff_correction: "value/tradeoff correction",
 };
 
 const methodLabels: MethodLabel[] = [
@@ -140,65 +82,34 @@ const methodLabels: MethodLabel[] = [
   },
 ];
 
-const plural = (n: number, one: string, many: string) =>
-  `${n} ${n === 1 ? one : many}`;
-
 export const en = {
   common: {
     localeName: "English",
     nav: {
       debates: "Debates",
       method: "Method",
-      review: "Review queue",
-      readDebate: "Read a debate",
-      you: "You",
     },
     actions: {
       allDebates: "All debates",
-      browseDebates: "Browse the debates",
-      read: "Read",
-      close: "Close",
-      approve: "Approve",
-      reject: "Reject",
-      resetDemo: "Reset demo data (clears local contributions, reviews, and audit events)",
     },
     counts: {
-      claims: (n: number) => plural(n, "claim", "claims"),
-      sources: (n: number) => plural(n, "source", "sources"),
-      publicSources: (n: number) => plural(n, "public source", "public sources"),
-      evidenceLinks: (n: number) => plural(n, "evidence link", "evidence links"),
-      draftContributions: (n: number) =>
-        `${n} draft contribution${n === 1 ? "" : "s"} awaiting review — open the queue ->`,
       seriousAnswers: (n: number) => `${n} serious answer${n === 1 ? "" : "s"}.`,
       previewStats: (claims: number, sources: number, links: number) =>
         `${claims} claims · ${sources} public sources · ${links} evidence links.`,
       cardStats: (claims: number, sources: number, links: number) =>
         `${claims} claims · ${sources} sources · ${links} evidence links`,
-      pendingPrefix: (n: number) => (n > 0 ? `${n} pending · ` : ""),
       sourceCount: (n: number) => `${n} source${n === 1 ? "" : "s"}`,
     },
     labels: {
       revision: "Revision",
       revisionShort: "rev.",
       publicPolicy: "Public policy",
-      step: "Step",
       confidence: "confidence",
       retrieved: "retrieved",
-      utc: "UTC",
-      community: "Community",
-      submitted: "Submitted",
-      pending: "Pending",
-      decided: "Decided",
-      reviewer: "Reviewer",
-      on: "on",
-      proposedLabel: "proposed label",
       evidence: "Evidence",
-      source: "source",
       noSourceYet: "no source yet",
       unreviewedStamp: "Unreviewed",
-      openSource: "Open source",
-      nonProfit: "Non-profit",
-      auditable: "Auditable",
+      nonProfit: "Public-interest project",
     },
     claimTypes: {
       factual: "factual",
@@ -215,34 +126,18 @@ export const en = {
     evidenceLabels,
     directionLabels,
     reviewStatusLabels,
-    contributionStatusLabels,
-    contributionLabels,
     sourceTypes,
     retrievalStatuses,
-    actorTypes,
-    auditEventTypes: {
-      topic_created: "topic created",
-      source_added: "source added",
-      source_retrieved: "source retrieved",
-      claim_extracted: "claim extracted",
-      evidence_labeled: "evidence labeled",
-      position_generated: "position generated",
-      revision_published: "revision published",
-      contribution_submitted: "contribution submitted",
-      review_completed: "review completed",
-    } as Record<string, string>,
   },
   meta: {
     titleHome: "Parallax — The atlas of disagreement",
     titleDebates: "Debates — Parallax",
     titleMethod: "Method — Parallax",
-    titleReview: "Review queue — Parallax",
-    titleYou: "Your map — Parallax",
     description:
       "Parallax maps serious disagreement: every view at its strongest, every claim tied to its sources, every value named. Enough to build a grounded view — and to understand why reasonable people diverge: sometimes the same values weighed differently, sometimes different ones. No winner crowned.",
     ogTitle: "Parallax — Understand every view. Including your own.",
     ogDescription:
-      "A non-profit, open-source atlas of disagreement. Facts, then the strongest case, then the values underneath. No winners declared. Ever.",
+      "An open-source atlas of disagreement built with a public-interest purpose. Facts, then the strongest case, then the values underneath. No winners declared.",
     descriptionDebates:
       "Browse every debate on Parallax — each laid out flat: positions at their strongest, evidence, and the values underneath.",
     descriptionMethod:
@@ -255,44 +150,109 @@ export const en = {
   },
   chrome: {
     footerMotto:
-      "Most disagreements are about values, not facts. When we see each other's values clearly, we stop being enemies.",
+      "Once the facts are laid out, what remains is values, bets on the future and trust. Seen clearly, an opponent stops being an enemy.",
     explore: "Explore",
     principles: "Principles",
     project: "Project",
     allDebates: "All debates",
     howItWorks: "How it works",
-    reviewQueue: "Review queue",
     principleItems: [
       "No winners declared",
       "Every side steel-manned",
       "Every label auditable",
     ],
-    projectItems: ["Open source", "Non-profit", "Milestone 1-3 prototype"],
+    projectItems: [
+      "Open source",
+      "Public-interest purpose",
+      "Read-only drafts",
+    ],
     legal: {
       instrument: "parallax — an instrument for public reasoning",
       seed: "seed debates use public sources · structure unreviewed",
     },
     languageLabel: "Language",
-    skipToContent: "Skip to content",
     primaryNavLabel: "Primary",
+    ctaReadDebate: "Read a debate",
     commandPaletteLabel: "Search and jump to a page",
-    ctaTakeQuiz: "Take the quiz",
     menuOpen: "Open menu",
     menuClose: "Close menu",
-    pendingCount: (n: number) =>
-      `${n} contribution${n === 1 ? "" : "s"} pending review`,
+  },
+  legal: {
+    legal: {
+      title: "Legal notice",
+      lede: "Publisher identity and information about publishing Parallax.",
+    },
+    privacy: {
+      title: "Privacy",
+      lede: "You can read the dossiers without an account, cookies or trackers in the application.",
+    },
+    contact: {
+      title: "Contact",
+      lede: "An error in a claim, excerpt or label? Identify the passage so it can be reviewed.",
+    },
+    editorTitle: "Publisher and publication",
+    editor: "Publisher",
+    director: "Publication director",
+    address: "Postal address",
+    email: "Contact email",
+    addressPending: "Postal address to be supplied before publication.",
+    phone: "Phone",
+    phonePending: "Phone number to be supplied before publication.",
+    nonProfessional:
+      "Parallax is published on a non-professional basis. Under article 1-1, II of French law no. 2004-575 of 21 June 2004 (LCEN), the publisher's address and phone number are not published: they are supplied to the hosting provider below.",
+    emailPending: "Contact email to be supplied before publication.",
+    hostTitle: "Hosting provider",
+    hostPolicy: "Cloudflare privacy policy",
+    sourceTitle: "About the dossiers",
+    sourceBody: "The current dossiers were prepared with AI tools. They have not yet been reviewed or signed by named people. Sources, excerpts and labels remain open to correction.",
+    reportError: "Report an error",
+    reportBody: "The GitHub form is public: do not publish personal or confidential information there. Identify the claim, source and relevant excerpt.",
+    privateTitle: "Private contact",
+    privateBody: "For a private enquiry or a request about your data, use the publisher’s email. Vulnerabilities can be reported through GitHub’s private security form.",
+    securityLink: "Report a vulnerability privately",
+    privacySections: [
+      {
+        title: "Reading without a profile",
+        body: "The application has no account, collection form or opinion profile. It sets no cookies and includes no trackers or audience analytics. Fonts are hosted with the site.",
+      },
+      {
+        title: "Storage in your browser",
+        body: "localStorage holds only parallax.locale, with the value fr or en: the last language viewed. This preference stays in this browser and is not sent to a database. No vote, quiz, profile, contribution draft or reading history is stored. You can clear it in your browser settings; the page address determines the reading language.",
+      },
+      {
+        title: "Hosting logs",
+        body: "Cloudflare may process IP addresses and technical request information to route pages and keep them secure. Processing and retention depend on the hosting services and their configuration; we do not promise an absence of logs. See Cloudflare’s policy for its processing and international transfers.",
+      },
+      {
+        title: "External links and messages",
+        body: "Sources and GitHub links lead to third-party sites with their own rules. GitHub reports are public. If you email the publisher, the information in your message is used to handle your request, without enriching an opinion profile.",
+      },
+      {
+        title: "Your rights",
+        body: "Contact the publisher for access, correction or erasure requests concerning your data. You can also contact the CNIL, the French data protection authority. Do not send sensitive information in a public issue.",
+      },
+    ],
+    rightsLink: "Contact the CNIL",
   },
   landing: {
+    draftNote: "Intended method: these drafts prepared with AI tools still await human review and signatures.",
+    projectMission: "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to align AI.",
+    methodSummary: "Present each position at its strongest, connect claims to exact source excerpts, then name the values and uncertainties behind the disagreement. Review should make every step inspectable.",
+    reviewers: {
+      eyebrow: "Call for reviewers",
+      headline: "Do you defend a position?",
+      headlineEm: "Help us represent it fairly.",
+      body: "We are looking for supporters of each position and source reviewers. The dossiers still await that review: read the protocol and how to sign a review.",
+      cta: "Take part in the review",
+    },
     hero: {
       kicker: "The atlas of disagreement",
-      titleLine: "The living library of the",
-      titleEm: "great debates.",
+      titleLine: "The dossier on every great debate,",
+      titleEm: "reviewed by those who disagree.",
       lede:
-        "Here, we advance every great question toward clear, structured, sourced answers. Every viewpoint, at its strongest.",
+        "Every position at its strongest, signed by its supporters. Every fact tied to the exact excerpt of its source. What remains — values, bets on the future, trust — stated without naming a winner.",
       primaryCta: "Explore the debates",
       secondaryCta: "Read the method",
-      tertiaryCta: "Measure your own view",
-      tertiaryCtaTime: "1-minute test",
     },
     schematic: {
       topicLabel: "topic",
@@ -378,38 +338,16 @@ export const en = {
       creedSub: "Every view stays — but every claim must be sourced, and a false one is refuted in plain sight.",
       chip: "Three seed debates · structure unreviewed by design",
     },
-    interactive: {
-      eyebrow: "Read it, then test yourself",
-      titleLine: "Don't just read it —",
-      titleEm: "prove you can argue the other side.",
-      lede:
-        "Parallax is not a wall of text to scroll past. Take a position, then prove you can argue the other side — and watch your own view of \"them\" shift.",
-      quizStep: "One minute",
-      quizTitle: "Find where you stand",
-      quizBody:
-        "Five trade-offs map your priorities to the closest position — and to the values you share with the people who disagree.",
-      steelStep: "The real test",
-      steelTitle: "Argue the other side",
-      steelBody:
-        "Pass the steelman test on a view you reject. State it the way a supporter would, and earn a badge that proves you understood it.",
-      deltaStep: "Measured on you, not on them",
-      deltaMetric: "before → after",
-      deltaBody:
-        "Rate the other side before you read, and again after. The shift is computed on your own answers, stays in your browser, and is never sent to us — a mirror, not a metric we collect. Whether reading moves readers in general is a study we want to run, not a result we're claiming.",
-      refrain: "This is where the enemy turns back into a person.",
-      cta: "Start with the smartphones debate",
-      profileLink: "or see your profile",
-    },
     ai: {
       eyebrow: "Humans and AI",
       titleLine: "A compass for humans.",
       titleEm: "A corpus for AI.",
       lede:
-        "The same engine serves both: a living base of verified, sourced reflection where humans and AI learn to think better — together.",
-      buildStep: "AI helps build it",
+        "Today Parallax is a living collection of sourced, unreviewed debate maps. The longer-term aim is a contestable, reviewable corpus for people and AI systems.",
+      buildStep: "The planned AI contract",
       buildTitle: "AI proposes. Humans decide.",
       buildBody:
-        "AI can extract claims, write a position at its strongest, or label how a source aligns. But every AI contribution is flagged, must carry a source, and is confirmed by a human before it enters the record. The AI proposes structure; it never publishes a verdict.",
+        "AI tools helped prepare these draft dossiers. Claims, steelmen and source-alignment labels remain unreviewed until a named human decision.",
       alignStep: "It helps align AI",
       alignTitle: "A corpus to align AI.",
       alignBody:
@@ -421,33 +359,6 @@ export const en = {
       note: "Assembled by hand from public sources and marked unreviewed until independently checked. That status is part of the product, not a disclaimer.",
       allDebates: "All debates ->",
     },
-    loop: {
-      eyebrow: "The loop",
-      titleLine: "Open contribution,",
-      titleEm: "governed by review.",
-      steps: [
-        {
-          verb: "Read",
-          text: "a debate — positions, claims, evidence, values, trade-offs.",
-        },
-        {
-          verb: "Contribute",
-          text: "a draft — a claim, a source, a challenge, a missing position.",
-        },
-        {
-          verb: "Review",
-          text: "drafts stay pending until a reviewer accepts or rejects them, with a written rationale.",
-        },
-        {
-          verb: "Audit",
-          text: "every transformation lands on the record. Nothing changes silently.",
-        },
-      ],
-      noteStart: "Try it: open any debate and press",
-      noteButton: "Improve this debate",
-      noteMiddle: "then play reviewer in the",
-      noteLink: "review queue",
-    },
     trust: {
       titleStart: "\"If you don't trust us,",
       titleEm: "verify.",
@@ -457,22 +368,22 @@ export const en = {
           body: "All prompts, algorithms, and moderation logic are built to be public and inspectable.",
         },
         {
-          title: "Non-profit",
-          body: "Designed as a non-profit: no engagement metrics to juice, no side to favor.",
+          title: "Public-interest purpose",
+          body: "Parallax is currently an open-source project, not a registered non-profit. Its target is independent public-interest governance without engagement incentives or a favored camp.",
         },
         {
           title: "Auditable",
-          body: "Every review decision is on the record; when the AI pipeline ships, every AI step is logged the same way. Neutrality is audited, not proclaimed — an external auditor is a deliverable, not a badge.",
+          body: "The content is stored in versioned files. Their Git history records actual edits; each draft states that it has no named human review yet.",
         },
       ],
     },
     invite: {
       eyebrow: "You're invited",
-      headline: "See a label you'd dispute?",
-      headlineEm: "Touch it.",
+      headline: "See the sources behind a claim?",
+      headlineEm: "Open it.",
       body:
-        "Parallax isn't read-only. Contest a source label, add a better source, or write the missing position — no account needed. Your draft never edits the page directly: it waits for review, with a written rationale, on the record.",
-      cta: "Open a live debate →",
+        "Read each position and open a claim to inspect its sources and available excerpts. These drafts are read-only and have no named human review yet.",
+      cta: "Open a debate demo →",
     },
     whyNow: {
       eyebrow: "Why now",
@@ -480,8 +391,8 @@ export const en = {
       headlineEm: "finally buildable.",
       items: [
         {
-          title: "The validation method is proven.",
-          body: "Judgments confirmed only when they earn agreement across camps — not by majority — now work at scale. Community Notes showed it.",
+          title: "Cross-group agreement is a promising design reference.",
+          body: "Cross-group review is a design reference. Parallax has no active review gate; signed review, coverage and resistance to coordination remain work to be validated.",
         },
         {
           title: "The build cost collapsed.",
@@ -504,7 +415,7 @@ export const en = {
       cards: [
         {
           title: "Mission lock",
-          body: "Parallax is being set up as a French association loi 1901 to hold the mission, the corpus, and the governance, with any commercial work in a legally separate subsidiary — so the red lines can't be quietly sold off.",
+          body: "No legal entity or association exists today. The target is an independent public-interest structure that holds the mission, corpus, and governance, with any commercial work legally separated.",
         },
         {
           title: "Open corpus",
@@ -512,7 +423,7 @@ export const en = {
         },
         {
           title: "No attention economy",
-          body: "No engagement metrics to optimize, no side to favor. Individual data — your quiz, your profile, your perception shift — is never sold; today it never leaves your browser.",
+          body: "The reading site has no account, opinion profile or ballot. Only the language preference is stored in this browser.",
         },
       ],
       fundingLine:
@@ -536,16 +447,11 @@ export const en = {
     titleEm: "organized.",
     lede:
       "Each dossier is a public-policy question decomposed into positions, claims, source-labeled evidence, values, and trade-offs — seeded from public sources, open to contributions, reviewed before changes land.",
-    next: "next",
-    proposeTitle: "Propose a topic",
-    proposeSummary:
-      "General topic creation arrives with Milestone 6 — after the contribution and review loop has proven itself. Good candidates: public-policy questions with publicly inspectable sources.",
-    notOpen: "not yet open",
-    proposeHint: "your idea",
-    proposeAction: "Propose it →",
     emptyTitle: "No debate matches that search.",
     emptyBody: "Try a broader term, or clear the filters to see every dossier.",
     emptyClear: "Clear filters",
+    resultsCount: (n: number) => `${n} debate dossier${n === 1 ? "" : "s"} found.`,
+    dataDemo: "Built-in demo dossiers are active; no live library is configured.",
     noteStart: "Seed packets were assembled by hand from public sources and are marked",
     noteStrong: "unreviewed",
     noteEnd: "until independently checked. That status is part of the product, not a disclaimer.",
@@ -557,29 +463,39 @@ export const en = {
       `${n} claim${n === 1 ? "" : "s"} holding up`,
     shapeContested: (n: number) =>
       `${n} claim${n === 1 ? "" : "s"} contested`,
+    shapeProvisional: (n: number) =>
+      `${n} provisional claim${n === 1 ? "" : "s"} awaiting review`,
     shapeValues: (n: number) =>
       `${n} claim${n === 1 ? "" : "s"} down to values`,
   },
   atlas: {
     spineAria: "Epistemic shape of this debate",
-    spineSummary: (established: number, contested: number, values: number) =>
-      `${established} settled, ${contested} contested, ${values} down to values`,
+    spineSummary: (
+      established: number,
+      contested: number,
+      provisional: number,
+      values: number,
+    ) =>
+      `${established} established, ${contested} contested, ${provisional} provisional, ${values} values-dependent`,
     revisedPrefix: "Revised",
     claimsCounted: (n: number) => `${n} claim${n === 1 ? "" : "s"} on the books`,
     viewAria: "Order the library",
     temperaments: {
       settled: "Mostly settled",
       contested: "Contested",
+      provisional: "Awaiting review",
       values: "Values-dependent",
-    } as Record<"settled" | "contested" | "values", string>,
+    } as Record<"settled" | "contested" | "provisional" | "values", string>,
     legend: {
-      established: (n: number) => `${n} settled`,
+      established: (n: number) => `${n} established`,
       contested: (n: number) => `${n} contested`,
+      provisional: (n: number) => `${n} provisional`,
       values: (n: number) => `${n} down to values`,
     },
     views: {
       all: "All dossiers",
       contested: "Most contested",
+      provisional: "Most awaiting review",
       values: "Values-dependent",
       recent: "Recently revised",
     },
@@ -592,54 +508,44 @@ export const en = {
       links: (_n: number) => "source-to-claim labels",
       questions: (_n: number) => "questions opened",
       settledNote:
-        "Settled means evidence-backed, not a verdict — positions still disagree on what to DO with these facts.",
+        "These are review states, not truth scores: established requires an approved claim evaluation; provisional means independent review is still pending.",
     },
+  },
+  draft: {
+    title: "Unreviewed draft",
+    provenance: "Prepared with AI tools; no named human review yet.",
+    coverage: (positions: string, excerpts: number, links: number, percent: number | null) =>
+      `Sources per position — ${positions} · links with a stored exact excerpt: ${excerpts}/${links}${percent === null ? "" : ` (${percent}%)`}.`,
+    reviewers: "Reviewers: none yet.",
+    excerptNote: "An excerpt’s presence does not certify its fidelity to the source: human review is still needed.",
+    unverifiedExcerpt: "unverified excerpt",
   },
   debatePage: {
     notFound: "No such dossier.",
-    communityPosition: "Community position",
     sharedClaim: (positions: string) => `shared with ${positions}`,
     evidenceEmpty: "No source has been attached to this claim yet.",
-    communityUnmapped: "Not yet mapped on the values matrix.",
     legendCaption:
       "A label describes how one source relates to one claim — never whether the claim is \"true\".",
     argMeta: (claims: number, contested: number, dominant: string) =>
       `${claims} claim${claims === 1 ? "" : "s"} · ${
         contested > 0 ? `${contested} contested · ` : ""
       }mostly ${dominant}`,
-    switcherPassed: "Steelman test passed",
-    switcherMatch: "Your closest position",
-    switcherTakeTest: "Steelman test available",
-    openReviewQueue: "Open the review queue",
     continueEyebrow: "Keep going",
     continueTitle: "Understand the next one.",
-    continueDelta: (delta: number) =>
-      `You rated the other side +${delta} more reasonable after reading.`,
-    continueProfileLink: "See it on your profile",
-    continueYouLink: "your map",
     back: "<- All debates",
     heroStatus: (revision: number, sources: number) =>
       `Revision ${revision} · ${sources} public sources · structure not yet independently reviewed`,
-    improve: "Improve this debate",
     step1: "Step 1",
     chooserEm: "Pick one to read it at its strongest.",
-    communityAccepted: "Community · accepted",
     readingBelow: "Reading below ↓",
     readThisView: "Read this view ->",
     chooserNote: "Parallax organizes disagreement — it never picks a winner.",
     positionAria: "Position",
     readingEyebrow: (letter: string) => `Position ${letter} — read in full`,
-    communityReadingEyebrow: "Community position — accepted in review",
     steelmanLabel: "The strongest case, as a supporter would make it",
-    contested: "contested",
-    communityChallenge: "Community challenge:",
     restsOn: "What this position rests on",
     restsHint:
       "Each argument leans on claims. Open a claim to see its sources and how they align.",
-    communityAdditions: "Community additions",
-    communityAdditionsHint: "Accepted in review. Sources still await alignment labeling.",
-    communityNote:
-      "This position was proposed by a visitor and accepted by a reviewer. It has no structured arguments yet — challenges and sources welcome.",
     asksAccept: "What it asks you to accept",
     youGain: "You gain",
     youPay: "You pay",
@@ -654,8 +560,9 @@ export const en = {
     workTitle: "Show the work.",
     workEm: "Every source, every change, on the record.",
     allSources: "All sources",
-    communitySubmittedSource: "community-submitted · accepted in review · awaiting alignment labeling",
-    auditTrail: "Audit trail",
+    fileHistory: "File history",
+    fileHistoryNote: "Actual changes to this dossier are recorded in Git. Content dates describe the working version, not a human review.",
+    fileHistoryLink: "See changes on GitHub",
     howToRead: "How to read this page",
     howToReadP1:
       "Every position is written as a steelman — the strongest version of that view, as a thoughtful supporter would state it.",
@@ -663,11 +570,9 @@ export const en = {
     howToReadP2End:
       "A label is about one source and one claim. It is never a verdict on the debate.",
     howToReadP3:
-      "Everything here is currently unreviewed: the structure was assembled by hand from the seed packet and has not yet been checked by independent reviewers.",
+      "These drafts were prepared with AI tools and have not yet been checked by named human reviewers. The file history records actual changes.",
     evidenceNote:
       "Labels describe how each source relates to this exact claim — never whether the claim is \"true\".",
-    communityChallengeProposes: (label: string) =>
-      `Community challenge — proposes “${label}”`,
     faultEyebrow: "The fault-line map",
     faultTitle: "Where this debate actually splits.",
     faultEm: "Read the agreement before the fight.",
@@ -689,53 +594,13 @@ export const en = {
     faultEmptySettled: "No settled facts on the map yet.",
     faultEmptyContested: "Nothing is contested by the evidence right now.",
     faultEmptyValues: "No purely values-based claim surfaced yet.",
-    faultWeightLead: "Ranked by what you weigh most",
-    faultWeightNote:
-      "Your quiz priorities, scored against each position's values. A lens, not a verdict.",
-    faultWeightEmpty: "Take the values quiz to see which positions fit you.",
-    faultWeightEmptyCta: "Find where you stand ↑",
-  },
-  contribute: {
-    types: contributionTypes,
-    improve: "Improve this debate",
-    title: "Draft a contribution",
-    submitted: "Submitted",
-    pendingTitle: "Your draft is pending review.",
-    pendingBody:
-      "It will not change the published debate until a reviewer accepts it — with a written rationale, on the record.",
-    openReview: "Open the review queue",
-    draftAnother: "Draft another",
-    whatAdding: "What are you adding?",
-    whichPosition: "Which position?",
-    choosePosition: "Choose a position...",
-    whichClaim: "Which claim?",
-    chooseClaim: "Choose a claim...",
-    whichEvidenceLink: "Which evidence link?",
-    chooseLink: "Choose the link...",
-    currently: "currently",
-    shouldBeLabeled: "It should be labeled...",
-    positionTitle: "Position title",
-    positionTitlePlaceholder: "e.g. \"Yes, but only city-by-city referendum\"",
-    sourceUrl: "Source URL",
-    optional: "(optional)",
-    textareaPlaceholder: "Write it the way a careful reviewer would want to read it...",
-    submit: "Submit for review",
-    hint: "Drafts never edit the live debate directly.",
-    bodyLabels: {
-      new_claim: "The claim, stated atomically",
-      new_source: "What does this source say about the claim?",
-      challenge_evidence_label: "Why is the current label wrong?",
-      challenge_steelman: "What would a supporter not recognize?",
-      new_position: "The position, at its strongest",
-      value_tradeoff_correction: "What value or tradeoff is mis-stated, and how?",
-    } as Record<ContributionType, string>,
   },
   method: {
     labels: methodLabels,
     eyebrow: "The method",
     titleStart: "How to read",
     mission:
-      "Most serious disagreements are about values, not facts. When we can see each other's values clearly — what each side is protecting, and what it is willing to pay — we stop treating the other as an enemy and start treating them as a person who weighs the world differently.",
+      "Serious disagreements are rarely about facts alone. Once the facts are laid out, values, bets on the future and trust remain. When we can see each other's values clearly — what each side is protecting, and what it is willing to pay — we stop treating the other as an enemy and start treating them as a person who weighs the world differently.",
     lede:
       "The product does not tell you what to think. It organizes a debate so you can think clearly — and shows its work at every step.",
     filtersEyebrow: "The three filters",
@@ -745,7 +610,7 @@ export const en = {
       eyebrow: "From start to finish",
       title: "The life of a topic.",
       intro:
-        "A question comes in, gets taken apart, and never stops being inspectable — the same machine runs at every scale.",
+        "This is the target lifecycle: a question is decomposed without losing its sources, scope, review state, or audit trail. Today's prototype demonstrates only part of that loop.",
       steps: [
         {
           n: "1",
@@ -766,28 +631,28 @@ export const en = {
           key: "evidence",
           title: "Claims meet their sources",
           body:
-            "Each position rests on claims; each claim is tied to its sources with a precise alignment label. Sources are vetted — AI first, then people — and join a reusable library.",
+            "Each position rests on claims. In today's prototype, truth-apt claims can link to hand-labeled, unreviewed source cards; AI-assisted review and a reusable, versioned source library remain target behavior.",
         },
         {
           n: "4",
           key: "recurse",
           title: "Contested points fork off",
           body:
-            "A claim contested enough becomes its own scoped question — a sub-debate — and the cycle starts over. A big topic is an atlas of sub-debates, not a page.",
+            "In the target system, a sufficiently contested claim can become its own scoped question and preserve its links back to the parent debate. Today's prototype does not yet create sub-debates.",
         },
         {
           n: "5",
           key: "state",
-          title: "Everything sorts into three",
+          title: "Every claim shows its review state",
           body:
-            "At every level: established (survived scrutiny), contested (and exactly where it blocks), or values-dependent (a legitimate choice of priorities).",
+            "Established means an approved evaluation; contested means a reviewed challenge; provisional means independent review is still pending; values-dependent names a legitimate choice of priorities.",
         },
         {
           n: "6",
           key: "review",
           title: "Nothing changes silently",
           body:
-            "Sensitive judgments ship only when reviewers from opposing camps converge. Every step is on the record, and everything stays contestable.",
+            "The target requires opposing-camp review for sensitive judgments. Current dossiers are unreviewed drafts; changes are recorded in the debate files’ Git history.",
         },
       ],
       recursionNote:
@@ -809,24 +674,19 @@ export const en = {
         body:
           "Most of a hard debate is not about whether the facts are right — it is about which values come first: fairness, efficiency, freedom, safety, trust. Each position declares the values it prioritizes and the price it accepts: what you gain, what you pay, what you risk. That is usually where the real disagreement lives.",
       },
-      {
-        title: "4 — Changes go through review, on the record",
-        body:
-          "Anyone can draft a contribution: a new claim, a new source, a challenge to a label or a steelman, a missing position. Drafts never touch the published debate. A reviewer accepts or rejects each one with a written rationale, and every step — submission, decision, publication — lands in the audit trail. Nothing changes silently.",
-      },
     ],
     noVerified:
       "There is deliberately no \"verified true\". Truth usually needs synthesis across many sources and domain expertise. Claim-source alignment is narrower — and auditable. The label tells you what the source says about the claim; the verdict stays yours.",
     sources: {
       eyebrow: "Trusting the sources",
-      title: "Verified without an arbiter.",
+      title: "Source use, without a global reliability stamp.",
       lede:
         "The hardest question in any debate is whose sources to trust. Parallax never answers it for you by stamping a source \"reliable\" — the moment a platform plays referee, half its readers walk away. So we move the question, and show our work.",
       points: [
         {
           title: "Trust the claim, not the brand.",
           body:
-            "A source is never \"reliable\" in the abstract — only usable, or not, for a specific claim, in a specific field, over a specific period. We trace every citation back to its primary source and check it actually says what it is quoted as saying.",
+            "A source is never \"reliable\" in the abstract — only usable, or not, for a scoped claim. The target is to trace each citation to an exact source version and show the relationship; today's fixture coverage is partial and unreviewed.",
         },
         {
           title: "Two questions, kept apart.",
@@ -836,37 +696,37 @@ export const en = {
         {
           title: "Agreement across camps, not a majority.",
           body:
-            "A judgment about a source only stands when reviewers who usually disagree both accept it. A brigade can't push it through; a single camp can't veto it — the mechanism behind X's Community Notes.",
+            "The target is review by people who hold differing positions. Current drafts have no named human review; no production review pool or sampling method is implemented.",
         },
         {
           title: "Nothing is deleted.",
           body:
-            "A weak source is flagged with its exact defect and pushed down — never erased. It stays on the record, with its reason, open to challenge.",
+            "The target keeps a challenged source visible with its exact defect and rationale rather than erasing the record. This full versioned source history is not implemented yet.",
         },
       ],
-      flowTitle: "How a source gets vetted",
+      flowTitle: "Target workflow for source review",
       flow: [
         {
           step: "01",
-          title: "An LLM checks first",
+          title: "An assistant prepares the checks",
           body:
-            "When a source comes in, the assistant traces it to its primary source, verifies the quote actually says what's claimed, and flags retractions or conflicts of interest — then drafts a neutral source card.",
+            "AI tools helped prepare the draft sources and labels. Their excerpts and proposed alignments require human review; readers cannot trigger an analysis.",
         },
         {
           step: "02",
-          title: "Then people analyze it",
+          title: "People make the review decision",
           body:
-            "Readers from different camps weigh its integrity and leave structured notes. Agreement across camps — not a show of hands — is what lets a verdict stand.",
+            "The target is structured review by people from differing positions. No production reviewer pool, sampling method, or coverage threshold is implemented yet.",
         },
         {
           step: "03",
-          title: "And it joins the library",
+          title: "A reviewed version can join the library",
           body:
-            "A source vetted by many becomes a reusable entry. Later debates cite it without re-litigating it, and the assistant can suggest already-verified sources as you build your case.",
+            "After sufficient scoped review, the target is a reusable, versioned source entry whose evidence, limits, and freshness remain visible. No reviewed source library exists in today's prototype.",
         },
       ],
       libraryLine:
-        "Verify a source once; reuse it everywhere. The longer Parallax runs, the stronger this commons of vetted evidence becomes — analyzed by thousands, owned by no one.",
+        "Review one source version for one scoped use; the target is to reuse it without losing scope, freshness, or limitations. This reusable library is not implemented yet.",
       keyline:
         "We can promise a fair process — never a comfortable conclusion. You do the trusting; Parallax does the disclosure.",
     },
@@ -888,111 +748,39 @@ export const en = {
       "publishes contentious changes without review",
     ],
     aiSourceRule:
-      "AI can take part too — but anything it adds is flagged \"AI-proposed\", verified before it counts, and must cite a source. In fact no argument enters without one, whether it comes from a person or a machine.",
+      "Target contract: AI outputs remain labeled \"AI-proposed, unreviewed\" until human review, with source provenance attached to every truth-apt claim.",
     note:
-      "In this prototype the seed structure was assembled by hand; the AI pipeline arrives in Milestone 4 and will be held to the same contract.",
+      "These draft dossiers were prepared with AI tools and have no named human review yet. Readers cannot trigger an analysis.",
     cta: "Read a debate with this lens",
   },
-  review: {
-    targetPosition: (letter: string, title: string) => `Position ${letter} — ${title}`,
-    targetClaim: (id: string, text: string) => `${id.toUpperCase()} — ${text}`,
-    targetEvidence: (publisher: string, claim: string) => `Evidence: ${publisher} on ${claim}`,
-    eyebrow: "Reviewer mode",
-    title: "The review queue.",
-    titleEm: "Nothing changes silently.",
-    lede:
-      "Draft contributions wait here. Approving merges them into the live debate view and publishes a new local revision; rejecting keeps them on the record with your rationale. In this prototype you are the reviewer — decisions persist in your browser.",
-    clear: "The queue is clear.",
-    emptyHintStart: "Open a debate and press",
-    emptyHintButton: "Improve this debate",
-    emptyHintEnd: "to draft a contribution, then come back here to review it.",
-    rationalePlaceholder: "Written rationale — it goes on the record...",
-    mergeAction: "Merge into the record",
-    mergeHint:
-      "Clone the published revision, apply this contribution, publish a new dated revision.",
-    mergeAdminOnly:
-      "Admin role required to merge — a reviewer accepts, an admin publishes.",
-    mergeDeferred:
-      "Not yet auto-mergeable — this contribution type needs human structuring first.",
-    mergeDone: (slug: string) =>
-      `Merged into a new published revision — open /debates/${slug}.`,
-    mergeFailed: "Merge failed; the canonical record is unchanged.",
-    mergedInto: (rev: string) => `Merged into the canonical record · ${rev}.`,
-    sampleType: "new source",
-    sampleTopic: "Should schools ban smartphones during class?",
-    sampleTag: "sample",
-    sampleTarget:
-      "Claim: \"Banning phones during the school day improves adolescent mental wellbeing.\"",
-    sampleBody:
-      "A longitudinal study finds wellbeing gains concentrated in heavy users — worth attaching, but it supports a narrower claim than the one stated.",
-    sampleHint:
-      "A sample, so you can see what reviewing feels like. The controls are inert — draft a real contribution to use them.",
-  },
   features: {
-    voicesEyebrow: "Where this view comes from",
-    voicesHint: "Values are often the trace of a story. Seed voices are realistic composites, curated like every other contribution.",
-    voicesSample: "composite voice · seed content",
     statsDebates: "debates open to read",
     statsClaims: "claims, each tied to sources",
     statsSources: "public sources, hand-labeled",
-    statsDeltas: "Process, not verdicts.",
     classroomsEyebrow: "For classrooms",
     classroomsTitle: "A ready-made lesson in disagreeing well.",
-    classroomsBody: "One debate, the values quiz, the steelman test: a full civics session where the homework is to state the other side fairly. Teacher packs arrive with the pilot program.",
+    classroomsBody: "A debate, its sources and the strongest case for each side: a reading session where the exercise is to state the other side fairly. Teacher packs are planned for a pilot.",
     classroomsCta: "Ask about the pilot",
-    proposeTitle: "Propose a topic",
-    proposeLede: "Good candidates are public-policy questions whose evidence is publicly inspectable. Drafts stay on your device until topic creation opens (Milestone 6).",
-    proposeQuestion: "The debate question",
-    proposeQuestionPh: "Should …?",
-    proposeWhy: "Why it matters now",
-    proposeWhyPh: "What makes this debate worth mapping…",
-    proposeSources: "Two public sources to start from",
-    proposeEmail: "Email",
-    proposeEmailPh: "you@example.org",
-    proposeEmailHint: "Optional — only used to tell you when your topic goes live.",
-    proposeSubmit: "Save my proposal",
-    proposeSavedToast: "Proposal saved on this device — topic creation opens with Milestone 6",
-    proposeSavedTitle: "Saved, on your device.",
-    proposeSavedBody: "When general topic creation opens, your draft will be right here, ready to submit through the same review pipeline as everything else.",
     nameOrigin: "A parallax is how astronomers measure the distance to stars: the same object, sighted from two viewpoints, reveals a truth no single viewpoint can reach.",
     libraryEyebrow: "The library",
     libraryTitle: "What the debate establishes,",
     libraryTitleEm: "the library keeps.",
     libThesis: "Disagreement isn't the obstacle to truth — it's how truth is made. A claim that survives the strongest objection its opponents can bring is worth more than one a neutral checker stamped.",
-    libraryLede: "Every claim is built to end in one of three states — and all three are progress.",
+    libraryLede: "Every claim starts provisional and is designed to reach one of three reviewed outcomes — all three are progress.",
     libEstablished: "Established",
     libEstablishedDesc: "The state a claim earns when it survives cross-camp review against the best counter-evidence anyone brings. Dated, revisable — never \"final\". (Today every seed claim is still unreviewed — the bar is the point.)",
     libContested: "Contested",
     libContestedDesc: "Where the evidence still conflicts. The debate page shows exactly where a claim blocks, and what evidence would unblock it.",
     libValues: "A values choice",
     libValuesDesc: "Facts shared, positions understood — what remains is a legitimate difference in priorities. Naming it is the resolution.",
-    libProtoNote: "Cross-camp review is how this is designed to work, and what we're building. Today's prototype runs single-reviewer mode — and says so on every debate.",
+    libProtoNote: "Cross-camp review is the intended method. Every current dossier is an unreviewed draft; no named human reviewer has signed it yet.",
     stateEyebrow: "State of the debate",
     stateEstablished: (n: number) => `${n} holding up`,
     stateContested: (n: number) => `${n} contested`,
     stateValues: (n: number) => `${n} values-dependent`,
-    stateNote: "Derived from claim-source alignment. Cross-camp review will refine these states.",
-    dedupTitle: "Similar claims already on the map",
-    dedupHint: "Parallax merges duplicates instead of multiplying them. If your point is below, add a source or a distinction to it instead.",
-    dedupUseIt: "This is my point",
-    bridgeNote: "Production rule: a decision ships only when reviewers from opposing camps agree (bridging consensus). This prototype runs single-reviewer mode.",
-    stewardTitle: "Steward eligibility",
-    stewardHint: (done: number, total: number) => `Pass the steelman test on every position to earn moderation rights. ${done}/${total} earned.`,
-    stewardEligible: "Eligible — you have proven you can state every side fairly.",
-    engineTitle: "How a topic advances",
-    engineLede: "The engine behind every page — designed for objectivity at scale, against spam, and for completeness.",
-    engineItems: [
-      { title: "A contribution is a diff, not a post", body: "Every submission is matched against the existing map first. Duplicates are merged, never multiplied — repetition and spam die at the gate, without censorship." },
-      { title: "Bridging consensus, not majority", body: "Labels and steelmans are validated when reviewers from opposing camps agree — the mechanism behind Community Notes. Majorities can brigade; bridges cannot." },
-      { title: "Moderation is earned by understanding", body: "To become a steward of a debate, pass the steelman test on every one of its positions. You may only moderate what you can state fairly." },
-      { title: "Big topics fractalize", body: "A vast question becomes an atlas of sub-questions sharing one global claim library — a claim is verified once, cited everywhere." },
-      { title: "AI does the mass work, humans judge", body: "Dedup, extraction, retrieval, first-pass labels: AI, fully audited. Validation, fairness, arbitration: humans, by bridging." },
-    ],
-    searchPh: "Search the debates…",
+    stateNote: "Derived from review status and auditable claim evaluations. A source-alignment label alone never establishes a claim.",
+    searchPh: "Search questions, arguments, claims, or sources…",
     allThemes: "All",
-    revHistory: "history",
-    revSeed: "seed structure published from the research packet",
-    revLocal: "community contribution merged (local to this browser)",
     notFoundTitle: "This page does not exist.",
     notFoundBody: "But the debates do.",
     notFoundCta: "Browse the debates",
@@ -1002,124 +790,13 @@ export const en = {
     errorCta: "Reload the page",
   },
   interactive: {
-    scale: {
-      min: "not at all",
-      max: "completely",
-    },
-    quiz: {
-      introEyebrow: "Before you read",
-      introTitle: "Where do you stand?",
-      introLede:
-        "Five trade-offs, one minute. No right answers — just your priorities. Then see which position fits them, and which values you share with the other side.",
-      start: "Start",
-      privacy: "stays in your browser",
-      sightedAt: (n: number) => `Sighted at ${n} · before reading`,
-      baselineEyebrow: "Quick calibration",
-      baselineQuestion:
-        "People who disagree with you on this topic — how reasonable are they?",
-      back: "← Back",
-      resultEyebrow: "Your values, mapped",
-      matchLead: "Your closest position",
-      readFirst: "Read it first",
-      bridgesLead: "And here is the part that matters:",
-      bridge: (value: string, letter: string) =>
-        `You share ${value.toLowerCase()} with people who answer ${letter}.`,
-      lensNote:
-        "Values are one lens, not a verdict — people also arrive at positions through their history, their fears, what they have lived. The map shows the lens. The person is always bigger than it.",
-      savedToast: "Saved to your local profile — see /you",
-      savedLink: "Saved to your profile →",
-      compactLeadStart: "Your closest position is",
-      compactLeadEnd: (values: string[]) =>
-        ` — you lean ${values.join(" and ").toLowerCase()}.`,
-      reRead: "Re-read it →",
-      retake: "Retake the quiz",
-    },
-    steelman: {
-      eyebrow: "Steelman test",
-      title: "Do you really understand this view?",
-      counter: (n: number, total: number, position: string) =>
-        `Question ${n} of ${total} · ${position}`,
-      exactly: "Exactly.",
-      notQuite: "Not quite.",
-      next: "Next question",
-      seeResult: "See result",
-      passStamp: "Steelman ✓",
-      passTitle: "You can state this position the way a supporter would.",
-      passBody:
-        "That is the rarest skill in any debate — and the badge is now on your local profile. Try the test on the position you disagree with most.",
-      failTitle: "Close — but a supporter would object.",
-      failBody:
-        "Re-read the steelman and the trade-off ledger, then try again. Understanding the other side is the whole game.",
-      backToReading: "Back to reading",
-      tryAgain: "Try again",
-      badgeToast: "Steelman badge earned — saved to your profile",
-    },
-    perception: {
-      eyebrow: "Before you go",
-      beforeLabel: "Before",
-      afterLabel: "After",
-      movedDownStart: "Your answer moved",
-      movedDownEnd:
-        "after reading. That happens too — at least the disagreement is precise now instead of vague.",
-      measuredLine: "We measured this on you — never on them.",
-      question:
-        "Same question as when you arrived: people who disagree with you on this — how reasonable are they?",
-      noBaseline:
-        "Noted. Take the values quiz next time before reading — then we can show you whether reading moved you.",
-      movedUpStart: "Your answer moved",
-      movedUpEnd:
-        "after reading. Not because anyone won — because you saw what the other side actually values.",
-      held:
-        "Your answer held steady. Understanding doesn't always mean moving — it means knowing precisely where and why you differ.",
-      movedDown: (delta: number) =>
-        `Your answer moved ${delta}. That happens too — at least now the disagreement is precise instead of vague.`,
-      note: "This number stays in your browser. It exists for you, not for us.",
-    },
-    you: {
-      eyebrow: "Your map",
-      titleLine: "What you value.",
-      titleEm: "Who you understand.",
-      lede:
-        "Your quiz results, steelman badges, and perception shifts — all stored in this browser only. No account, no tracking, no server. Clearing your browser data clears this page.",
-      emptyTitle: "Nothing here yet.",
-      emptyBody:
-        "Open a debate, take the one-minute values quiz, and try a steelman test. Your map builds itself.",
-      emptyCta: "Start with a debate",
-      previewLabel: "What your map will hold",
-      previewValues: "The values you lean on, aggregated across every debate you read.",
-      previewBadges: "A badge for each side you can argue as well as its own supporters.",
-      previewDelta: "Whether reading moved your view of the people who disagree.",
-      valuesTitle: "Your values profile",
-      valuesHint: "Aggregated from every quiz you have taken. Not a verdict — a mirror.",
-      debatesTitle: "Your debates",
-      closestPosition: "Your closest position:",
-      quizNotTaken: "Values quiz not taken yet",
-      badgePassed: "Steelman test passed",
-      badgeAttempt: (correct: number, total: number) =>
-        `Best attempt: ${correct}/${total}`,
-      badgeNotAttempted: "Steelman test not attempted",
-      badgeLabel: "steelman badges",
-      deltaUp: (delta: number) =>
-        `Your view of the other side softened by +${delta} after reading.`,
-      deltaHeld: "Your view of the other side held steady.",
-      deltaDown: (delta: number) =>
-        `Your view of the other side hardened by ${delta}.`,
-      contributionsTitle: "Your contributions",
-      contributionsSummary: (drafted: number, accepted: number, rejected: number, pending: number) =>
-        `${drafted} drafted · ${accepted} accepted · ${rejected} rejected · ${pending} pending — `,
-      reviewQueueLink: "see the review queue",
-      reset: "Reset my profile",
-      resetConfirm: "Clear your local profile (quiz results, badges, perception data)?",
-    },
     palette: {
       home: "Home",
       allDebates: "All debates",
       method: "Method — how to read Parallax",
-      review: "Review queue",
-      you: "Your profile — values, badges",
       hintPage: "page",
       hintDebate: "debate",
-      placeholder: "Jump to a page or a debate…",
+      placeholder: "Search pages, debates, claims, or sources…",
       empty: "Nothing matches.",
     },
     debate: {
@@ -1127,208 +804,6 @@ export const en = {
       debateLinkCopied: "Debate link copied — send it into the argument",
       claimLinkCopied: "Link to this claim copied",
       claimCopyTitle: "Copy link to this claim",
-      smctaText: "Think you understand this view? Prove it — to yourself.",
-      smctaEarned: "Steelman ✓ earned",
-      smctaButton: "Take the steelman test",
-    },
-  },
-  positionSignal: {
-    eyebrow: "Where readers stand",
-    beforeTitle: "Before you read — where do you stand?",
-    afterTitle: "Now you've read it all — where do you stand?",
-    pickFirst: "Pick first. Then we show you where everyone landed — no bandwagon.",
-    undecided: "It depends / undecided",
-    cast: "Register my position",
-    casting: "Registering…",
-    revealTitle: "Where readers landed",
-    notLeaderboard:
-      "A landscape, not a leaderboard — no winner, no ranking. Just where people stand.",
-    priorityNote:
-      "This is a priority, not a fact. You're marking which position you'd stand with — not whether the evidence is true.",
-    youMark: "you",
-    pctBand: (lo: number, hi: number) => `~${lo}–${hi}%`,
-    withheld: "Too few to show",
-    confidenceEmerging: "Emerging — too few signals to read much into yet.",
-    confidenceForming: "Forming — a shape is appearing.",
-    confidenceSettled: "Settled — a stable spread across many readers.",
-    shiftTitle: "What moved",
-    shiftLede:
-      "Of readers who went through the whole debate, here's how the spread shifted.",
-    shiftDelta: (pts: number, letter: string) =>
-      `${pts > 0 ? "+" : ""}${pts} pts toward ${letter}`,
-    shiftYouMoved: "You softened toward another position after reading.",
-    shiftYouHeld: "You held your position after reading.",
-    shiftDignity:
-      "Softening, holding, and digging in all count equally. Moving isn't winning.",
-    shiftEmpty: "Not enough readers have gone in-and-out yet to show the shift.",
-    change: "Change my answer",
-    privacy:
-      "Only the anonymous total is ever stored. Your own pick stays in this browser and is never sold.",
-    demoNote:
-      "Demo distribution — not live data. Live aggregates appear once the signal has readers.",
-    signedOutNote:
-      "Sign in to register your position (keeps the count honest, never tied to you).",
-  },
-  claimEval: {
-    stateLabel: {
-      established: "Established",
-      contested: "Contested",
-      values: "A values choice",
-    },
-    byReview: (date: string) => `reviewed ${date}`,
-    setState: "Record the state:",
-    savedToast: "Claim evaluation recorded — on the library record",
-    failedToast: "Could not record — reviewer role required",
-    bridge: {
-      status: {
-        bridged_established: (n: number) =>
-          `Established — bridged across ${n} opposing camp${n === 1 ? "" : "s"}`,
-        bridged_contested: (n: number) =>
-          `Contested — bridged across ${n} opposing camp${n === 1 ? "" : "s"}`,
-        bridged_established_nocount: "Established — bridged across opposing camps",
-        bridged_contested_nocount: "Contested — bridged across opposing camps",
-        bridged_conflicting:
-          "Camps reached different cross-camp conclusions — unresolved",
-        pending_single_camp: "Pending — only one camp has endorsed this so far",
-        insufficient: "No cross-camp verdict yet",
-      },
-      explainer:
-        "Confirmed only when reviewers from opposing positions agree — not by majority, not by one reviewer. A single camp, at any size, cannot confirm.",
-      scopeNote:
-        "This measures cross-camp agreement on the claim's state only — not a full reliability verdict (the integrity-vs-relevance split and rotating juries are not yet in effect).",
-      demo: "demo",
-      endorse: "Endorse this state:",
-      endorsed: (state: string) => `You endorsed: ${state}`,
-      endorseSaved: "Endorsement recorded — counts only across distinct camps",
-      endorseFailed:
-        "Could not record your endorsement — reviewer role required",
-      yourCamp: (camp: string) => `Your stance: ${camp}`,
-      yourCampHint:
-        "Only you see your stance. It is never shown publicly or to other reviewers.",
-      camp: {
-        prompt: "Before you endorse, declare your stance on this debate.",
-        why: "Your stance is recorded once for this debate and is never shown publicly. It lets agreement be measured across camps — so one camp can't confirm alone.",
-        pick: (letter: string, title: string) => `Position ${letter} — ${title}`,
-        undecided: "Undecided / it depends",
-        confirm: "Set my stance",
-        saved: "Stance recorded for this debate",
-        failed: "Could not record your stance — reviewer role required",
-        lockHint:
-          "Recorded once for this debate. Changing it later re-counts your endorsements under the new camp.",
-      },
-    },
-  },
-  sourceFloor: {
-    legendEyebrow: "Source integrity",
-    verdicts: {
-      meets_floor: "clears the floor for this use",
-      attribution_required: "attribute it for this use",
-      context_required: "needs context for this use",
-      below_floor: "below the floor for this use",
-    } as Record<string, string>,
-    verdictHint: {
-      meets_floor:
-        "No floor rule fired for this source on this claim. Not an endorsement, not “reliable”, not “true”.",
-      attribution_required:
-        "Usable only as an attributed viewpoint here, not as a standalone factual authority.",
-      context_required:
-        "A material attribute (sponsored / AI / undisclosed conflict / high-bar domain) must be disclosed before relying on it here.",
-      below_floor:
-        "A rule found this structurally inadequate for THIS use. Demoted and labelled — kept on record, never deleted. Not “false”, not “bad in the abstract”.",
-    } as Record<string, string>,
-    rules: {
-      ugc_controversial_factual:
-        "Unverified user content isn’t a valid source for a contested factual claim.",
-      no_editorial_accountability:
-        "No identifiable editorial accountability and no correction policy — negative presumption.",
-      opinion_attribution:
-        "Opinion or analysis — usable as an attributed viewpoint, not as a factual authority.",
-      conflict_context:
-        "A conflict, funding, sponsorship or AI generation must be disclosed before relying on this here.",
-      high_bar_domain:
-        "Health, law, finance or living-persons claims need a higher source bar than this clears.",
-      documented_fabrication:
-        "Documented fabrication on record (external proof) — visibility restricted, kept on record.",
-      no_floor_rule: "No floor rule fired for this source on this claim.",
-    } as Record<string, string>,
-    attrValues: {
-      content_genre: {
-        primary: "primary / data",
-        reporting: "reporting",
-        analysis: "analysis",
-        opinion: "opinion",
-        sponsored: "sponsored",
-        ugc: "user-generated",
-        ai_generated: "AI-generated",
-        unknown: "unknown",
-      },
-      editorial_accountability: {
-        named_masthead: "named masthead",
-        named_author: "named author",
-        org_only: "organisation only",
-        anonymous: "anonymous",
-        none: "none",
-        unknown: "unknown",
-      },
-      correction_policy: {
-        documented: "documented",
-        informal: "informal",
-        none: "none",
-        unknown: "unknown",
-      },
-      independence: {
-        independent: "independent",
-        funded_disclosed: "funded (disclosed)",
-        funded_undisclosed: "funded (undisclosed)",
-        self_interested: "self-interested",
-        unknown: "unknown",
-      },
-      fabrication_record: {
-        none_known: "none known",
-        corrected_history: "corrections on record",
-        retraction_history: "retractions on record",
-        documented_fabrication: "documented fabrication",
-      },
-      expertise_basis: {
-        peer_reviewed: "peer-reviewed",
-        domain_expert: "domain expert",
-        journalistic: "journalistic",
-        lay: "lay",
-        none: "none",
-        unknown: "unknown",
-      },
-      identity_basis: {
-        verified: "verified",
-        pseudonymous: "pseudonymous",
-        unverified: "unverified",
-        unknown: "unknown",
-      },
-      sensitive_domain: {
-        none: "—",
-        health: "health",
-        law: "law",
-        finance: "finance",
-        living_persons: "living persons",
-      },
-    } as Record<string, Record<string, string>>,
-    drivenBy: (drivers: string) => `driven by ${drivers}`,
-    demo: "demo",
-    vsRelevance:
-      "Two separate questions. The evidence label asks: does this source support THIS claim? Integrity asks: is this a credible source at all, by fixed rules? We never merge them.",
-    notTruth:
-      "This is a rules check on integrity, not a verdict on truth. v1 guarantees identical mechanical rules for every source — the controversy and high-bar-domain scope come from cross-camp signals, not one reviewer’s say-so. A source is never “reliable” in the abstract; the floor is always scoped to a use.",
-    libraryReuse:
-      "An assessment travels with the source, not the debate — assess a source once, and the floor re-scopes itself wherever that source is cited.",
-    assess: {
-      title: "Assess this source (integrity floor)",
-      hint: "Declare the source’s mechanical attributes and any external proof. The verdict is computed by the rules, per claim — you don’t set it.",
-      proofLabel:
-        "External proof (for fabrication / no-accountability below-floor)",
-      save: "Record attributes",
-      saved:
-        "Source assessed — the rules compute the verdict per claim, on the library record",
-      failed: "Could not record — reviewer role required",
-      verdictReadonly: "Verdict (computed by the rules):",
     },
   },
 };

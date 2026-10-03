@@ -1,4 +1,5 @@
 import { dictionaries, type Locale } from "../i18n";
+import { localizedPath } from "../i18n/paths";
 
 /** Minimal per-debate facts the head needs. Injected by the caller (the client
  *  reads it from the fixtures via getDebates; the prerender reads JSON via fs) so
@@ -8,21 +9,32 @@ export type DebateMeta = { slug: string; question: string; summary?: string };
 
 // One origin var, two readers: client build sees VITE_SITE_ORIGIN; the Node
 // prerender (tsx) sees process.env.SITE_ORIGIN. Same value, set both in CF Pages.
+const PROCESS_ENV = (globalThis as {
+  process?: { env?: Record<string, string | undefined> };
+}).process?.env;
 const ENV_ORIGIN =
   (import.meta.env?.VITE_SITE_ORIGIN as string | undefined) ??
-  (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env
-    ?.SITE_ORIGIN;
-export const SITE_ORIGIN = (ENV_ORIGIN ?? "https://parallax.org").replace(/\/+$/, "");
+  PROCESS_ENV?.SITE_ORIGIN;
+const LOCAL_FALLBACK_ALLOWED =
+  Boolean(import.meta.env?.DEV) || PROCESS_ENV?.SITE_ORIGIN_ALLOW_LOCAL === "1";
+if (!ENV_ORIGIN && !LOCAL_FALLBACK_ALLOWED) {
+  throw new Error(
+    "VITE_SITE_ORIGIN and SITE_ORIGIN are unset. Refusing to generate a guessed public canonical.",
+  );
+}
+export const SITE_ORIGIN = (
+  ENV_ORIGIN ?? (import.meta.env?.DEV ? "http://127.0.0.1:5173" : "http://127.0.0.1:4173")
+).replace(/\/+$/, "");
 const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
-export const LOCALES: Locale[] = ["en", "fr"];
+export const LOCALES: Locale[] = ["fr", "en"];
 const OG_LOCALE: Record<Locale, string> = { en: "en_US", fr: "fr_FR" };
 
 export type RouteKey =
   | { kind: "home" }
   | { kind: "debates" }
   | { kind: "method" }
-  | { kind: "review" }
-  | { kind: "you" }
+  | { kind: "project" }
+  | { kind: "legal" | "privacy" | "contact" }
   | { kind: "debate"; slug: string }
   | { kind: "notfound" };
 
@@ -34,21 +46,23 @@ export function pathForRoute(r: RouteKey): string {
       return "/debates";
     case "method":
       return "/method";
-    case "review":
-      return "/review";
-    case "you":
-      return "/you";
+    case "project":
+      return "/projet";
     case "debate":
       return `/debates/${r.slug}`;
+    case "legal":
+      return "/mentions-legales";
+    case "privacy":
+      return "/confidentialite";
+    case "contact":
+      return "/contact";
     case "notfound":
       return "/404";
   }
 }
 
 export function urlFor(localePath: string, locale: Locale): string {
-  const clean = localePath === "/" ? "" : localePath;
-  const path = locale === "fr" ? `/fr${clean}` : clean;
-  return `${SITE_ORIGIN}${path === "" ? "/" : path}`;
+  return `${SITE_ORIGIN}${localizedPath(localePath, locale)}`;
 }
 
 function clamp(s: string, max = 160): string {
@@ -81,6 +95,7 @@ export function buildHead(
   route: RouteKey,
   locale: Locale,
   debate?: DebateMeta,
+  options: { debateLookupUnavailable?: boolean } = {},
 ): HeadModel {
   const t = dictionaries[locale];
   const other: Locale = locale === "en" ? "fr" : "en";
@@ -107,19 +122,19 @@ export function buildHead(
       ogTitle = title;
       ogDescription = description;
       break;
-    case "review":
-      title = t.meta.titleReview;
-      description = t.meta.descriptionShort;
+    case "project":
+      title = `${t.chrome.project} — Parallax`;
+      description = t.landing.projectMission;
       ogTitle = title;
       ogDescription = description;
-      robots = "noindex,follow";
       break;
-    case "you":
-      title = t.meta.titleYou;
-      description = t.meta.descriptionShort;
+    case "legal":
+    case "privacy":
+    case "contact":
+      title = `${t.legal[route.kind].title} — Parallax`;
+      description = t.legal[route.kind].lede;
       ogTitle = title;
       ogDescription = description;
-      robots = "noindex,follow";
       break;
     case "notfound":
       title = t.meta.titleNotFound;
@@ -129,7 +144,20 @@ export function buildHead(
       robots = "noindex,follow";
       break;
     case "debate": {
-      if (!debate) return buildHead({ kind: "notfound" }, locale);
+      if (!debate) {
+        if (!options.debateLookupUnavailable) {
+          return buildHead({ kind: "notfound" }, locale);
+        }
+        // The client may still be loading a backend-only debate, or the live
+        // corpus may be temporarily unavailable. Keep the requested canonical
+        // instead of falsely declaring /404, but do not index an unresolved page.
+        title = t.meta.titleDebates;
+        description = t.meta.descriptionDebates;
+        ogTitle = title;
+        ogDescription = description;
+        robots = "noindex,follow";
+        break;
+      }
       title = `${debate.question} — Parallax`;
       const raw = (debate.summary ?? "").trim();
       description = raw.length ? raw : `${debate.question} ${t.meta.debateTail}`;
@@ -162,7 +190,7 @@ export function buildHead(
     alternates: [
       { hreflang: "en", href: urlFor(localePath, "en") },
       { hreflang: "fr", href: urlFor(localePath, "fr") },
-      { hreflang: "x-default", href: urlFor(localePath, "en") },
+      { hreflang: "x-default", href: urlFor(localePath, "fr") },
     ],
   };
 }
