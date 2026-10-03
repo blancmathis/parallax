@@ -63,54 +63,48 @@ objectives are *what it's for*. Never lead communication with six things.
 
 The site delivers it as a **three-layer hero**, not one dense sentence:
 
-**Hero (H1) — broad and calm:**
-> FR : « La bibliothèque vivante des grands débats. »
-> EN : "The living library of the great debates."
+*Revised 2026-10-03 (D24): "library of truths" and "clear answers" promise a
+verdict the method refuses, so they are dropped.*
 
-**Sub-line — the movement + the output + our signature:**
-> FR : « On y fait avancer chaque grande question vers des réponses claires,
-> structurées et sourcées. Tous les points de vue, à leur meilleur. »
-> EN : "We advance every great question toward clear, structured, sourced
-> answers. Every viewpoint, at its strongest."
+**Hero (H1) — what a page is:**
+> FR : « Le dossier de chaque grand débat, relu par ceux qui ne sont pas d'accord. »
+> EN : "The dossier on every great debate, reviewed by those who disagree."
 
-**Lower on the landing — the deeper, dual mission (explicit only here):**
+Until a debate carries its reviewers' signatures, the line describes the
+method, and each draft says "Brouillon non relu" at the top.
+
+**Sub-line — the method + our signature:**
+> FR : « Chaque position à son meilleur, signée par ses partisans. Chaque fait
+> relié à l'extrait exact de sa source. Ce qui reste — valeurs, paris sur
+> l'avenir, confiance — dit sans désigner de vainqueur. »
+> EN : "Every position at its strongest, signed by its supporters. Every fact
+> tied to the exact excerpt of its source. What remains — values, bets on the
+> future, trust — stated without naming a winner."
+
+**On the Project page only — the deeper, dual mission:**
 > FR : « Un socle de réflexion sourcée et auditable : une boussole pour les humains, un
 > corpus pour aligner les IA. »
 > EN : "A foundation of source-grounded, auditable reflection: a compass for humans, a corpus to
 > align AI."
 
 Why these exact words:
-- **"grands débats" not "grandes questions"** in the H1 — "questions" can read as
-  a bare *list of questions* (a FAQ). A *debate* is worked content (positions,
-  evidence, an advancing answer). "Question" stays in the sub-line, where it
-  keeps its breadth (a great question can be civilizational — *what should an AI
-  value?* is one).
-- **"library / vivante"** — an institution and a *thing*, not an *activity*. A
-  library doesn't presuppose who reads it: humans today, AI too. That breadth is
-  what leaves room for the dual mission without saying "AI" in the headline (it
-  would confuse a first-time visitor — so it lives lower on the page).
-- **"qu'on fait avancer ensemble / we advance together"** — it is collective
-  *progress*, not a static map of opinions. Disagreement is the testing process,
-  per the target Library of Truths below.
-- **"réponses claires, structurées, sourcées"** — the useful output, not a
-  verdict (we never declare a winner; the structured answer includes what is
-  established vs. what is a values choice).
+- **"dossier" not "library" or "answers"** — a dossier is worked, dated, and
+  revisable material. It promises a procedure, not a verdict.
+- **"grand débat"** — a *debate* is worked content (positions, evidence, what
+  remains); "question" alone can read as a FAQ.
+- **"relu par ceux qui ne sont pas d'accord"** — the guarantee is a procedure
+  (named supporters signed), never a verdict.
 - **"à son meilleur / at its strongest"** — the **steelman**, our signature.
 
 Variants by context:
 - **Tagline (ultra-short):** « L'atlas du désaccord » / "The atlas of
   disagreement." (used as the hero kicker, above the H1).
-- **One-line pitch (meta / decks):** « La bibliothèque vivante des grands débats,
-  que l'on fait avancer ensemble vers des réponses claires, structurées et
-  sourcées. » / "The living library of the great debates, advanced together
-  toward clear, structured, sourced answers."
+- **One-line pitch (meta / decks):** the H1 above, unchanged.
 
-The hierarchy is deliberate: **one headline, then the six objectives** (kept,
-and adjustable later — more or fewer). The landing's narrative order reflects it:
-**the human interest first** (the problem, the three filters, the provable
-understanding loop), **then what we do with AI** (the dual-mission section —
-AI proposes under a human-reviewed membrane; the corpus aligns AI), then the
-library, the debates, contribution, and the audited trust band.
+The hierarchy is deliberate: **one headline, then the six objectives**. Since
+2026-10-03 the landing is short: the headline, the debates in the first
+screen, the method in a few lines, and the call for reviewers. The problem
+statement, the AI mission, and the funding model live on the Project page.
 
 ## The Mission
 
@@ -155,7 +149,7 @@ AI cognition may improve on the same substrate of reviewed claims and mapped val
 This is the dual mission of the funding model — *"a compass for humans, a corpus
 for AIs"* — made concrete as six objectives that reinforce one another.
 
-## The Library of Truths
+## The library of reviewed dossiers
 
 **Status: Target.** The name is an institutional aspiration. The product output
 is a provisional dossier with traceable evidence and explicit uncertainty, not
@@ -183,7 +177,7 @@ The current browser UI additionally uses `provisional` when no auditable
 evaluation justifies `established` or `contested`. It is a protective display
 state, not evidence that the full lifecycle above is implemented.
 
-"Library of truths" is shorthand for reviewed scoped claims plus the honest map
+The library means reviewed scoped claims plus the honest map
 of contested, refuted, values-dependent, stale, and unknown material. Values do
 not decide factual support; they help explain which choices remain after the
 evidentiary record is made explicit.
@@ -209,7 +203,7 @@ evidentiary record is made explicit.
 > Personne n'y gagne un débat. Tout le monde y gagne une chose : on cesse de
 > prendre pour un ennemi quelqu'un qui priorise autrement. Plus nous serons
 > nombreux, plus les questions avanceront. Lisez. Contestez. Apportez votre
-> pierre — elle sera relue, et elle restera.
+> pierre — elle sera relue, et la réponse sera publique.
 
 (The English equivalent lives in the site's dictionary; both are canonical.)
 
@@ -325,8 +319,8 @@ it a map of understanding, not a popularity contest:
 The target funding hypothesis is that sufficiently governed aggregate data
 could produce a **pluralistic-values distribution per question**. It is not a
 current dataset or product offering. Individual data must never be sold; the
-current experimental signal schema stores aggregate buckets only. Full mechanics: [02-product.md](02-product.md) D15 and
-[03-data-model.md](03-data-model.md#position-signal-aggregate-vote-then-reveal).
+position signal was cut on 2026-10-03 (D21): no opinion is tied to an
+account, and the only collection is the anonymous, pre-registered measure.
 
 ## Red lines (institutional)
 

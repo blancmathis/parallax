@@ -13,9 +13,13 @@ become chaotic, hostile, and repetitive — Parallax uses AI to organize
 arguments, check sources against claims, and reveal the real reasons people
 disagree.
 
-**Core belief:** most conflicts between people are not about facts — they are
-about **different values**. When we see that someone simply prioritizes
-different things than we do, we stop seeing them as enemies.
+**Core belief:** once the facts are laid out, what remains between people is
+rarely bad faith. It is **different values**, different **bets on the
+future**, and unequal **trust in institutions**. Seeing that someone
+prioritizes, predicts, or trusts differently makes them harder to see as an
+enemy. The order facts → understanding → values is logical, not
+psychological: people weigh the facts of a side they already find reasonable,
+so a debate page starts with the people.
 
 ## The Problem
 
